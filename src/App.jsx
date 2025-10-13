@@ -1,11 +1,14 @@
 import { useState } from 'react'
+import Navbar from './components/navBar.jsx'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <h1 className="text-4xl font-bold bg-pink-600">Hello World</h1>
+      <div className="min-h-screen bg-[var(--brand-bg)]">
+      <Navbar />
+      </div>
     </>
   )
 }

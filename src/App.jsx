@@ -1,5 +1,5 @@
-import Navbar from './components/Navbar.jsx'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route } from "react-router-dom";
+import SiteLayout from "./layouts/SiteLayout.jsx"; 
 
 function Home() {
   return (
@@ -50,10 +50,9 @@ function Contacto() {
   )
 }
 
-function App() {
+export default function App() {
   return (
-    <div className="min-h-screen bg-neutral-900 text-white">
-      <Navbar />
+    <SiteLayout>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/servicios" element={<Servicios />} />
@@ -62,8 +61,6 @@ function App() {
         <Route path="/equipo" element={<Equipo />} />
         <Route path="/contacto" element={<Contacto />} />
       </Routes>
-    </div>
-  )
+    </SiteLayout>
+  );
 }
-
-export default App

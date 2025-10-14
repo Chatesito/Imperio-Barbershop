@@ -2,12 +2,12 @@ import { useState } from "react";
 import { ShoppingBag, Menu, X } from "lucide-react";
 
 const links = [
-    { href: "#", label: "HOME" },
-    { href: "#", label: "SERVICES AND PRICES" },
-    { href: "#", label: "ABOUT US" },
-    { href: "#", label: "RESERVATIONS" },
-    { href: "#", label: "OUR TEAM" },
-    { href: "#", label: "CONTACT" },
+    { href: "#", label: "INICIO" },
+    { href: "#", label: "SERVICIOS Y PRECIOS" },
+    { href: "#", label: "SOBRE NOSOTROS" },
+    { href: "#", label: "RESERVACIONES" },
+    { href: "#", label: "NUESTRO EQUIPO" },
+    { href: "#", label: "CONTACTO" },
 ];
 
 export default function Navbar() {
@@ -16,10 +16,9 @@ export default function Navbar() {
     return (
         <nav className="bg-neutral-800 border-b border-neutral-700 relative z-40">
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-                {/* Marca (puedes reemplazar por un <img src="/logo.svg" ... />) */}
                 <a href="#" className="flex items-center gap-3">
-                    <div className="h-11 w-11 rounded-full bg-neutral-700 grid place-items-center border border-neutral-600">
-                        <span className="text-xs tracking-widest">ESTD</span>
+                    <div className="h-10 w-11 rounded-full bg-neutral-700 grid place-items-center border border-neutral-600">
+                        <img src="/public/images/logo.png" alt="Logo - Imperio Barbershop" className="h-full w-full object-contain" />
                     </div>
                     <div className="leading-4">
                         <div className="font-extrabold tracking-wide">IMPERIO</div>
@@ -31,7 +30,7 @@ export default function Navbar() {
                 <button
                     className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-neutral-200 hover:bg-neutral-700"
                     onClick={() => setOpen((v) => !v)}
-                    aria-label="Toggle menu"
+                    aria-label="menu desplegable"
                     aria-expanded={open}
                 >
                     {open ? <X className="size-5" /> : <Menu className="size-5" />}
@@ -54,7 +53,7 @@ export default function Navbar() {
                 <div className="hidden lg:flex items-center gap-2">
                     <button className="inline-flex items-center gap-2 px-3 py-2 rounded-md hover:bg-neutral-700/60">
                         <ShoppingBag className="size-4" aria-hidden />
-                        <span className="hidden md:inline">CARD</span>
+                        <span className="hidden md:inline">TARJETA</span>
                         <span className="ml-1 text-xs font-bold bg-brand-gold text-black rounded-full px-2 py-0.5">0</span>
                     </button>
                 </div>

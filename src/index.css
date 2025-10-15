@@ -1,19 +1,7 @@
 @import "tailwindcss";
 
-:root {
-  --brand-gold: #d4a35e;
-  --brand-bg: #0e0e0e;
+@theme {
+  --color-brand-gold: #c8a256;
+  --color-brand-bg: #0e0e0e;
 }
-
-body {
-  background-color: var(--brand-bg);
-  color: white;
-  font-family: system-ui, sans-serif;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #9ca3af;
-  border-radius: 4px;
-}
-
 

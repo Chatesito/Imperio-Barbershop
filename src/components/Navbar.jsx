@@ -1,52 +1,87 @@
-import React from 'react';
-import { ShoppingBag, Phone, MapPin } from 'lucide-react';
-import './Navbar.css'; // opcional
+import { useState } from "react";
+import { ShoppingBag, Menu, X } from "lucide-react";
+
+const links = [
+    { href: "#", label: "INICIO" },
+    { href: "#", label: "SERVICIOS Y PRECIOS" },
+    { href: "#", label: "SOBRE NOSOTROS" },
+    { href: "#", label: "RESERVACIONES" },
+    { href: "#", label: "NUESTRO EQUIPO" },
+    { href: "#", label: "CONTACTO" },
+];
 
 export default function Navbar() {
-  return (
-    <header className="w-full text-sm text-white">
-      <div className="bg-black py-2 px-12 flex justify-between items-center">
-        <div className="flex items-center gap-2 text-xs">
-          <span className="text-[var(--brand-gold)] font-semibold">
-            WE ARE OPEN
-          </span>
-          <span>7 DAYS A WEEK</span>
-        </div>
-        <div className="flex items-center gap-6 text-xs">
-          <div className="flex items-center gap-1">
-            <MapPin className="size-4 text-[var(--brand-gold)]" />
-            <span>9400 Penatibus Road</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <Phone className="size-4 text-[var(--brand-gold)]" />
-            <span>1-386-253-7950</span>
-          </div>
-        </div>
-      </div>
+    const [open, setOpen] = useState(false);
 
-      <nav className="bg-[#1a1a1a] py-4 px-12 flex justify-between items-center border-b border-[#2a2a2a]">
-        <div className="flex items-center gap-3">
-          <img
-            src="/logo.png"
-            alt="Imperio Barber Shop"
-            className="size-12 object-contain"
-          />
-        </div>
+    return (
+        <nav className="bg-neutral-800 border-b border-neutral-700 relative z-40">
+            <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+                <a href="#" className="flex items-center gap-3">
+                    <div className="h-10 w-11 rounded-full bg-neutral-700 grid place-items-center border border-neutral-600">
+                        <img src="/public/images/logo.png" alt="Logo - Imperio Barbershop" className="h-full w-full object-contain" />
+                    </div>
+                    <div className="leading-4">
+                        <div className="font-extrabold tracking-wide">IMPERIO</div>
+                        <div className="text-xs text-neutral-400">BARBERSHOP</div>
+                    </div>
+                </a>
 
-        <ul className="flex items-center gap-8 uppercase text-xs font-semibold tracking-wide">
-          <li className="text-[var(--brand-gold)] cursor-pointer">The Home</li>
-          <li className="hover:text-[var(--brand-gold)] cursor-pointer">Services & Prices</li>
-          <li className="hover:text-[var(--brand-gold)] cursor-pointer">About Us</li>
-          <li className="hover:text-[var(--brand-gold)] cursor-pointer">Reservations</li>
-          <li className="hover:text-[var(--brand-gold)] cursor-pointer">Our Team</li>
-          <li className="hover:text-[var(--brand-gold)] cursor-pointer">Contact</li>
-        </ul>
+                {/* Toggle móvil */}
+                <button
+                    className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-neutral-200 hover:bg-neutral-700"
+                    onClick={() => setOpen((v) => !v)}
+                    aria-label="menu desplegable"
+                    aria-expanded={open}
+                >
+                    {open ? <X className="size-5" /> : <Menu className="size-5" />}
+                </button>
 
-        <div className="flex items-center gap-2 cursor-pointer hover:text-[var(--brand-gold)] transition-colors">
-          <ShoppingBag className="size-5" />
-          <span className="text-xs font-semibold">Cart (0)</span>
-        </div>
-      </nav>
-    </header>
-  );
+                {/* Links desktop */}
+                <div className="hidden lg:flex items-center gap-6">
+                    {links.map((l) => (
+                        <a
+                            key={l.label}
+                            href={l.href}
+                            className="px-1 py-2 text-sm font-semibold tracking-wide text-neutral-300 hover:text-brand-gold border-b-2 border-transparent hover:border-brand-gold"
+                        >
+                            {l.label}
+                        </a>
+                    ))}
+                </div>
+
+                {/* Acciones */}
+                <div className="hidden lg:flex items-center gap-2">
+                    <button className="inline-flex items-center gap-2 px-3 py-2 rounded-md hover:bg-neutral-700/60">
+                        <ShoppingBag className="size-4" aria-hidden />
+                        <span className="hidden md:inline">TARJETA</span>
+                        <span className="ml-1 text-xs font-bold bg-brand-gold text-black rounded-full px-2 py-0.5">0</span>
+                    </button>
+                </div>
+            </div>
+
+        {/* Drawer móvil */}
+            {open && (
+                <div className="lg:hidden absolute inset-x-0 top-full bg-neutral-800 border-t border-neutral-700">
+                    <div className="px-4 py-3 flex flex-col gap-1">
+                        {links.map((l) => (
+                            <a
+                                key={l.label}
+                                href={l.href}
+                                onClick={() => setOpen(false)}
+                                className="block px-2 py-2 rounded-md text-sm font-semibold text-neutral-300 hover:bg-neutral-700 hover:text-white"
+                            >
+                                {l.label}
+                            </a>
+                        ))}
+
+                        <button className="mt-2 inline-flex items-center gap-2 px-3 py-2 rounded-md bg-neutral-700/60 hover:bg-neutral-700">
+                            <ShoppingBag className="size-4" aria-hidden />
+                            <span>CARD</span>
+                            <span className="ml-1 text-xs font-bold bg-brand-gold text-black rounded-full px-2 py-0.5">0</span>
+                        </button>
+                    </div>
+                </div>
+            )}
+        </nav>
+    );
 }

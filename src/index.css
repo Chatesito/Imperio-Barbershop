@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Karantina:wght@700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-brand-gold: #c8a256;
-  --color-brand-bg: #0e0e0e;
+  --color-brand-bg: #fff;
+  --font-karantina: "Karantina", system-ui, sans-serif;
 }
 

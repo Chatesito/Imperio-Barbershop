@@ -15,14 +15,10 @@ export default function Navbar() {
 
     return (
         <nav className="bg-neutral-800 border-b border-neutral-700 relative z-40">
-            <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-                <a href="#" className="flex items-center gap-3">
-                    <div className="h-10 w-11 rounded-full bg-neutral-700 grid place-items-center border border-neutral-600">
+            <div className="max-w-7xl mx-auto px-7 h-16 flex items-center justify-between gap-4">
+                <a hrwef="#" className="flex items-center gap-3">
+                    <div className="h-[5rem] w-11">
                         <img src="/public/images/logo.png" alt="Logo - Imperio Barbershop" className="h-full w-full object-contain" />
-                    </div>
-                    <div className="leading-4">
-                        <div className="font-extrabold tracking-wide">IMPERIO</div>
-                        <div className="text-xs text-neutral-400">BARBERSHOP</div>
                     </div>
                 </a>
 

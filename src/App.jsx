@@ -1,5 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import SiteLayout from "./layouts/SiteLayout.jsx"; 
+import Contacto from "./pages/Contact.jsx";
 
 function Home() {
   return (
@@ -38,14 +39,6 @@ function Equipo() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold">Our Team</h1>
-    </section>
-  )
-}
-
-function Contacto() {
-  return (
-    <section className="max-w-7xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold">Contact</h1>
     </section>
   )
 }

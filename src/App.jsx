@@ -1,19 +1,11 @@
 import { Routes, Route } from "react-router-dom";
-import SiteLayout from "./layouts/SiteLayout.jsx"; 
-
-function Home() {
-  return (
-    <section className="max-w-7xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold">Home</h1>
-      <p className="text-neutral-300 mt-2">Bienvenido a Imperio Barbershop.</p>
-    </section>
-  )
-}
+import SiteLayout from "./layouts/SiteLayout.jsx";
+import Home from "./pages/Home.jsx";
 
 function Servicios() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold">Services and Prices</h1>
+      <h1 className="text-3xl font-bold">Servicios y Precios</h1>
     </section>
   )
 }
@@ -21,7 +13,7 @@ function Servicios() {
 function SobreNosotros() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold">About Us</h1>
+      <h1 className="text-3xl font-bold">Sobre Nosotros</h1>
     </section>
   )
 }
@@ -29,7 +21,7 @@ function SobreNosotros() {
 function Reservaciones() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold">Reservations</h1>
+      <h1 className="text-3xl font-bold">Reservaciones</h1>
     </section>
   )
 }
@@ -37,7 +29,7 @@ function Reservaciones() {
 function Equipo() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold">Our Team</h1>
+      <h1 className="text-3xl font-bold">Nuestro Equipo</h1>
     </section>
   )
 }
@@ -45,7 +37,7 @@ function Equipo() {
 function Contacto() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold">Contact</h1>
+      <h1 className="text-3xl font-bold">Contacto</h1>
     </section>
   )
 }
@@ -55,11 +47,11 @@ export default function App() {
     <SiteLayout>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/servicios" element={<Servicios />} />
-        <Route path="/sobre-nosotros" element={<SobreNosotros />} />
-        <Route path="/reservaciones" element={<Reservaciones />} />
-        <Route path="/equipo" element={<Equipo />} />
-        <Route path="/contacto" element={<Contacto />} />
+        <Route path="/Services" element={<Servicios />} />
+        <Route path="/About" element={<SobreNosotros />} />
+        <Route path="/Reservations" element={<Reservaciones />} />
+        <Route path="/OurTeam" element={<Equipo />} />
+        <Route path="/Contect" element={<Contacto />} />
       </Routes>
     </SiteLayout>
   );

@@ -1,24 +1,41 @@
 import { useState } from "react";
 import { ShoppingBag, Menu, X } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const links = [
-    { href: "#", label: "INICIO" },
-    { href: "#", label: "SERVICIOS Y PRECIOS" },
-    { href: "#", label: "SOBRE NOSOTROS" },
-    { href: "#", label: "RESERVACIONES" },
-    { href: "#", label: "NUESTRO EQUIPO" },
-    { href: "#", label: "CONTACTO" },
+    { to: "/", label: "INICIO" },
+    { to: "/servicios", label: "SERVICIOS Y PRECIOS" },
+    { to: "/sobre-nosotros", label: "SOBRE NOSOTROS" },
+    { to: "/reservaciones", label: "RESERVACIONES" },
+    { to: "/equipo", label: "NUESTRO EQUIPO" },
+    { to: "/contacto", label: "CONTACTO" },
 ];
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
 
+    const desktopLinkClass = ({ isActive }) =>
+        [
+            "px-1 py-2 text-sm font-semibold tracking-wide border-b-2",
+            isActive
+                ? "text-brand-gold border-brand-gold"
+                : "text-neutral-300 hover:text-brand-gold border-transparent hover:border-brand-gold",
+        ].join(" ");
+
+    const mobileLinkClass = ({ isActive }) =>
+        [
+            "block px-2 py-2 rounded-md text-sm font-semibold",
+            isActive
+                ? "bg-neutral-700 text-white"
+                : "text-neutral-300 hover:bg-neutral-700 hover:text-white",
+        ].join(" ");
+
     return (
         <nav className="bg-neutral-800 border-b border-neutral-700 relative z-40">
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-                <a href="#" className="flex items-center gap-3">
+                <a href="/" className="flex items-center gap-3">
                     <div className="h-10 w-11 rounded-full bg-neutral-700 grid place-items-center border border-neutral-600">
-                        <img src="/public/images/logo.png" alt="Logo - Imperio Barbershop" className="h-full w-full object-contain" />
+                        <img src="/images/logo.png" alt="Logo - Imperio Barbershop" className="h-full w-full object-contain" />
                     </div>
                     <div className="leading-4">
                         <div className="font-extrabold tracking-wide">IMPERIO</div>
@@ -39,14 +56,15 @@ export default function Navbar() {
                 {/* Links desktop */}
                 <div className="hidden lg:flex items-center gap-6">
                     {links.map((l) => (
-                        <a
-                            key={l.label}
-                            href={l.href}
-                            className="px-1 py-2 text-sm font-semibold tracking-wide text-neutral-300 hover:text-brand-gold border-b-2 border-transparent hover:border-brand-gold"
-                        >
-                            {l.label}
-                        </a>
-                    ))}
+                    <NavLink
+                        key={l.label}
+                        to={l.to}
+                        end={l.to === "/"}
+                        className={desktopLinkClass}
+                    >
+                        {l.label}
+                    </NavLink>
+                ))}
                 </div>
 
                 {/* Acciones */}
@@ -64,19 +82,20 @@ export default function Navbar() {
                 <div className="lg:hidden absolute inset-x-0 top-full bg-neutral-800 border-t border-neutral-700">
                     <div className="px-4 py-3 flex flex-col gap-1">
                         {links.map((l) => (
-                            <a
-                                key={l.label}
-                                href={l.href}
-                                onClick={() => setOpen(false)}
-                                className="block px-2 py-2 rounded-md text-sm font-semibold text-neutral-300 hover:bg-neutral-700 hover:text-white"
-                            >
-                                {l.label}
-                            </a>
+                    <NavLink
+                        key={l.label}
+                        to={l.to}
+                        end={l.to === "/"}
+                        className={mobileLinkClass}
+                        onClick={() => setOpen(false)}
+                    >
+                        {l.label}
+                    </NavLink>
                         ))}
 
                         <button className="mt-2 inline-flex items-center gap-2 px-3 py-2 rounded-md bg-neutral-700/60 hover:bg-neutral-700">
                             <ShoppingBag className="size-4" aria-hidden />
-                            <span>CARD</span>
+                            <span>TARJETA</span>
                             <span className="ml-1 text-xs font-bold bg-brand-gold text-black rounded-full px-2 py-0.5">0</span>
                         </button>
                     </div>

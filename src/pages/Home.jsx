@@ -110,7 +110,7 @@ export default function Home() {
                                 <li className="flex justify-between"><span>Sábado</span><span>10 AM – 5 PM</span></li>
                                 <li className="flex justify-between"><span>Domingo</span><span>10 AM – 5 PM</span></li>
                             </ul>
-                            <a href="/reservaciones" className="mt-6 inline-flex items-center justify-center px-5 py-3 rounded-md bg-brand-gold text-black font-semibold hover:opacity-90 w-full">
+                            <a href="/reservations" className="mt-6 inline-flex items-center justify-center px-5 py-3 rounded-md bg-brand-gold text-black font-semibold hover:opacity-90 w-full">
                                 Agendar un corte
                             </a>
                         </div>

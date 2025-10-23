@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function SobreNosotros() {
+export default function About() {
     return (
         <>
             {/* Primera sección */}

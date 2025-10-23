@@ -23,10 +23,10 @@ export default function Home() {
                         </p>
 
                         <div className="mt-6 flex items-center gap-3">
-                            <a href="/reservaciones" className="inline-flex items-center justify-center px-5 py-3 rounded-md bg-brand-gold text-black font-semibold hover:opacity-90">
+                            <a href="/Reservations" className="inline-flex items-center justify-center px-5 py-3 rounded-md bg-brand-gold text-black font-semibold hover:opacity-90">
                                 Agendar un corte
                             </a>
-                            <a href="/servicios" className="inline-flex items-center justify-center px-5 py-3 rounded-md border border-white/30 text-white hover:bg-white/10">
+                            <a href="/services" className="inline-flex items-center justify-center px-5 py-3 rounded-md border border-white/30 text-white hover:bg-white/10">
                                 Buscar servicios
                             </a>
                         </div>
@@ -180,6 +180,7 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+
         </div>
     );
 }

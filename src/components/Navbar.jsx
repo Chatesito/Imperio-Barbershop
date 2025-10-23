@@ -14,6 +14,22 @@ const links = [
 export default function Navbar() {
     const [open, setOpen] = useState(false);
 
+    const desktopLinkClass = ({ isActive }) =>
+        [
+            "px-1 py-2 text-sm font-semibold tracking-wide border-b-2",
+            isActive
+                ? "text-brand-gold border-brand-gold"
+                : "text-neutral-300 hover:text-brand-gold border-transparent hover:border-brand-gold",
+        ].join(" ");
+
+    const mobileLinkClass = ({ isActive }) =>
+        [
+            "block px-2 py-2 rounded-md text-sm font-semibold",
+            isActive
+                ? "bg-neutral-700 text-white"
+                : "text-neutral-300 hover:bg-neutral-700 hover:text-white",
+        ].join(" ");
+
     return (
         <nav className="bg-neutral-900 border-b border-neutral-700 relative z-40 shadow-md shadow-black/20">
         <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">

@@ -1,19 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import SiteLayout from "./layouts/SiteLayout.jsx";
 import Home from "./pages/Home.jsx";
+import SobreNosotros from "./pages/SobreNosotros.jsx";
 
 function Servicios() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold">Servicios y Precios</h1>
-    </section>
-  )
-}
-
-function SobreNosotros() {
-  return (
-    <section className="max-w-7xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold">Sobre Nosotros</h1>
     </section>
   )
 }

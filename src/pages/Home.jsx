@@ -23,10 +23,10 @@ export default function Home() {
                         </p>
 
                         <div className="mt-6 flex items-center gap-3">
-                            <a href="/reservaciones" className="inline-flex items-center justify-center px-5 py-3 rounded-md bg-brand-gold text-black font-semibold hover:opacity-90">
+                            <a href="/Reservations" className="inline-flex items-center justify-center px-5 py-3 rounded-md bg-brand-gold text-black font-semibold hover:opacity-90">
                                 Agendar un corte
                             </a>
-                            <a href="/servicios" className="inline-flex items-center justify-center px-5 py-3 rounded-md border border-white/30 text-white hover:bg-white/10">
+                            <a href="/services" className="inline-flex items-center justify-center px-5 py-3 rounded-md border border-white/30 text-white hover:bg-white/10">
                                 Buscar servicios
                             </a>
                         </div>
@@ -52,7 +52,10 @@ export default function Home() {
                         <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-wide">Quiénes somos?</h2>
                         <div className="mt-5 space-y-4 text-neutral-700 leading-relaxed">
                             <p>
-                                En Imperio Barbershop combinamos técnica moderna y tradición. Nuestro equipo de barberos certificados ofrece cortes y afeitados de alta calidad en un ambiente cómodo, higiénico y cercano.
+                                En <strong>Imperio Barbershop</strong> combinamos técnica moderna y tradición para ofrecer un servicio de excelencia. Nuestro equipo de barberos certificados se distingue por su atención personalizada, su experiencia y su pasión por el detalle.
+                            </p>
+                            <p>
+                                Creemos que cada visita es más que un corte: es una experiencia. Desde el ambiente relajado hasta el trato profesional, trabajamos para que cada cliente se sienta cómodo, seguro y renovado al salir. Nuestro compromiso es reflejar tu estilo y realzar tu confianza.
                             </p>
                         </div>
                     </div>
@@ -61,14 +64,17 @@ export default function Home() {
                         <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-wide">Dónde estamos?</h2>
                         <div className="mt-5 space-y-4 text-neutral-700 leading-relaxed">
                             <p>
-                                Nos encuentras en Neiva, Huila, Cll 14A #34‑20 (Barrio Las Catleyas). A pocos minutos del centro, con fácil acceso y atención los 7 días de la semana.
+                                Nos encuentras en <strong>Neiva, Huila</strong>, en la <strong>Cll 14A #34-20, Barrio Las Catleyas</strong>. Una ubicación estratégica, a pocos minutos del centro de la ciudad, ideal para quienes buscan comodidad y fácil acceso.
+                            </p>
+                            <p>
+                                Contamos con un espacio moderno y climatizado, diseñado para tu confort. Ya sea que vengas por un cambio de look o un mantenimiento rápido, siempre te recibiremos con la mejor atención, los mejores productos y la pasión que caracteriza a nuestro equipo.
                             </p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Porque escogernos / Horas laborales */}
+            {/* Por qué escogernos / Horario */}
             <section
                 className="relative"
                 style={{ backgroundImage: 'url(/images/interior.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
@@ -104,7 +110,7 @@ export default function Home() {
                                 <li className="flex justify-between"><span>Sábado</span><span>10 AM – 5 PM</span></li>
                                 <li className="flex justify-between"><span>Domingo</span><span>10 AM – 5 PM</span></li>
                             </ul>
-                            <a href="/reservaciones" className="mt-6 inline-flex items-center justify-center px-5 py-3 rounded-md bg-brand-gold text-black font-semibold hover:opacity-90 w-full">
+                            <a href="/reservations" className="mt-6 inline-flex items-center justify-center px-5 py-3 rounded-md bg-brand-gold text-black font-semibold hover:opacity-90 w-full">
                                 Agendar un corte
                             </a>
                         </div>
@@ -112,7 +118,7 @@ export default function Home() {
                 </div>
             </section>
 
-        {/* 4) FEATURES / WHY CHOOSE US (iconos con imagen) */}
+            {/* Features */}
             <section className="bg-white">
                 <div className="max-w-7xl mx-auto px-4 py-14 md:py-16">
                     <h2 className="text-center text-3xl md:text-4xl font-extrabold text-neutral-900 tracking-wide">
@@ -137,16 +143,18 @@ export default function Home() {
                             </article>
                         ))}
                     </div>
-                </div>  
+                </div>
             </section>
 
-        {/* Locaciones */}
+            {/* Locación */}
             <section className="bg-neutral-900 text-white">
                 <div className="max-w-7xl mx-auto px-4 py-14 md:py-16 grid md:grid-cols-2 gap-8 items-start">
                     <div>
-                        <h2 className="text-3xl md:text-4xl font-extrabold">Aprende donde nos encontramos</h2>
+                        <h2 className="text-3xl md:text-4xl font-extrabold">Aprende dónde nos encontramos</h2>
                         <br />
-                        <p>Estamos ubicados en el corazón de la ciudad, listos para atenderte.</p>
+                        <p className="text-white/90 leading-relaxed">
+                            Estamos ubicados en el corazón de la ciudad, rodeados de movimiento, estilo y cultura urbana. Nuestra barbería se ha convertido en un punto de encuentro para quienes valoran la autenticidad y la precisión en cada detalle. Ven, disfruta del ambiente y vive la experiencia Imperio Barbershop.
+                        </p>
                         <img src="/images/map.png" alt="Map" className="mt-6 w-full h-48 object-cover rounded-lg" />
                     </div>
                     <div>
@@ -154,6 +162,25 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+
+            {/* Opiniones de Google */}
+            <section className="bg-neutral-100 text-neutral-800">
+                <div className="max-w-6xl mx-auto px-4 py-14 md:py-16 text-center">
+                    <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-wide">
+                        Opiniones de nuestros clientes
+                    </h2>
+                    <p className="mt-4 text-neutral-600 max-w-2xl mx-auto">
+                        Próximamente podrás ver aquí las <strong>opiniones verificadas de Google</strong> sobre Imperio Barbershop.  
+                        Nuestro compromiso es seguir mejorando cada día para ofrecerte una experiencia excepcional.
+                    </p>
+                    <div className="mt-10">
+                        <div className="border border-neutral-300 rounded-2xl p-10 text-neutral-500 italic">
+                            <p>⭐ Las reseñas aparecerán aquí una vez activada la integración con Google Reviews ⭐</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
         </div>
     );
 }

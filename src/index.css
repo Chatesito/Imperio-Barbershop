@@ -1,9 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Karantina:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,800;1,800&display=swap');
 @import "tailwindcss";
 
 @theme {
   --color-brand-gold: #c8a256;
   --color-brand-bg: #fff;
   --font-karantina: "Karantina", system-ui, sans-serif;
+  --font-barlow: "Barlow", sans-serif;
+  
+    /* Imagenes de fondo */
+  --background-image-sede-uno: url('./assets/images/sede-uno.png');
 }
 

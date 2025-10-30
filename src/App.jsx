@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import SiteLayout from "./layouts/SiteLayout.jsx"; 
 import Contacto from "./pages/Contact.jsx";
-import SiteLayout from "./layouts/SiteLayout.jsx";
 import Home from "./pages/Home.jsx";
 import Services from "./pages/Services.jsx";
 import About from"./pages/About";

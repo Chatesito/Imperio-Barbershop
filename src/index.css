@@ -4,11 +4,10 @@
 
 @theme {
   --color-brand-gold: #c8a256;
-  --color-brand-bg: #fff;
+  --color-brand-bg: #0e0e0e;
   --font-karantina: "Karantina", system-ui, sans-serif;
   --font-barlow: "Barlow", sans-serif;
   
     /* Imagenes de fondo */
   --background-image-sede-uno: url('./assets/images/sede-uno.png');
 }
-

@@ -1,6 +1,7 @@
 import React from "react";
 import ImgFondoSeccion from "../assets/images/barbero-cortando-cabello.png";
 import BranchesSection from "../components/sections/BranchesSection";
+import ContactSection from "../components/ContactSection.jsx";
 
 export default function Contact() {
   return (
@@ -45,6 +46,8 @@ export default function Contact() {
         </p>
       </section>
        <BranchesSection/>
+      {/* Sección de contacto */}
+      <ContactSection />
     </>
   );
 }

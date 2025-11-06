@@ -1,28 +1,28 @@
 import React from "react";
 import BranchCard from "../BranchCard";
 import sede1 from "../../assets/images/sede-uno.png";
-import sede2 from "../../assets/images/sede-uno.png";
-import sede3 from "../../assets/images/sede-uno.png";
+import sede2 from "../../assets/images/sede-dos.png";
+import sede3 from "../../assets/images/sede-tres.png";
 
 export default function BranchesSection() {
   const branches = [
     {
-      name: "Sede Platino",
-      address: "Calle 10 #4-55, Neiva, Huila",
+      name: "Sede Ipanema",
+      address: "Calle 29, Neiva, Huila",
       image: sede1,
-      mapUrl: "https://maps.app.goo.gl/ApWLAAtUJZ41DMg99?g_st=aw",
+      mapUrl: "https://maps.app.goo.gl/qHXLv8SrMyg2Nayq5",
     },
     {
-      name: "Sede Dorada",
-      address: "Carrera 12 #6-22, Neiva, Huila",
+      name: "Sede Candido",
+      address: "Cl. 37 #1 26, Neiva, Huila",
       image: sede2,
-      mapUrl: "https://maps.app.goo.gl/tSiJwQp5rYepYwh26",
+      mapUrl: "https://maps.app.goo.gl/i7D5SCKU4SS2ihuD8",
     },
     {
-      name: "Sede Master",
-      address: "Av. Circunvalar #8-14, Neiva, Huila",
+      name: "Sede Neiva La Nueva",
+      address: "Cra. 20 #26-385, Neiva, Huila",
       image: sede3,
-      mapUrl: "https://maps.app.goo.gl/1geQQGUaJU9YJ1WEA",
+      mapUrl: "https://maps.app.goo.gl/AQykuFbBc8nwNPVt9",
     },
   ];
 

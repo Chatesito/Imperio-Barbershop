@@ -1,22 +1,15 @@
 import { Routes, Route } from "react-router-dom";
 import SiteLayout from "./layouts/SiteLayout.jsx"; 
-import Contacto from "./pages/Contact.jsx";
+import Contact from "./pages/Contact.jsx";
 import Home from "./pages/Home.jsx";
 import Services from "./pages/Services.jsx";
 import About from"./pages/About";
+import OurTeam from "./pages/OurTeam.jsx";
 
 function Reservations() {
   return (
     <section className="max-w-7xl mx-auto px-4 py-6">
       <h1 className="text-3xl font-bold">Reservaciones</h1>
-    </section>
-  )
-}
-
-function OurTeam() {
-  return (
-    <section className="max-w-7xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold">Nuestro Equipo</h1>
     </section>
   )
 }
@@ -30,7 +23,7 @@ export default function App() {
         <Route path="/About" element={<About />} />
         <Route path="/Reservations" element={<Reservations />} />
         <Route path="/OurTeam" element={<OurTeam />} />
-        <Route path="/Contact" element={<Contacto />} />
+        <Route path="/Contact" element={<Contact />} />
       </Routes>
     </SiteLayout>
   );

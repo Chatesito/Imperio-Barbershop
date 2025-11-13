@@ -1,30 +1,73 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+
 import SiteLayout from "./layouts/SiteLayout.jsx"; 
 import Contact from "./pages/Contact.jsx";
 import Home from "./pages/Home.jsx";
 import Services from "./pages/Services.jsx";
-import About from"./pages/About";
+import About from "./pages/About.jsx";
 import OurTeam from "./pages/OurTeam.jsx";
-
-function Reservations() {
-  return (
-    <section className="max-w-7xl mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold">Reservaciones</h1>
-    </section>
-  )
-}
+import Reservations from "./pages/Reservation.jsx";
+import AnimatedPage from "./components/common/AnimatedPage.jsx";
 
 export default function App() {
+  const location = useLocation();
+
   return (
     <SiteLayout>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/Services" element={<Services />} />
-        <Route path="/About" element={<About />} />
-        <Route path="/Reservations" element={<Reservations />} />
-        <Route path="/OurTeam" element={<OurTeam />} />
-        <Route path="/Contact" element={<Contact />} />
-      </Routes>
+      {/* AnimatePresence permite animaciones al montar y desmontar rutas */}
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route
+            path="/"
+            element={
+              <AnimatedPage>
+                <Home />
+              </AnimatedPage>
+            }
+          />
+          <Route
+            path="/Services"
+            element={
+              <AnimatedPage>
+                <Services />
+              </AnimatedPage>
+            }
+          />
+          <Route
+            path="/About"
+            element={
+              <AnimatedPage>
+                <About />
+              </AnimatedPage>
+            }
+          />
+          <Route
+            path="/Reservations"
+            element={
+              <AnimatedPage>
+                <Reservations />
+              </AnimatedPage>
+            }
+          />
+          <Route
+            path="/OurTeam"
+            element={
+              <AnimatedPage>
+                <OurTeam />
+              </AnimatedPage>
+            }
+          />
+          <Route
+            path="/Contact"
+            element={
+              <AnimatedPage>
+                <Contact />
+              </AnimatedPage>
+            }
+          />
+        </Routes>
+      </AnimatePresence>
     </SiteLayout>
   );
 }

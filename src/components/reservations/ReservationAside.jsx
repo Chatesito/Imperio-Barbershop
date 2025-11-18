@@ -30,12 +30,6 @@ const ReservationAside = () => {
           </p>
         </li>
 
-        <li className="flex items-start gap-3">
-          <MapPin className="w-5 h-5 sm:w-6 sm:h-6 mt-1" />
-          <p>
-            <strong>Dirección:</strong> Calle 10 #15-34, Centro — Neiva, Huila.
-          </p>
-        </li>
       </ul>
 
       {/* --- Botón de llamada --- */}

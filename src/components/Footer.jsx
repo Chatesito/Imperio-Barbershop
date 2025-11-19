@@ -22,7 +22,7 @@ export default function Footer() {
                 {/* --- Logo e identidad --- */}
                 <div className="flex flex-col md:flex-row justify-center items-center gap-2">
                     <img
-                        src="/public/images/Isotipo.png"
+                        src="/images/Isotipo.png"
                         alt="Imperio Barbershop"
                         className="h-12 w-auto object-contain"
                     />

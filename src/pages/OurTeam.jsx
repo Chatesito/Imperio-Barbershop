@@ -194,7 +194,7 @@ export default function OurTeam() {
                         <div className="mt-2 tracking-widest text-sm md:text-base">CORTES DE PELO</div>
                     </div>
                     <div>
-                        <div className="text-5xl md:text-6xl font-extrabold text-brand-gold">3</div>
+                        <div className="text-5xl md:text-6xl font-extrabold text-brand-gold">4</div>
                         <div className="mt-2 tracking-widest text-sm md:text-base">BARBERIAS ABIERTAS</div>
                     </div>
                 </div>

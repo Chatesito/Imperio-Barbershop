@@ -53,15 +53,6 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Botón del carrito (solo escritorio) */}
-        <button className="hidden lg:inline-flex items-center gap-2 px-3 py-2 rounded-md bg-neutral-700/60 hover:bg-neutral-700 transition-all">
-          <ShoppingBag className="size-4" aria-hidden />
-          <span>CARD</span>
-          <span className="ml-1 text-xs font-bold bg-brand-gold text-black rounded-full px-2 py-0.5">
-            0
-          </span>
-        </button>
-
         {/* Botón menú móvil */}
         <button
           className="lg:hidden text-neutral-300 focus:outline-none text-2xl"
@@ -100,14 +91,6 @@ export default function Navbar() {
                   {l.label}
                 </NavLink>
               ))}
-
-              <button className="mt-2 inline-flex items-center gap-2 px-3 py-2 rounded-md bg-neutral-700/60 hover:bg-neutral-700 transition-all">
-                <ShoppingBag className="size-4" aria-hidden />
-                <span>CARD</span>
-                <span className="ml-1 text-xs font-bold bg-brand-gold text-black rounded-full px-2 py-0.5">
-                  0
-                </span>
-              </button>
             </div>
           </motion.div>
         )}

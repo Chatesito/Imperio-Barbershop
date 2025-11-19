@@ -15,6 +15,7 @@ const ReservationForm = () => {
     reset,
     watch,
     control,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm();
 
@@ -22,6 +23,7 @@ const ReservationForm = () => {
   const [maxTime, setMaxTime] = useState("18:00");
   
   const selectedDate = watch("fecha");
+  const domicilio = watch("domicilio");
 
   const services = [
     { category: "Corte de Cabello", name: "Corte clásico", price: "$25.000" },
@@ -40,18 +42,23 @@ const ReservationForm = () => {
 
   const branches = [
     {
+      name: "Sede Principal",
+      address: "Cll 14a # 34-20, Neiva, Huila",
+      mapUrl: "https://maps.app.goo.gl/inURPkNs6dtSnrTW7",
+    },
+    {
       name: "Sede Ipanema",
-      address: "Calle 29, Neiva, Huila",
+      address: "Cll 29, Neiva, Huila",
       mapUrl: "https://maps.app.goo.gl/qHXLv8SrMyg2Nayq5",
     },
     {
       name: "Sede Candido",
-      address: "Cl. 37 #1 26, Neiva, Huila",
+      address: "Cll 37 #1 26, Neiva, Huila",
       mapUrl: "https://maps.app.goo.gl/i7D5SCKU4SS2ihuD8",
     },
     {
       name: "Sede Neiva La Nueva",
-      address: "Cra. 20 #26-385, Neiva, Huila",
+      address: "Cra 20 #26-385, Neiva, Huila",
       mapUrl: "https://maps.app.goo.gl/AQykuFbBc8nwNPVt9",
     },
   ];
@@ -103,6 +110,12 @@ const ReservationForm = () => {
     return true;
   };
 
+  useEffect(() => {
+    if (domicilio === "Sí") {
+      setValue("sede", "");
+    }
+  }, [domicilio, setValue]);
+
   const onSubmit = async (data) => {
     try {
       const date = new Date(data.fecha + 'T00:00:00');
@@ -135,7 +148,9 @@ const ReservationForm = () => {
         fecha: "",
         hora: "",
         servicio: "",
-        mensaje: ""
+        mensaje: "",
+        domicilio: "",
+        direccion: ""
       });
     } catch (error) {
       console.error(error);
@@ -174,15 +189,64 @@ const ReservationForm = () => {
         />
       </div>
 
+      {/* Servicio a domicilio */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
+        <div>
+          <label className="block text-sm font-semibold mb-2 tracking-wide">
+            ¿Servicio a domicilio?
+          </label>
+          <div className="flex items-center gap-6">
+            <label className="inline-flex items-center gap-2">
+              <input
+                type="radio"
+                value="No"
+                className="h-4 w-4 accent-[#C5A253]"
+                {...register("domicilio", { required: "Selecciona una opción" })}
+              />
+              <span>No</span>
+            </label>
+            <label className="inline-flex items-center gap-2">
+              <input
+                type="radio"
+                value="Sí"
+                className="h-4 w-4 accent-[#C5A253]"
+                {...register("domicilio", { required: "Selecciona una opción" })}
+              />
+              <span>Sí</span>
+            </label>
+          </div>
+          {errors.domicilio && (
+            <span className="text-red-500 text-sm mt-2 block">
+              {errors.domicilio.message}
+            </span>
+          )}
+          <p className="text-xs text-neutral-400 mt-2">
+            Al elegir “Sí” se solicitará la dirección y no es necesario seleccionar sede.
+          </p>
+        </div>
+
+        {domicilio === "Sí" && (
+          <InputField
+            label="Dirección"
+            id="direccion"
+            placeholder="Ej: Calle 10 #5-23 Barrio Centro"
+            register={register}
+            errors={errors}
+          />
+        )}
+      </div>
+
       {/* Sede */}
-      <SelectInput
-        label="Selecciona la sede"
-        id="sede"
-        register={register}
-        errors={errors}
-        options={branchOptions}
-        placeholder="Selecciona una sede"
-      />
+      {domicilio !== "Sí" && (
+        <SelectInput
+          label="Selecciona la sede"
+          id="sede"
+          register={register}
+          errors={errors}
+          options={branchOptions}
+          placeholder="Selecciona una sede"
+        />
+      )}
 
       {/* Fecha y Hora */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">

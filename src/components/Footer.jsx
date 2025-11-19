@@ -53,7 +53,7 @@ export default function Footer() {
                                 href="mailto:ImperioBarbershop@gmail.com"
                                 className="hover:text-white transition-colors"
                             >
-                                ImperioBarbershop@gmail.com
+                                Imperio.barbershop@gmail.com
                             </a>
                         }
                     />

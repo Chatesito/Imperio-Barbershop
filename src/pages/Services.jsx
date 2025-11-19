@@ -90,8 +90,7 @@ export default function Services() {
 
                 <div className="text-left">
                     <h2 className="text-4xl font-extrabold text-gray-900 mb-6 leading-tight">
-                        Tu servicio de peluquería personal
-                en tu casa
+                        Podemos ofrecerte servicio de peluquería personal en tu casa
                     </h2>
                     <p className="text-gray-600 mb-8 text-lg">
                         Llevamos la experiencia de Imperio Barbershop directamente a tu hogar. 
@@ -109,7 +108,7 @@ export default function Services() {
                             <p className="text-sm text-neutral-700 mt-1">Clientes felices</p>
                         </div>
                         <div className="p-6 bg-neutral-100 rounded-2xl shadow-inner hover:shadow-md transition">
-                            <p className="text-4xl font-bold text-brand-gold">15+</p>
+                            <p className="text-4xl font-bold text-brand-gold">10+</p>
                             <p className="text-sm text-neutral-700 mt-1">Servicios exclusivos</p>
                         </div>
                     </div>

@@ -28,7 +28,7 @@ const ContactSection = () => {
                 Oficina
               </h3>
               <p className="text-base leading-relaxed mt-2">
-                Calle 10 #15-34, Centro<br />Neiva - Huila, Colombia
+                Cll 14a # 34-20, Barrio Las Catleyas<br />Neiva - Huila, Colombia
               </p>
             </section>
 
@@ -42,7 +42,7 @@ const ContactSection = () => {
                     href="mailto:info@barberapp.com"
                     className="hover:underline focus:outline-none focus:ring-2 focus:ring-black transition-all"
                   >
-                    info@barberapp.com
+                    imperio.barbershop@gmail.com
                   </a>
                 </li>
                 <li>
@@ -60,8 +60,8 @@ const ContactSection = () => {
               <h3 className="font-semibold text-2xl mb-3 relative inline-block after:content-[''] after:block after:w-10 after:h-[2px] after:bg-black after:mt-1 after:rounded-full">
                 Horarios de Atención
               </h3>
-              <p>Lunes a Sábado: 9:00 a.m. - 6:00 p.m.</p>
-              <p>Domingo: 10:00 a.m. - 5:00 p.m.</p>
+              <p>Lunes a Viernes: 8:00 a.m. - 6:00 p.m.</p>
+              <p>Sabado y Domingo: 10:00 a.m. - 5:00 p.m.</p>
             </section>
           </div>
         </article>
@@ -123,7 +123,7 @@ const ContactSection = () => {
               name="asunto"
               type="text"
               className="w-full px-4 py-3 rounded-md bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#C5A253] transition-all"
-              placeholder="Reserva, consulta o comentario"
+              placeholder="Consulta, Comentario, etc..."
             />
           </div>
 
@@ -147,7 +147,7 @@ const ContactSection = () => {
             type="submit"
             className="bg-[#C5A253] text-black font-extrabold uppercase tracking-wider py-4 rounded-md hover:bg-[#b89540] transition-all focus:outline-none focus:ring-4 focus:ring-[#C5A253]"
           >
-            Reservar Cita
+            Enviar Mensaje
           </button>
         </form>
       </div>

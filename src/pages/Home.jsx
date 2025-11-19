@@ -62,7 +62,7 @@ export default function Home() {
                         <h2 className="text-3xl md:text-4xl font-extrabold text-brand-gold tracking-wide">Dónde estamos?</h2>
                         <div className="mt-5 space-y-4 text-neutral-700 leading-relaxed">
                             <p>
-                                Nos encuentras en <strong>Neiva, Huila</strong>, en la <strong>Cll 14A #34-20, Barrio Las Catleyas</strong>. Una ubicación estratégica, a pocos minutos del centro de la ciudad, ideal para quienes buscan comodidad y fácil acceso.
+                                Nos encuentras en <strong>Neiva, Huila</strong>, en la sede principal <strong>Cll 14A #34-20, Barrio Las Catleyas</strong>. Una ubicación estratégica, a pocos minutos del centro de la ciudad, ideal para quienes buscan comodidad y fácil acceso.
                             </p>
                             <p>
                                 Contamos con un espacio moderno y climatizado, diseñado para tu confort. Ya sea que vengas por un cambio de look o un mantenimiento rápido, siempre te recibiremos con la mejor atención, los mejores productos y la pasión que caracteriza a nuestro equipo.
@@ -82,14 +82,15 @@ export default function Home() {
                     <div className="text-white">
                         <h2 className="text-3xl md:text-4xl font-extrabold text-brand-gold tracking-wide">Por qué escogernos?</h2>
                         <p className="mt-3 text-white/90">
-                            Además, aquí hay más razones por las que los hombres prefieren Imperio Barbershop:
+                            <strong>Además, aquí hay más razones por las que los hombres prefieren Imperio Barbershop:</strong>
                         </p>
                         <ul className="mt-6 space-y-3 text-white/90">
-                            <li>• Siempre un ambiente acogedor</li>
-                            <li>• Nuestros maestros se enfocan en la calidad</li>
-                            <li>• Valoramos tanto tu tiempo como tu dinero</li>
-                            <li>• Solo productos de primera calidad</li>
-                            <li>• Herramientas limpias y desinfectadas después de cada uso</li>
+                        
+                            <li><strong>• Siempre un ambiente acogedor</strong></li>
+                            <li><strong>• Nuestros maestros se enfocan en la calidad</strong></li>
+                            <li><strong>• Valoramos tanto tu tiempo como tu dinero</strong></li>
+                            <li><strong>• Solo productos de primera calidad</strong></li>
+                            <li><strong>• Herramientas limpias y desinfectadas después de cada uso</strong></li>
                         </ul>
                     </div>
 
@@ -151,7 +152,7 @@ export default function Home() {
                             Aprende dónde nos encontramos
                         </h2>
                         <p className="mt-4 text-white/90 leading-relaxed">
-                            Estamos ubicados en el corazón de la ciudad, rodeados de movimiento, estilo y cultura urbana. Nuestra barbería se ha convertido en un punto de encuentro para quienes valoran la autenticidad y la precisión en cada detalle. Ven, disfruta del ambiente y vive la experiencia Imperio Barbershop.
+                            Nuestra sede central se ubica en el corazón de la ciudad, rodeados de movimiento, estilo y cultura urbana. Nuestra barbería se ha convertido en un punto de encuentro para quienes valoran la autenticidad y la precisión en cada detalle. Ven, disfruta del ambiente y vive la experiencia Imperio Barbershop.
                         </p>
                         <img src="/images/map.png" alt="Map" className="mt-6 w-full h-64 object-cover rounded-lg" />
                     </div>

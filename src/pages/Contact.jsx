@@ -19,12 +19,12 @@ export default function Contact() {
         {/* Overlay para contraste visual */}
         <div className="absolute inset-0 bg-black/25" aria-hidden="true" />
 
-        <div className="relative z-10 max-w-2xl mx-auto">
+        <div className="relative z-10 max-w-4x20 mx-auto">
           <h2
             className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-[3rem] font-barlow font-extrabold 
             tracking-[.1rem] uppercase leading-tight drop-shadow-lg"
           >
-            Experimente el lujo de los servicios de barbero a domicilio
+            Experimente el lujo de los servicios de barbero en cualquiera de nuestras sedes
           </h2>
         </div>
       </section>
@@ -41,12 +41,10 @@ export default function Contact() {
           ¿Dónde estamos ubicados?
         </h2>
         <p className="mt-6 text-neutral-400 max-w-2xl text-base sm:text-lg">
-          Encuéntranos en el corazón de la ciudad y disfruta de la experiencia
-          exclusiva de Imperio Barbershop, donde el estilo y la elegancia se encuentran.
+          Encuéntranos en la sede principal ubicada en el corazón de la ciudad, pero también puedes disfrutar de la experiencia exclusiva de Imperio Barbershop en cualquiera de nuestras otras sedes, donde el estilo y la elegancia se encuentran.
         </p>
       </section>
-       <BranchesSection/>
-      {/* Sección de contacto */}
+      <BranchesSection/>
       <ContactSection />
     </>
   );

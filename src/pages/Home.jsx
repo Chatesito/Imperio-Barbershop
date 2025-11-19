@@ -154,7 +154,17 @@ export default function Home() {
                         <p className="mt-4 text-white/90 leading-relaxed">
                             Nuestra sede central se ubica en el corazón de la ciudad, rodeados de movimiento, estilo y cultura urbana. Nuestra barbería se ha convertido en un punto de encuentro para quienes valoran la autenticidad y la precisión en cada detalle. Ven, disfruta del ambiente y vive la experiencia Imperio Barbershop.
                         </p>
-                        <img src="/images/map.png" alt="Map" className="mt-6 w-full h-64 object-cover rounded-lg" />
+                        <div className="mt-6 w-full h-64 rounded-lg overflow-hidden">
+                        <iframe
+                        title="Mapa ubicación Imperio Barbershop"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.5774530734902!2d-75.265569!3d2.9370423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b7415e24bef73%3A0x77c1c66f24bab228!2sCl.%2014a%20%23%2034-20%2C%20Neiva%2C%20Huila!5e0!3m2!1ses-419!2sco!4v1763579753457!5m2!1ses-419!2sco"
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                        style={{ border: 0 }}
+                        className="w-full h-full"
+                        />
+                        </div>        
                     </div>
                     <div className="flex items-end">
                         <img src="/images/storefront.png" alt="Imperio storefront" className="w-full h-full object-cover rounded-lg" />

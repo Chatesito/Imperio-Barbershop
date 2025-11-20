@@ -1,4 +1,5 @@
 import { Facebook, Instagram } from "lucide-react";
+import ReviewsSection from "../components/ReviewsSection"; // ⬅️ IMPORT NUEVO
 
 export default function Home() {
     return (
@@ -85,7 +86,6 @@ export default function Home() {
                             <strong>Además, aquí hay más razones por las que los hombres prefieren Imperio Barbershop:</strong>
                         </p>
                         <ul className="mt-6 space-y-3 text-white/90">
-                        
                             <li><strong>• Siempre un ambiente acogedor</strong></li>
                             <li><strong>• Nuestros maestros se enfocan en la calidad</strong></li>
                             <li><strong>• Valoramos tanto tu tiempo como tu dinero</strong></li>
@@ -116,6 +116,8 @@ export default function Home() {
                 </div>
             </section>
 
+            <ReviewsSection />
+            
             {/* Features */}
             <section className="bg-white">
                 <div className="max-w-7xl mx-auto px-4 py-14 md:py-16">
@@ -127,7 +129,7 @@ export default function Home() {
                     </p>
 
                     <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {[ 
+                        {[
                             { title: "LICENCIADOS", img: "/images/feature1.jpg", text: "Barberos con licencia y asegurados." },
                             { title: "MAESTROS", img: "/images/feature2.jpg", text: "Apasionados por el servicio y la calidad." },
                             { title: "CONFIABLES", img: "/images/feature3.jpg", text: "Fuerte reputación y clientes satisfechos." },
@@ -144,7 +146,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* Locación */}
             <section className="bg-neutral-900 text-white">
                 <div className="max-w-7xl mx-auto px-4 py-14 md:py-16 grid md:grid-cols-2 gap-8 items-end">
                     <div>
@@ -155,37 +156,19 @@ export default function Home() {
                             Nuestra sede central se ubica en el corazón de la ciudad, rodeados de movimiento, estilo y cultura urbana. Nuestra barbería se ha convertido en un punto de encuentro para quienes valoran la autenticidad y la precisión en cada detalle. Ven, disfruta del ambiente y vive la experiencia Imperio Barbershop.
                         </p>
                         <div className="mt-6 w-full h-64 rounded-lg overflow-hidden">
-                        <iframe
-                        title="Mapa ubicación Imperio Barbershop"
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.5774530734902!2d-75.265569!3d2.9370423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b7415e24bef73%3A0x77c1c66f24bab228!2sCl.%2014a%20%23%2034-20%2C%20Neiva%2C%20Huila!5e0!3m2!1ses-419!2sco!4v1763579753457!5m2!1ses-419!2sco"
-                        loading="lazy"
-                        allowFullScreen
-                        referrerPolicy="no-referrer-when-downgrade"
-                        style={{ border: 0 }}
-                        className="w-full h-full"
-                        />
-                        </div>        
+                            <iframe
+                                title="Mapa ubicación Imperio Barbershop"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.5774530734902!2d-75.265569!3d2.9370423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b7415e24bef73%3A0x77c1c66f24bab228!2sCl.%2014a%20%23%2034-20%2C%20Neiva%2C%20Huila!5e0!3m2!1ses-419!2sco!4v1763579753457!5m2!1ses-419!2sco"
+                                loading="lazy"
+                                allowFullScreen
+                                referrerPolicy="no-referrer-when-downgrade"
+                                style={{ border: 0 }}
+                                className="w-full h-full"
+                            />
+                        </div>
                     </div>
                     <div className="flex items-end">
                         <img src="/images/storefront.png" alt="Imperio storefront" className="w-full h-full object-cover rounded-lg" />
-                    </div>
-                </div>
-            </section>
-
-            {/* Opiniones */}
-            <section className="bg-neutral-100 text-neutral-800">
-                <div className="max-w-6xl mx-auto px-4 py-14 md:py-16 text-center">
-                    <h2 className="text-3xl md:text-4xl font-extrabold text-brand-gold tracking-wide">
-                        Opiniones de nuestros clientes
-                    </h2>
-                    <p className="mt-4 text-neutral-600 max-w-2xl mx-auto">
-                        Próximamente podrás ver aquí las <strong>opiniones verificadas de Google</strong> sobre Imperio Barbershop.  
-                        Nuestro compromiso es seguir mejorando cada día para ofrecerte una experiencia excepcional.
-                    </p>
-                    <div className="mt-10">
-                        <div className="border border-neutral-300 rounded-2xl p-10 text-neutral-500 italic">
-                            <p>⭐ Las reseñas aparecerán aquí una vez activada la integración con Google Reviews ⭐</p>
-                        </div>
                     </div>
                 </div>
             </section>

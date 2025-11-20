@@ -42,6 +42,13 @@ export default function Footer() {
                                 Cll 14a # 34-20
                                 <br />
                                 Barrio Las Catleyas
+                                <br />
+                                            <a
+                                    href="/contact#branches"
+                                    className="text-brand-gold hover:text-white underline underline-offset-4 transition-colors block mt-2 font-medium"
+                                >
+                                    Ver todas las sedes
+                                </a>
                             </>
                         }
                     />

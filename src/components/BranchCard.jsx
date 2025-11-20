@@ -18,7 +18,7 @@ export default function BranchCard({ name, address, image, mapUrl }) {
           loading="lazy"
         />
         <figcaption className="absolute inset-0 flex flex-col items-center justify-center bg-black/40
-         text-white px-4 transition-all duration-500 group-hover:bg-black/70">
+        text-white px-4 transition-all duration-500 group-hover:bg-black/70">
           <h3 className="text-5xl font-karantina font-extrabold tracking-[0.3rem] uppercase text-brand-gold mb-3 translate-y-10 
           group-hover:translate-y-0 transition-all duration-500">
             {name}

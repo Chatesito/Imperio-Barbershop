@@ -22,7 +22,7 @@ export default function About() {
                             la precisión y el estilo.
                         </p>
 
-                        <Link to="/reservaciones">
+                        <Link to="/Reservations">
                             <button
                                 className="px-10 py-4 bg-[#C5A253] text-white rounded-md font-medium text-sm uppercase tracking-wider hover:bg-[#b48e46] transition-colors shadow-md"
                             >

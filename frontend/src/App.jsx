@@ -8,6 +8,7 @@ import Services from "./pages/Services.jsx";
 import About from "./pages/About.jsx";
 import OurTeam from "./pages/OurTeam.jsx";
 import Reservations from "./pages/Reservation.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 import AnimatedPage from "./components/common/AnimatedPage.jsx";
 
 export default function App() {
@@ -63,6 +64,14 @@ export default function App() {
             element={
               <AnimatedPage>
                 <Contact />
+              </AnimatedPage>
+            }
+          />
+          <Route
+            path="/Dashboard"
+            element={
+              <AnimatedPage>
+                <Dashboard />
               </AnimatedPage>
             }
           />

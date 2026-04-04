@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 const reservationSchema = new mongoose.Schema(
   {
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     nombre: { type: String, required: true, trim: true },
     email: { type: String, required: true, trim: true },
     domicilio: { type: String, required: true, enum: ["Sí", "No"] },

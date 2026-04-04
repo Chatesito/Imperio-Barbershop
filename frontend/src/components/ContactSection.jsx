@@ -1,6 +1,27 @@
 import React from "react";
+import toast from "react-hot-toast";
 
 const ContactSection = () => {
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
+    try {
+      const api = (await import("../services/api.js")).default;
+      await api.post("/contact", data);
+      toast.success("Mensaje enviado con éxito");
+      e.target.reset();
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al enviar el mensaje.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section
       id="contacto"
@@ -68,6 +89,7 @@ const ContactSection = () => {
 
         {/* --- Formulario de Contacto --- */}
         <form
+          onSubmit={handleSubmit}
           className="bg-neutral-950 text-white rounded-[2rem] p-12 flex flex-col space-y-8 shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-500 hover:shadow-[0_12px_35px_rgba(0,0,0,0.25)]"
           aria-labelledby="formulario-contacto-title"
         >
@@ -145,9 +167,10 @@ const ContactSection = () => {
 
           <button
             type="submit"
-            className="bg-[#C5A253] text-black font-extrabold uppercase tracking-wider py-4 rounded-md hover:bg-[#b89540] transition-all focus:outline-none focus:ring-4 focus:ring-[#C5A253]"
+            disabled={isSubmitting}
+            className="bg-[#C5A253] text-black font-extrabold uppercase tracking-wider py-4 rounded-md hover:bg-[#b89540] transition-all focus:outline-none focus:ring-4 focus:ring-[#C5A253] disabled:opacity-75 disabled:cursor-not-allowed text-center flex justify-center items-center gap-2"
           >
-            Enviar Mensaje
+            {isSubmitting ? "Enviando..." : "Enviar Mensaje"}
           </button>
         </form>
       </div>

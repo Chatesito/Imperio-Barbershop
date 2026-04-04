@@ -138,6 +138,10 @@ const ReservationForm = () => {
         return;
       }
       
+      await import("../../services/api.js").then((module) => {
+        const api = module.default;
+        return api.post("/reservations", data);
+      });
       console.log("Datos enviados:", data);
       toast.success("Tu reservación fue enviada con éxito 🎉");
       
@@ -154,7 +158,7 @@ const ReservationForm = () => {
       });
     } catch (error) {
       console.error(error);
-      toast.error("Hubo un problema al enviar tu reservación");
+      toast.error(error.response?.data?.message || "Hubo un problema al enviar tu reservación");
     }
   };
 

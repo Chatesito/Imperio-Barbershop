@@ -1,14 +1,18 @@
-import { X, Mail, Lock, LogIn } from "lucide-react";
+import { X, Mail, Lock, LogIn, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
 
 export default function AuthModal({ isOpen, onClose }) {
     const [isLogin, setIsLogin] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const { login } = useAuth();
 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-            <div className="bg-neutral-900 rounded-lg shadow-2xl w-full max-w-md border border-neutral-700 overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm transition-opacity duration-300">
+            <div className="bg-neutral-900 rounded-lg shadow-2xl w-full max-w-md border border-neutral-700 overflow-hidden transform transition-all scale-100">
                 
                 {/* Header */}
                 <div className="bg-neutral-950 px-6 py-4 flex items-center justify-between border-b border-neutral-700">
@@ -17,7 +21,7 @@ export default function AuthModal({ isOpen, onClose }) {
                     </h2>
                     <button 
                         onClick={onClose}
-                        className="text-neutral-400 hover:text-white transition-colors"
+                        className="text-neutral-400 hover:text-white transition-colors focus:outline-none"
                     >
                         <X className="size-6" />
                     </button>
@@ -25,8 +29,41 @@ export default function AuthModal({ isOpen, onClose }) {
 
                 {/* Form */}
                 <div className="p-6">
-                    <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                    <form className="space-y-4" onSubmit={async (e) => {
+                        e.preventDefault();
+                        setIsLoading(true);
+                        const formData = new FormData(e.target);
+                        const data = Object.fromEntries(formData.entries());
                         
+                        try {
+                            await login(data, isLogin);
+                            toast.success(isLogin ? "¡Bienvenido de vuelta!" : "¡Cuenta creada exitosamente!");
+                            onClose();
+                        } catch (error) {
+                            toast.error(error.response?.data?.message || "Ocurrió un error.");
+                        } finally {
+                            setIsLoading(false);
+                        }
+                    }}>
+                        
+                        {/* Name (Only for Register) */}
+                        {!isLogin && (
+                            <div>
+                                <label className="block text-sm font-semibold text-neutral-300 mb-2 tracking-wide">
+                                    NOMBRE
+                                </label>
+                                <div className="relative">
+                                    <input 
+                                        type="text"
+                                        name="name"
+                                        required={!isLogin}
+                                        className="w-full px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-neutral-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors"
+                                        placeholder="Tu nombre completo"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
                         {/* Email */}
                         <div>
                             <label className="block text-sm font-semibold text-neutral-300 mb-2 tracking-wide">
@@ -36,6 +73,8 @@ export default function AuthModal({ isOpen, onClose }) {
                                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-neutral-500" />
                                 <input 
                                     type="email"
+                                    name="email"
+                                    required
                                     className="w-full pl-11 pr-4 py-3 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-neutral-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors"
                                     placeholder="tu@email.com"
                                 />
@@ -51,6 +90,8 @@ export default function AuthModal({ isOpen, onClose }) {
                                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 size-5 text-neutral-500" />
                                 <input 
                                     type="password"
+                                    name="password"
+                                    required
                                     className="w-full pl-11 pr-4 py-3 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-neutral-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors"
                                     placeholder="••••••••"
                                 />
@@ -60,7 +101,7 @@ export default function AuthModal({ isOpen, onClose }) {
                         {/* Forgot password */}
                         {isLogin && (
                             <div className="text-right">
-                                <button className="text-sm text-brand-gold hover:text-yellow-500 transition-colors font-semibold">
+                                <button type="button" className="text-sm text-brand-gold hover:text-yellow-500 transition-colors font-semibold">
                                     ¿Olvidaste tu contraseña?
                                 </button>
                             </div>
@@ -69,10 +110,11 @@ export default function AuthModal({ isOpen, onClose }) {
                         {/* Action button */}
                         <button 
                             type="submit"
-                            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-md bg-brand-gold text-black font-bold text-sm tracking-wide hover:bg-yellow-500 transition-colors shadow-lg"
+                            disabled={isLoading}
+                            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-md bg-brand-gold text-black font-bold text-sm tracking-wide hover:bg-yellow-500 transition-colors shadow-lg disabled:opacity-75 disabled:cursor-not-allowed"
                         >
-                            <LogIn className="size-5" />
-                            <span>{isLogin ? "ENTRAR" : "CREAR CUENTA"}</span>
+                            {isLoading ? <Loader2 className="size-5 animate-spin" /> : <LogIn className="size-5" />}
+                            <span>{isLoading ? "PROCESANDO..." : (isLogin ? "ENTRAR" : "CREAR CUENTA")}</span>
                         </button>
                     </form>
 

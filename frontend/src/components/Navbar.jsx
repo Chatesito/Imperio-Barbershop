@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { User } from "lucide-react";
+import { User, LogOut } from "lucide-react";
 import AuthModal from "./AuthModal";
+import { useAuth } from "../context/AuthContext";
 
 const links = [
   { to: "/", label: "INICIO" },
@@ -15,6 +16,7 @@ const links = [
 export default function Navbar() {
     const [open, setOpen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false);
+    const { user, logout } = useAuth();
 
     const desktopLinkClass = ({ isActive }) =>
         [
@@ -51,13 +53,26 @@ export default function Navbar() {
                     </div>
 
                     {/* Login outline */}
-                    <button 
-                        onClick={() => setShowAuthModal(true)}
-                        className="hidden lg:flex items-center gap-2 px-4 py-1.5 rounded-md border border-brand-gold text-brand-gold font-semibold text-sm tracking-wide hover:bg-brand-gold hover:text-black transition-colors"
-                    >
-                        <User className="size-4" />
-                        <span>Ingresar</span>
-                    </button>
+                    {user ? (
+                        <div className="hidden lg:flex items-center gap-4">
+                            <span className="text-sm font-semibold text-neutral-300">Hola, {user.name}</span>
+                            <button 
+                                onClick={logout}
+                                className="flex items-center gap-2 px-4 py-1.5 rounded-md border border-red-500 text-red-500 font-semibold text-sm tracking-wide hover:bg-red-500 hover:text-white transition-colors"
+                            >
+                                <LogOut className="size-4" />
+                                <span>Salir</span>
+                            </button>
+                        </div>
+                    ) : (
+                        <button 
+                            onClick={() => setShowAuthModal(true)}
+                            className="hidden lg:flex items-center gap-2 px-4 py-1.5 rounded-md border border-brand-gold text-brand-gold font-semibold text-sm tracking-wide hover:bg-brand-gold hover:text-black transition-colors"
+                        >
+                            <User className="size-4" />
+                            <span>Ingresar</span>
+                        </button>
+                    )}
 
                     {/* Mobile menu */}
                     <button
@@ -84,16 +99,29 @@ export default function Navbar() {
                             ))}
 
                             {/* Login mobile */}
-                            <button 
-                                onClick={() => {
-                                    setShowAuthModal(true);
-                                    setOpen(false);
-                                }}
-                                className="mt-2 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-brand-gold text-brand-gold font-semibold text-sm tracking-wide hover:bg-brand-gold hover:text-black transition-colors"
-                            >
-                                <User className="size-4" />
-                                <span>Ingresar</span>
-                            </button>
+                            {user ? (
+                                <div className="mt-2 flex flex-col gap-2 border-t border-neutral-700 pt-3">
+                                    <span className="text-sm font-semibold text-neutral-300 px-2">Hola, {user.name}</span>
+                                    <button 
+                                        onClick={() => { logout(); setOpen(false); }}
+                                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-red-500 text-red-500 font-semibold text-sm tracking-wide hover:bg-red-500 hover:text-white transition-colors"
+                                    >
+                                        <LogOut className="size-4" />
+                                        <span>Salir</span>
+                                    </button>
+                                </div>
+                            ) : (
+                                <button 
+                                    onClick={() => {
+                                        setShowAuthModal(true);
+                                        setOpen(false);
+                                    }}
+                                    className="mt-2 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-brand-gold text-brand-gold font-semibold text-sm tracking-wide hover:bg-brand-gold hover:text-black transition-colors"
+                                >
+                                    <User className="size-4" />
+                                    <span>Ingresar</span>
+                                </button>
+                            )}
                         </div>
                     </div>
                 )}

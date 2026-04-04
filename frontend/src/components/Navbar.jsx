@@ -56,9 +56,15 @@ export default function Navbar() {
                     {user ? (
                         <div className="hidden lg:flex items-center gap-4">
                             <span className="text-sm font-semibold text-neutral-300">Hola, {user.name}</span>
+                            <Link 
+                                to="/Dashboard"
+                                className="text-sm text-brand-gold hover:text-white transition-colors font-semibold border border-brand-gold hover:border-white px-3 py-1.5 rounded-md"
+                            >
+                                Panel
+                            </Link>
                             <button 
                                 onClick={logout}
-                                className="flex items-center gap-2 px-4 py-1.5 rounded-md border border-red-500 text-red-500 font-semibold text-sm tracking-wide hover:bg-red-500 hover:text-white transition-colors"
+                                className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-red-500 text-red-500 font-semibold text-sm tracking-wide hover:bg-red-500 hover:text-white transition-colors"
                             >
                                 <LogOut className="size-4" />
                                 <span>Salir</span>
@@ -102,6 +108,13 @@ export default function Navbar() {
                             {user ? (
                                 <div className="mt-2 flex flex-col gap-2 border-t border-neutral-700 pt-3">
                                     <span className="text-sm font-semibold text-neutral-300 px-2">Hola, {user.name}</span>
+                                    <Link 
+                                        to="/Dashboard"
+                                        onClick={() => setOpen(false)}
+                                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-brand-gold text-brand-gold font-semibold text-sm tracking-wide hover:bg-brand-gold hover:text-black transition-colors"
+                                    >
+                                        Panel
+                                    </Link>
                                     <button 
                                         onClick={() => { logout(); setOpen(false); }}
                                         className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-red-500 text-red-500 font-semibold text-sm tracking-wide hover:bg-red-500 hover:text-white transition-colors"

@@ -17,3 +17,13 @@ export const getContacts = async (req, res) => {
     res.status(500).json({ message: "Error obteniendo mensajes", error: error.message });
   }
 };
+
+export const deleteContact = async (req, res) => {
+  try {
+    const contact = await Contact.findByIdAndDelete(req.params.id);
+    if (!contact) return res.status(404).json({ message: "Mensaje no encontrado" });
+    res.status(200).json({ message: "Mensaje eliminado con éxito" });
+  } catch (error) {
+    res.status(500).json({ message: "Error eliminando el mensaje", error: error.message });
+  }
+};

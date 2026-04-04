@@ -5,6 +5,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
 import reservationRoutes from "./routes/reservation.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
+import staffRoutes from "./routes/staff.routes.js";
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/staff", staffRoutes);
 
 // General Error Handling
 app.use((err, req, res, next) => {

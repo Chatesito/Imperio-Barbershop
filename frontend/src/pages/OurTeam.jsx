@@ -87,59 +87,34 @@ export default function OurTeam() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        const controller = new AbortController();
-
-        const pickUniqueRandomIds = (n, min, max) => {
-            const set = new Set();
-            while (set.size < n) {
-                set.add(Math.floor(Math.random() * (max - min + 1)) + min);
-            }
-            return Array.from(set);
-        };
-
-        (async () => {
+        const fetchStaff = async () => {
             try {
                 setLoading(true);
                 setError("");
-
-                // Obtener el total de personajes
-                const resInfo = await fetch("https://rickandmortyapi.com/api/character", {
-                    signal: controller.signal,
-                });
-                if (!resInfo.ok) throw new Error(`Error info: ${resInfo.status}`);
-                const infoJson = await resInfo.json();
-                const count = infoJson?.info?.count;
-                if (!count) throw new Error("No se pudo determinar el total de personajes.");
-
-                // Generar 6 IDs únicos y pedirlos en un solo request
-                const ids = pickUniqueRandomIds(6, 1, count);
-                const resChars = await fetch(
-                    `https://rickandmortyapi.com/api/character/${ids.join(",")}`,
-                    { signal: controller.signal }
-                );
-                if (!resChars.ok) throw new Error(`Error characters: ${resChars.status}`);
-                const data = await resChars.json();
-                const arr = Array.isArray(data) ? data : [data];
-
-                setCharacters(arr.slice(0, 6)); // aseguramos 6
+                
+                // Using global api configured previously
+                const { default: api } = await import("../services/api.js");
+                const res = await api.get("/staff");
+                
+                // Our backend returns the exact scheme we need: name, role, bio, imageUrl
+                setCharacters(res.data);
             } catch (e) {
-            if (e.name === "AbortError") return;
-            console.error(e);
-            setError("Ocurrió un error cargando los barberos.");
+                console.error(e);
+                setError("Ocurrió un error cargando al personal.");
             } finally {
                 setLoading(false);
             }
-        })();
+        };
 
-        return () => controller.abort();
+        fetchStaff();
     }, []);
 
-    // solo nombre e imagen de la API
-    const mergedTeam = characters.map((c, i) => ({
+    // No need to merge anything, the DB has everything
+    const mergedTeam = characters.map((c) => ({
         name: c.name,
-        img: c.image,
-        role: staticTeam[i]?.role ?? "",
-        bio: staticTeam[i]?.bio ?? "",
+        img: c.imageUrl,
+        role: c.role,
+        bio: c.bio,
     }));
 
     const gallery = [

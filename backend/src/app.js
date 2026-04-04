@@ -20,9 +20,26 @@ app.use("/api/contact", contactRoutes);
 // General Error Handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(err.status || 500).json({ 
+  
+  let status = err.status || 500;
+  let message = err.message || "Algo salió mal en el servidor.";
+
+  // Mongoose Validation Error
+  if (err.name === "ValidationError") {
+    status = 400;
+    message = Object.values(err.errors).map((val) => val.message).join(", ");
+  }
+  
+  // Mongoose Duplicate Key Error
+  if (err.code === 11000) {
+    status = 400;
+    const field = Object.keys(err.keyValue)[0];
+    message = `El ${field} ingresado ya está en uso.`;
+  }
+
+  res.status(status).json({ 
     success: false,
-    message: err.message || "Algo salió mal en el servidor.",
+    message,
     error: process.env.NODE_ENV === "development" ? err.stack : undefined 
   });
 });

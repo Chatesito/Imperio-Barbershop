@@ -83,51 +83,41 @@ export default function OurTeam() {
     ];
 
     const [characters, setCharacters] = useState([]);
+    const [gallery, setGallery] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        const fetchStaff = async () => {
+        const fetchData = async () => {
             try {
                 setLoading(true);
                 setError("");
                 
-                // Using global api configured previously
                 const { default: api } = await import("../services/api.js");
-                const res = await api.get("/staff");
+                const [staffRes, galleryRes] = await Promise.all([
+                    api.get("/staff"),
+                    api.get("/gallery")
+                ]);
                 
-                // Our backend returns the exact scheme we need: name, role, bio, imageUrl
-                setCharacters(res.data);
+                setCharacters(staffRes.data);
+                setGallery(galleryRes.data);
             } catch (e) {
                 console.error(e);
-                setError("Ocurrió un error cargando al personal.");
+                setError("Ocurrió un error cargando los datos.");
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchStaff();
+        fetchData();
     }, []);
 
-    // No need to merge anything, the DB has everything
     const mergedTeam = characters.map((c) => ({
         name: c.name,
         img: c.imageUrl,
         role: c.role,
         bio: c.bio,
     }));
-
-    const gallery = [
-        "/images/gallery-01.jpg",
-        "/images/gallery-02.jpg",
-        "/images/gallery-03.jpg",
-        "/images/gallery-04.jpg",
-        "/images/gallery-05.jpg",
-        "/images/gallery-06.jpg",
-        "/images/gallery-07.jpg",
-        "/images/gallery-08.jpg",
-        "/images/gallery-09.jpg",
-    ];
 
     return (
         <div className="flex flex-col">
@@ -183,10 +173,10 @@ export default function OurTeam() {
                     </h2>
 
                     <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                        {gallery.map((src, i) => (
-                            <div key={src} className="rounded-3xl overflow-hidden">
+                        {gallery.map((item, i) => (
+                            <div key={item.url || i} className="rounded-3xl overflow-hidden">
                                 <img
-                                    src={src}
+                                    src={item.url}
                                     alt={`Gallery ${i + 1}`}
                                     className="w-full h-64 object-cover"
                                     loading="lazy"

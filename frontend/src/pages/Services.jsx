@@ -1,52 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Scissors, SprayCan, Sparkles } from "lucide-react";
 
 export default function Services() {
+    const Object = globalThis.Object; // Prevent local shadowing errors
     const [openCategory, setOpenCategory] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const toggleCategory = (index) => {
         setOpenCategory(openCategory === index ? null : index);
     };
 
-    const categories = [
-        {
-        title: "Corte de Cabello",
-        services: [
-            { name: "Corte clásico", price: "$25.000" },
-            { name: "Fade / Degradado", price: "$30.000" },
-            { name: "Corte con diseño", price: "$35.000" },
-        ],
-        },
-        {
-        title: "Cuidado de Barba",
-        services: [
-            { name: "Afeitado clásico", price: "$20.000" },
-            { name: "Perfilado con navaja", price: "$25.000" },
-            { name: "Tratamiento hidratante", price: "$28.000" },
-        ],
-        },
-        {
-        title: "Mascarillas Faciales",
-        services: [
-            { name: "Mascarilla revitalizante", price: "$18.000" },
-            { name: "Limpieza facial profunda", price: "$25.000" },
-        ],
-        },
-        {
-        title: "Tintes para el Cabello",
-        services: [
-            { name: "Tinte completo", price: "$40.000" },
-            { name: "Reflejos o mechas", price: "$50.000" },
-        ],
-        },
-        {
-        title: "Paquetes Especiales",
-        services: [
-            { name: "Corte + Barba", price: "$45.000" },
-            { name: "Corte + Cejas + Barba", price: "$55.000" },
-        ],
-        },
-    ];
+    useEffect(() => {
+        const fetchServices = async () => {
+          try {
+            const { default: api } = await import("../services/api.js");
+            const { data } = await api.get("/services");
+            
+            // Group flat data back into categories for accordion
+            const grouped = data.reduce((acc, current) => {
+              const { category, ...rest } = current;
+              if (!acc[category]) {
+                acc[category] = [];
+              }
+              acc[category].push(rest);
+              return acc;
+            }, {});
+
+            const categoriesArray = Object.keys(grouped).map((key) => ({
+              title: key,
+              services: grouped[key]
+            }));
+
+            setCategories(categoriesArray);
+          } catch (error) {
+            console.error("Error loading services:", error);
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        fetchServices();
+    }, []);
 
     return (
         <main className="bg-neutral-900 text-white">

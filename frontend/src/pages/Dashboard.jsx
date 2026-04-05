@@ -3,7 +3,14 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import toast from "react-hot-toast";
-import { Trash2, Calendar, Mail, Loader2 } from "lucide-react";
+import { Trash2, Calendar, Mail, Loader2, LayoutDashboard, Scissors, Users, Images, MessageSquare, MapPin } from "lucide-react";
+
+// Admin Managers
+import ServicesManager from "../components/admin/ServicesManager";
+import BranchesManager from "../components/admin/BranchesManager";
+import StaffManager from "../components/admin/StaffManager";
+import ReviewsManager from "../components/admin/ReviewsManager";
+import GalleryManager from "../components/admin/GalleryManager";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -12,6 +19,9 @@ export default function Dashboard() {
   const [reservations, setReservations] = useState([]);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  // Tab System
+  const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
     if (!user) {
@@ -36,7 +46,7 @@ export default function Dashboard() {
         setReservations(resRes.data);
       }
     } catch (error) {
-      toast.error("Error al cargar información.");
+      toast.error("Error al cargar información base.");
     } finally {
       setLoading(false);
     }
@@ -103,8 +113,8 @@ export default function Dashboard() {
     </div>
   );
 
-  const renderAdminDashboard = () => (
-    <div className="space-y-8 w-full max-w-6xl mx-auto">
+  const renderAdminOverview = () => (
+    <div className="space-y-8 fade-in">
       {/* Resumen */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl flex items-center gap-4">
@@ -165,7 +175,7 @@ export default function Dashboard() {
       {/* Mensajes */}
       <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl overflow-x-auto">
         <h2 className="text-xl font-bold text-white mb-6 border-b border-neutral-800 pb-2">Buzón de Contacto</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {messages.map((m) => (
             <div key={m._id} className="bg-neutral-800 p-4 rounded-md border border-neutral-700 flex flex-col justify-between">
               <div>
@@ -186,16 +196,68 @@ export default function Dashboard() {
     </div>
   );
 
+  const TABS = [
+    { id: "overview", label: "Resumen", icon: LayoutDashboard },
+    { id: "services", label: "Servicios", icon: Scissors },
+    { id: "staff", label: "Personal", icon: Users },
+    { id: "branches", label: "Sedes", icon: MapPin },
+    { id: "gallery", label: "Galería", icon: Images },
+    { id: "reviews", label: "Reseñas", icon: MessageSquare },
+  ];
+
+  const renderAdminCMSContent = () => {
+    switch (activeTab) {
+      case "overview": return renderAdminOverview();
+      case "services": return <ServicesManager />;
+      case "staff": return <StaffManager />;
+      case "branches": return <BranchesManager />;
+      case "gallery": return <GalleryManager />;
+      case "reviews": return <ReviewsManager />;
+      default: return renderAdminOverview();
+    }
+  };
+
+  const renderAdminDashboard = () => (
+    <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 items-start">
+      {/* Sidebar Navigation */}
+      <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-4 shadow-xl w-full lg:w-64 shrink-0 space-y-2 sticky top-24">
+        <p className="text-xs font-bold text-brand-gold uppercase tracking-widest pl-3 mb-4 border-b border-neutral-800 pb-2">Módulos CMS</p>
+        {TABS.map((tab) => {
+          const Icon = tab.icon;
+          const isActive = activeTab === tab.id;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`w-full flex items-center gap-3 px-3 py-3 rounded-md transition-all text-sm font-semibold
+                ${isActive ? "bg-brand-gold text-black shadow-md" : "text-neutral-400 hover:bg-neutral-800 hover:text-white"}`}
+            >
+              <Icon className="size-5" />
+              {tab.label}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Main Content Area */}
+      <div className="flex-1 w-full relative">
+         {renderAdminCMSContent()}
+      </div>
+    </div>
+  );
+
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-neutral-950 py-12 px-4">
+    <div className="min-h-[100dvh] bg-neutral-950 py-12 px-4 md:py-20 animate-fade-in">
       {/* Header Panel */}
-      <div className="max-w-6xl mx-auto mb-8">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-wide uppercase">
+      <div className={`max-w-7xl mx-auto mb-8 ${user.role === "admin" ? "" : "max-w-4xl"}`}>
+        <h1 className="text-4xl md:text-5xl font-karantina font-extrabold text-white tracking-wide uppercase">
           Panel de <span className="text-brand-gold">Control</span>
         </h1>
-        <p className="text-neutral-400 mt-2">Bienvenido de vuelta, {user.name}.</p>
+        <p className="text-neutral-400 mt-2">
+          {user.role === "admin" ? "Centro de Administración Total. Modifica los módulos de negocio a tu gusto." : `Bienvenido de vuelta, ${user.name}.`}
+        </p>
       </div>
 
       {user.role === "admin" ? renderAdminDashboard() : renderUserDashboard()}

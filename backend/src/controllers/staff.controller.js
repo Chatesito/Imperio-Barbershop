@@ -5,37 +5,37 @@ const seedStaff = [
         name: "Carlos Mendoza",
         role: "Gerencia",
         bio: "Dirección y visión integral del servicio, asegurando calidad consistente.",
-        imageUrl: "https://randomuser.me/api/portraits/men/32.jpg"
+        imageUrl: "/images/staff/barber_1.png"
     },
     {
         name: "David 'El Rápido' Silva",
         role: "Estilista Maestro",
         bio: "Creatividad en estilismo y adaptación a tendencias actuales de grooming.",
-        imageUrl: "https://randomuser.me/api/portraits/men/44.jpg"
+        imageUrl: "/images/staff/barber_2.png"
     },
     {
         name: "Mateo Herrera",
         role: "Colorista & Estilista",
         bio: "Atención minuciosa a simetría, transición y armonía del estilo completo.",
-        imageUrl: "https://randomuser.me/api/portraits/men/62.jpg"
+        imageUrl: "/images/staff/barber_3.png"
     },
     {
-        name: "Samuel Reyes",
-        role: "Especialista en Barbería Clásica",
-        bio: "Optimización de textura y forma para looks versátiles y fáciles de mantener.",
-        imageUrl: "https://randomuser.me/api/portraits/men/85.jpg"
+        name: "Valeria Reyes",
+        role: "Especialista en Estilismo Femenino y Barbería",
+        bio: "Optimización de textura y forma para looks versátiles y modernos.",
+        imageUrl: "/images/staff/barber_4.png"
     },
     {
         name: "Julián 'Navaja' Ortiz",
         role: "Especialista en Afeitado",
         bio: "Enfoque en cortes clásicos y afeitado preciso con técnicas modernas.",
-        imageUrl: "https://randomuser.me/api/portraits/men/61.jpg"
+        imageUrl: "/images/staff/barber_5.png"
     },
     {
         name: "Andrés Montes",
         role: "Especialista Fades",
         bio: "Especialización en fades y detalles limpios orientados a acabado profesional.",
-        imageUrl: "https://randomuser.me/api/portraits/men/73.jpg"
+        imageUrl: "/images/staff/barber_6.png"
     }
 ];
 

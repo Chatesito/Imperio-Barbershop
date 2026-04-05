@@ -1,30 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import BranchCard from "../BranchCard";
-import sede1 from "../../assets/images/sede-uno.png";
-import sede2 from "../../assets/images/sede-dos.png";
-import sede3 from "../../assets/images/sede-tres.png";
 
 export default function BranchesSection() {
-  const branches = [
-    {
-      name: "Sede Ipanema",
-      address: "Calle 29, Neiva, Huila",
-      image: sede1,
-      mapUrl: "https://maps.app.goo.gl/qHXLv8SrMyg2Nayq5",
-    },
-    {
-      name: "Sede Candido",
-      address: "Cl. 37 #1 26, Neiva, Huila",
-      image: sede2,
-      mapUrl: "https://maps.app.goo.gl/i7D5SCKU4SS2ihuD8",
-    },
-    {
-      name: "Sede Neiva La Nueva",
-      address: "Cra. 20 #26-385, Neiva, Huila",
-      image: sede3,
-      mapUrl: "https://maps.app.goo.gl/AQykuFbBc8nwNPVt9",
-    },
-  ];
+  const [branches, setBranches] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchBranches = async () => {
+      try {
+        const { default: api } = await import("../../services/api.js");
+        const { data } = await api.get("/branches");
+        setBranches(data);
+      } catch (error) {
+        console.error("Error loading branches:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchBranches();
+  }, []);
 
   return (
     <section

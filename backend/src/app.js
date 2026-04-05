@@ -6,6 +6,10 @@ import authRoutes from "./routes/auth.routes.js";
 import reservationRoutes from "./routes/reservation.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
 import staffRoutes from "./routes/staff.routes.js";
+import serviceRoutes from "./routes/service.routes.js";
+import branchRoutes from "./routes/branch.routes.js";
+import reviewRoutes from "./routes/review.routes.js";
+import galleryRoutes from "./routes/gallery.routes.js";
 
 const app = express();
 
@@ -18,6 +22,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/reservations", reservationRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/staff", staffRoutes);
+app.use("/api/services", serviceRoutes);
+app.use("/api/branches", branchRoutes);
+app.use("/api/reviews", reviewRoutes);
+app.use("/api/gallery", galleryRoutes);
 
 // General Error Handling
 app.use((err, req, res, next) => {

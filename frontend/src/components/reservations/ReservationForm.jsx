@@ -25,43 +25,25 @@ const ReservationForm = () => {
   const selectedDate = watch("fecha");
   const domicilio = watch("domicilio");
 
-  const services = [
-    { category: "Corte de Cabello", name: "Corte clásico", price: "$25.000" },
-    { category: "Corte de Cabello", name: "Fade / Degradado", price: "$30.000" },
-    { category: "Corte de Cabello", name: "Corte con diseño", price: "$35.000" },
-    { category: "Cuidado de Barba", name: "Afeitado clásico", price: "$20.000" },
-    { category: "Cuidado de Barba", name: "Perfilado con navaja", price: "$25.000" },
-    { category: "Cuidado de Barba", name: "Tratamiento hidratante", price: "$28.000" },
-    { category: "Mascarillas Faciales", name: "Mascarilla revitalizante", price: "$18.000" },
-    { category: "Mascarillas Faciales", name: "Limpieza facial profunda", price: "$25.000" },
-    { category: "Tintes para el Cabello", name: "Tinte completo", price: "$40.000" },
-    { category: "Tintes para el Cabello", name: "Reflejos o mechas", price: "$50.000" },
-    { category: "Paquetes Especiales", name: "Corte + Barba", price: "$45.000" },
-    { category: "Paquetes Especiales", name: "Corte + Cejas + Barba", price: "$55.000" },
-  ];
+  const [services, setServices] = useState([]);
+  const [branches, setBranches] = useState([]);
 
-  const branches = [
-    {
-      name: "Sede Principal",
-      address: "Cll 14a # 34-20, Neiva, Huila",
-      mapUrl: "https://maps.app.goo.gl/inURPkNs6dtSnrTW7",
-    },
-    {
-      name: "Sede Ipanema",
-      address: "Cll 29, Neiva, Huila",
-      mapUrl: "https://maps.app.goo.gl/qHXLv8SrMyg2Nayq5",
-    },
-    {
-      name: "Sede Candido",
-      address: "Cll 37 #1 26, Neiva, Huila",
-      mapUrl: "https://maps.app.goo.gl/i7D5SCKU4SS2ihuD8",
-    },
-    {
-      name: "Sede Neiva La Nueva",
-      address: "Cra 20 #26-385, Neiva, Huila",
-      mapUrl: "https://maps.app.goo.gl/AQykuFbBc8nwNPVt9",
-    },
-  ];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { default: api } = await import("../../services/api.js");
+        const [servicesRes, branchesRes] = await Promise.all([
+          api.get("/services"),
+          api.get("/branches")
+        ]);
+        setServices(servicesRes.data);
+        setBranches(branchesRes.data);
+      } catch (error) {
+        console.error("Error fetching reservation options:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const branchOptions = branches.map(branch => ({
     value: branch.name,

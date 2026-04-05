@@ -12,7 +12,11 @@ export const createReservation = async (req, res) => {
 
 export const getReservations = async (req, res) => {
   try {
-    const reservations = await Reservation.find().sort({ createdAt: -1 });
+    let query = {};
+    if (req.user.role === "barber") {
+      query.barbero = req.user.name;
+    }
+    const reservations = await Reservation.find(query).sort({ createdAt: -1 });
     res.status(200).json(reservations);
   } catch (error) {
     res.status(500).json({ message: "Error obteniendo reservaciones", error: error.message });

@@ -11,6 +11,7 @@ const reservationSchema = new mongoose.Schema(
     fecha: { type: String, required: true },
     hora: { type: String, required: true },
     servicio: { type: String, required: true },
+    barbero: { type: String, trim: true, default: "" },
     mensaje: { type: String, trim: true },
     status: { type: String, enum: ["pending", "confirmed", "cancelled"], default: "pending" }
   },

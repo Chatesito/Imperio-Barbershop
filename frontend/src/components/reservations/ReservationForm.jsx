@@ -27,17 +27,20 @@ const ReservationForm = () => {
 
   const [services, setServices] = useState([]);
   const [branches, setBranches] = useState([]);
+  const [staff, setStaff] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { default: api } = await import("../../services/api.js");
-        const [servicesRes, branchesRes] = await Promise.all([
+        const [servicesRes, branchesRes, staffRes] = await Promise.all([
           api.get("/services"),
-          api.get("/branches")
+          api.get("/branches"),
+          api.get("/staff")
         ]);
         setServices(servicesRes.data);
         setBranches(branchesRes.data);
+        setStaff(staffRes.data);
       } catch (error) {
         console.error("Error fetching reservation options:", error);
       }
@@ -49,6 +52,12 @@ const ReservationForm = () => {
     value: branch.name,
     label: `${branch.name} - ${branch.address}`
   }));
+
+  const staffOptions = staff.map(member => ({
+    value: member.name,
+    label: `${member.name} (${member.role})`
+  }));
+
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -134,6 +143,7 @@ const ReservationForm = () => {
         fecha: "",
         hora: "",
         servicio: "",
+        barbero: "",
         mensaje: "",
         domicilio: "",
         direccion: ""
@@ -257,22 +267,34 @@ const ReservationForm = () => {
         />
       </div>
 
-      {/* Servicio personalizado */}
-      <Controller
-        name="servicio"
-        control={control}
-        rules={{ required: "Selecciona un servicio" }}
-        render={({ field }) => (
-          <CustomSelect
-            label="Servicio"
-            value={field.value || ""}
-            onChange={field.onChange}
-            options={services}
-            error={errors.servicio?.message}
-            placeholder="Selecciona un servicio"
-          />
-        )}
-      />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {/* Servicio personalizado */}
+        <Controller
+          name="servicio"
+          control={control}
+          rules={{ required: "Selecciona un servicio" }}
+          render={({ field }) => (
+            <CustomSelect
+              label="Servicio"
+              value={field.value || ""}
+              onChange={field.onChange}
+              options={services}
+              error={errors.servicio?.message}
+              placeholder="Selecciona un servicio"
+            />
+          )}
+        />
+        
+        {/* Selector de Barbero */}
+        <SelectInput
+          label="Tu profesional (Opcional)"
+          id="barbero"
+          register={register}
+          errors={errors}
+          options={staffOptions}
+          placeholder="Cualquiera / Sin Preferencia"
+        />
+      </div>
 
       {/* Comentarios */}
       <TextArea

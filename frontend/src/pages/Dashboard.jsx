@@ -41,6 +41,9 @@ export default function Dashboard() {
         ]);
         setReservations(resRes.data);
         setMessages(msgRes.data);
+      } else if (user.role === "barber") {
+        const resRes = await api.get("/reservations");
+        setReservations(resRes.data);
       } else {
         const resRes = await api.get("/reservations/me");
         setReservations(resRes.data);
@@ -99,6 +102,7 @@ export default function Dashboard() {
               <div>
                 <p className="text-brand-gold font-bold">{r.servicio}</p>
                 <p className="text-white text-sm">Sede: {r.sede || "A domicilio"} - {r.fecha} a las {r.hora}</p>
+                {r.barbero && <p className="text-xs text-brand-gold mt-1">Con: {r.barbero}</p>}
               </div>
               <button
                 onClick={() => handleCancelReservation(r._id)}
@@ -106,6 +110,32 @@ export default function Dashboard() {
               >
                 <Trash2 className="size-4" /> Cancelar Cita
               </button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  const renderBarberDashboard = () => (
+    <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl w-full max-w-4xl mx-auto">
+      <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+        <Scissors className="text-brand-gold" />
+        Agenda de Hoy - Profesional
+      </h2>
+      
+      {reservations.length === 0 ? (
+        <p className="text-neutral-400">Excelente, no tienes citas asignadas de momento.</p>
+      ) : (
+        <div className="space-y-4">
+          {reservations.map((r) => (
+            <div key={r._id} className="bg-neutral-800 p-4 rounded-md flex flex-wrap justify-between items-center gap-4 border border-neutral-700">
+              <div>
+                <p className="text-brand-gold font-bold">{r.servicio}</p>
+                <p className="text-white text-sm">Cliente: {r.nombre}</p>
+                <p className="text-neutral-400 text-xs mt-1">Sede: {r.sede || "A domicilio (Ver mapa)"} - {r.fecha} @ {r.hora}</p>
+                {r.mensaje && <p className="text-neutral-500 text-xs italic mt-1">Nota: {r.mensaje}</p>}
+              </div>
             </div>
           ))}
         </div>
@@ -248,19 +278,25 @@ export default function Dashboard() {
 
   if (!user) return null;
 
+  const renderViewByRole = () => {
+    if (user.role === "admin") return renderAdminDashboard();
+    if (user.role === "barber") return renderBarberDashboard();
+    return renderUserDashboard();
+  };
+
   return (
     <div className="min-h-[100dvh] bg-neutral-950 py-12 px-4 md:py-20 animate-fade-in">
       {/* Header Panel */}
       <div className={`max-w-7xl mx-auto mb-8 ${user.role === "admin" ? "" : "max-w-4xl"}`}>
         <h1 className="text-4xl md:text-5xl font-karantina font-extrabold text-white tracking-wide uppercase">
-          Panel de <span className="text-brand-gold">Control</span>
+          Panel de <span className="text-brand-gold">{user.role === 'barber' ? 'Profesionales' : 'Control'}</span>
         </h1>
         <p className="text-neutral-400 mt-2">
           {user.role === "admin" ? "Centro de Administración Total. Modifica los módulos de negocio a tu gusto." : `Bienvenido de vuelta, ${user.name}.`}
         </p>
       </div>
 
-      {user.role === "admin" ? renderAdminDashboard() : renderUserDashboard()}
+      {renderViewByRole()}
     </div>
   );
 }

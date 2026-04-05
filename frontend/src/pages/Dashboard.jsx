@@ -11,6 +11,7 @@ import BranchesManager from "../components/admin/BranchesManager";
 import StaffManager from "../components/admin/StaffManager";
 import ReviewsManager from "../components/admin/ReviewsManager";
 import GalleryManager from "../components/admin/GalleryManager";
+import UserReviewForm from "../components/UserReviewForm";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -87,33 +88,43 @@ export default function Dashboard() {
 
   // --- RENDERS ---
   const renderUserDashboard = () => (
-    <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl w-full max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-        <Calendar className="text-brand-gold" />
-        Mis Próximas Citas
-      </h2>
-      
-      {reservations.length === 0 ? (
-        <p className="text-neutral-400">No tienes citas próximas agendadas.</p>
-      ) : (
-        <div className="space-y-4">
-          {reservations.map((r) => (
-            <div key={r._id} className="bg-neutral-800 p-4 rounded-md flex flex-wrap justify-between items-center gap-4 border border-neutral-700">
-              <div>
-                <p className="text-brand-gold font-bold">{r.servicio}</p>
-                <p className="text-white text-sm">Sede: {r.sede || "A domicilio"} - {r.fecha} a las {r.hora}</p>
-                {r.barbero && <p className="text-xs text-brand-gold mt-1">Con: {r.barbero}</p>}
+    <div className="w-full max-w-4xl mx-auto space-y-8">
+      <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl">
+        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <Calendar className="text-brand-gold" />
+          Mis Próximas Citas
+        </h2>
+        
+        {reservations.length === 0 ? (
+          <p className="text-neutral-400">No tienes citas próximas agendadas.</p>
+        ) : (
+          <div className="space-y-4">
+            {reservations.map((r) => (
+              <div key={r._id} className="bg-neutral-800 p-4 rounded-md flex flex-wrap justify-between items-center gap-4 border border-neutral-700">
+                <div>
+                  <p className="text-brand-gold font-bold">{r.servicio}</p>
+                  <p className="text-white text-sm">Sede: {r.sede || "A domicilio"} - {r.fecha} a las {r.hora}</p>
+                  {r.barbero && <p className="text-xs text-brand-gold mt-1">Con: {r.barbero}</p>}
+                </div>
+                <button
+                  onClick={() => handleCancelReservation(r._id)}
+                  className="flex items-center gap-2 text-sm text-red-400 hover:text-red-300 transition-colors bg-red-400/10 px-3 py-1.5 rounded-md"
+                >
+                  <Trash2 className="size-4" /> Cancelar Cita
+                </button>
               </div>
-              <button
-                onClick={() => handleCancelReservation(r._id)}
-                className="flex items-center gap-2 text-sm text-red-400 hover:text-red-300 transition-colors bg-red-400/10 px-3 py-1.5 rounded-md"
-              >
-                <Trash2 className="size-4" /> Cancelar Cita
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl">
+         <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
+           <MessageSquare className="text-brand-gold" />
+           Tu Experiencia es Importante
+         </h2>
+         <UserReviewForm />
+      </div>
     </div>
   );
 

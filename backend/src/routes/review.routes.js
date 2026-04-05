@@ -6,7 +6,7 @@ import { adminRoute } from "../middlewares/admin.middleware.js";
 const router = Router();
 
 router.get("/", getReviews);
-router.post("/", protectRoute, adminRoute, createReview);
+router.post("/", protectRoute, createReview);
 router.delete("/:id", protectRoute, adminRoute, deleteReview);
 
 export default router;

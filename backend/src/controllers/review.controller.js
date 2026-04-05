@@ -60,7 +60,13 @@ export const getReviews = async (req, res) => {
 
 export const createReview = async (req, res) => {
   try {
-    const newDoc = await Review.create(req.body);
+    const payload = req.body;
+    if (req.user && req.user.role === 'user') {
+       payload.name = req.user.name;
+       payload.date = "Reciente";
+       payload.img = `https://ui-avatars.com/api/?name=${encodeURIComponent(req.user.name)}&background=C5A253&color=fff`;
+    }
+    const newDoc = await Review.create(payload);
     res.status(201).json(newDoc);
   } catch (error) {
     res.status(500).json({ message: "Error create", error: error.message });

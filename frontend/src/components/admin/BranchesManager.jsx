@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import toast from "react-hot-toast";
 import { Trash2, PlusCircle, Loader2 } from "lucide-react";
+import { compressImageToBase64 } from "../../utils/imageHelper";
 
 export default function BranchesManager() {
   const [branches, setBranches] = useState([]);
@@ -67,8 +68,18 @@ export default function BranchesManager() {
             <input required type="text" value={formData.mapUrl} onChange={e => setFormData({...formData, mapUrl: e.target.value})} className="w-full bg-neutral-900 text-white rounded px-3 py-2 outline-none focus:ring-1 focus:ring-brand-gold" placeholder="https://maps.app.goo.gl/..." />
           </div>
           <div>
-            <label className="text-xs text-neutral-400 mb-1 block">Ruta Imagen Sede</label>
-            <input required type="text" value={formData.image} onChange={e => setFormData({...formData, image: e.target.value})} className="w-full bg-neutral-900 text-white rounded px-3 py-2 outline-none focus:ring-1 focus:ring-brand-gold" placeholder="/images/branches/..." />
+            <label className="text-xs text-neutral-400 mb-1 block">Subir Fachada o Interior (Sede)</label>
+            <input required type="file" accept="image/*" onChange={async (e) => {
+              if (e.target.files && e.target.files[0]) {
+                 try {
+                   const b64 = await compressImageToBase64(e.target.files[0]);
+                   setFormData({...formData, image: b64});
+                 } catch (err) {
+                   toast.error("Error optimizando imagen");
+                 }
+              }
+            }} className="w-full text-sm text-neutral-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-brand-gold file:text-black hover:file:bg-yellow-500 cursor-pointer outline-none" />
+            {formData.image && <p className="text-[10px] text-green-400 mt-1">✓ Fachada lista ({(formData.image.length / 1024).toFixed(1)} KB)</p>}
           </div>
         </div>
         <div className="flex justify-end mt-2">

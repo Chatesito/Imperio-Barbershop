@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import toast from "react-hot-toast";
 import { Trash2, PlusCircle, Loader2, Star } from "lucide-react";
+import { compressImageToBase64 } from "../../utils/imageHelper";
 
 export default function ReviewsManager() {
   const [reviews, setReviews] = useState([]);
@@ -67,8 +68,18 @@ export default function ReviewsManager() {
             <input required type="text" value={formData.date} onChange={e => setFormData({...formData, date: e.target.value})} className="w-full bg-neutral-900 text-white rounded px-3 py-2 outline-none focus:ring-1 focus:ring-brand-gold" placeholder="Ej: Hace 2 días" />
           </div>
           <div>
-            <label className="text-xs text-neutral-400 mb-1 block">Avatar (URL Imagen)</label>
-            <input required type="text" value={formData.img} onChange={e => setFormData({...formData, img: e.target.value})} className="w-full bg-neutral-900 text-white rounded px-3 py-2 outline-none focus:ring-1 focus:ring-brand-gold" placeholder="/images/reviews/user1.png" />
+            <label className="text-xs text-neutral-400 mb-1 block">Avatar del Cliente</label>
+            <input required type="file" accept="image/*" onChange={async (e) => {
+              if (e.target.files && e.target.files[0]) {
+                 try {
+                   const b64 = await compressImageToBase64(e.target.files[0], 200, 200);
+                   setFormData({...formData, img: b64});
+                 } catch (err) {
+                   toast.error("Error optimizando foto");
+                 }
+              }
+            }} className="w-full text-sm text-neutral-400 file:block file:w-full file:py-1.5 file:rounded-md file:border-0 file:text-xs file:bg-brand-gold file:text-black hover:file:bg-yellow-500 cursor-pointer outline-none" />
+            {formData.img && <p className="text-[10px] text-green-400 mt-1 block">✓ Optimizada</p>}
           </div>
           <div className="lg:col-span-4 flex gap-4 items-end">
             <div className="flex-1">

@@ -3,6 +3,7 @@ import api from "../../services/api";
 import toast from "react-hot-toast";
 import { Trash2, PlusCircle, Loader2, Star } from "lucide-react";
 import { compressImageToBase64 } from "../../utils/imageHelper";
+import { confirmAction } from "../../utils/alerts";
 
 export default function ReviewsManager() {
   const [reviews, setReviews] = useState([]);
@@ -37,7 +38,7 @@ export default function ReviewsManager() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Eliminar este testimonio permanentemente?")) return;
+    if (!(await confirmAction("¿Eliminar Testimonio?", "Se purgará este registro de valoraciones."))) return;
     try {
       await api.delete(`/reviews/${id}`);
       setReviews(reviews.filter((r) => r._id !== id));

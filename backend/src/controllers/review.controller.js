@@ -58,13 +58,17 @@ export const getReviews = async (req, res) => {
   }
 };
 
+import User from "../models/User.js";
+
 export const createReview = async (req, res) => {
   try {
     const payload = req.body;
     if (req.user && req.user.role === 'user') {
-       payload.name = req.user.name;
+       const dbUser = await User.findById(req.user.id);
+       if(!dbUser) return res.status(404).json({ message: "Usuario no encontrado" });
+       payload.name = dbUser.name;
        payload.date = "Reciente";
-       payload.img = `https://ui-avatars.com/api/?name=${encodeURIComponent(req.user.name)}&background=C5A253&color=fff`;
+       payload.img = `https://ui-avatars.com/api/?name=${encodeURIComponent(dbUser.name)}&background=C5A253&color=fff`;
     }
     const newDoc = await Review.create(payload);
     res.status(201).json(newDoc);

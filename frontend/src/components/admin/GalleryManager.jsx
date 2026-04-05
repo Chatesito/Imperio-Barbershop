@@ -3,6 +3,7 @@ import api from "../../services/api";
 import toast from "react-hot-toast";
 import { Trash2, PlusCircle, Loader2 } from "lucide-react";
 import { compressImageToBase64 } from "../../utils/imageHelper";
+import { confirmAction } from "../../utils/alerts";
 
 export default function GalleryManager() {
   const [gallery, setGallery] = useState([]);
@@ -37,7 +38,7 @@ export default function GalleryManager() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Eliminar esta foto del portafolio?")) return;
+    if (!(await confirmAction("¿Borrar Foto?", "La imagen desaparecerá permanentemente de la plataforma."))) return;
     try {
       await api.delete(`/gallery/${id}`);
       setGallery(gallery.filter((g) => g._id !== id));

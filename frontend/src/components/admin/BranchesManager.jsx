@@ -3,6 +3,7 @@ import api from "../../services/api";
 import toast from "react-hot-toast";
 import { Trash2, PlusCircle, Loader2 } from "lucide-react";
 import { compressImageToBase64 } from "../../utils/imageHelper";
+import { confirmAction } from "../../utils/alerts";
 
 export default function BranchesManager() {
   const [branches, setBranches] = useState([]);
@@ -37,7 +38,7 @@ export default function BranchesManager() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar esta sede?")) return;
+    if (!(await confirmAction("¿Cerrar Sede?", "Se eliminará esta matriz de la lista de reservas."))) return;
     try {
       await api.delete(`/branches/${id}`);
       setBranches(branches.filter((b) => b._id !== id));

@@ -12,6 +12,7 @@ import StaffManager from "../components/admin/StaffManager";
 import ReviewsManager from "../components/admin/ReviewsManager";
 import GalleryManager from "../components/admin/GalleryManager";
 import UserReviewForm from "../components/UserReviewForm";
+import { confirmAction } from "../utils/alerts";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -57,7 +58,7 @@ export default function Dashboard() {
   };
 
   const handleCancelReservation = async (id) => {
-    if (!window.confirm("¿Seguro que deseas cancelar esta cita?")) return;
+    if (!(await confirmAction("¿Cancelar reservación?", "Se liberará el espacio en la agenda."))) return;
     try {
       await api.delete(`/reservations/${id}`);
       setReservations(reservations.filter((r) => r._id !== id));
@@ -68,7 +69,7 @@ export default function Dashboard() {
   };
 
   const handleDeleteMessage = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este mensaje?")) return;
+    if (!(await confirmAction("¿Eliminar este mensaje?", "No podrás recuperarlo más adelante."))) return;
     try {
       await api.delete(`/contact/${id}`);
       setMessages(messages.filter((m) => m._id !== id));

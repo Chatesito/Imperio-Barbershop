@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import toast from "react-hot-toast";
 import { Trash2, PlusCircle, Loader2 } from "lucide-react";
+import { confirmAction } from "../../utils/alerts";
 
 export default function ServicesManager() {
   const [services, setServices] = useState([]);
@@ -36,7 +37,7 @@ export default function ServicesManager() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este servicio?")) return;
+    if (!(await confirmAction("¿Eliminar este servicio?", "El historial no se perderá, pero ya no estará para agendar."))) return;
     try {
       await api.delete(`/services/${id}`);
       setServices(services.filter((s) => s._id !== id));

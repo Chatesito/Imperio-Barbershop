@@ -3,6 +3,7 @@ import api from "../../services/api";
 import toast from "react-hot-toast";
 import { Trash2, PlusCircle, Loader2 } from "lucide-react";
 import { compressImageToBase64 } from "../../utils/imageHelper";
+import { confirmAction } from "../../utils/alerts";
 
 export default function StaffManager() {
   const [staff, setStaff] = useState([]);
@@ -37,7 +38,7 @@ export default function StaffManager() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("¿Seguro que deseas eliminar este miembro del equipo?")) return;
+    if (!(await confirmAction("¿Desvincular Barbero?", "Este miembro será eliminado del portal de clientes."))) return;
     try {
       await api.delete(`/staff/${id}`);
       setStaff(staff.filter((s) => s._id !== id));

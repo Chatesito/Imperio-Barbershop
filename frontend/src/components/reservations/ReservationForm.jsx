@@ -7,8 +7,10 @@ import DateInput from "./DateInput";
 import TimeInput from "./TimeInput";
 import SelectInput from "./SelectInput";
 import TextArea from "./TextArea";
+import { useAuth } from "../../context/AuthContext";
 
 const ReservationForm = () => {
+  const { user } = useAuth();
   const {
     register,
     handleSubmit,
@@ -109,6 +111,11 @@ const ReservationForm = () => {
 
   const onSubmit = async (data) => {
     try {
+      if (user) {
+        data.nombre = user.name;
+        data.email = user.email;
+      }
+      
       const date = new Date(data.fecha + 'T00:00:00');
       const dayOfWeek = date.getDay();
       const [hours, minutes] = data.hora.split(':').map(Number);
@@ -167,23 +174,35 @@ const ReservationForm = () => {
       </h2>
 
       {/* Nombre y Correo */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <InputField
-          label="Tu nombre"
-          id="nombre"
-          placeholder="Juan Pérez"
-          register={register}
-          errors={errors}
-        />
-        <InputField
-          label="Tu correo"
-          id="email"
-          type="email"
-          placeholder="ejemplo@email.com"
-          register={register}
-          errors={errors}
-        />
-      </div>
+      {user ? (
+        <div className="bg-neutral-900 border border-brand-gold/30 p-4 rounded-lg flex items-center gap-4">
+          <div className="size-12 bg-brand-gold text-black font-karantina text-3xl tracking-widest rounded-full flex items-center justify-center">
+            {user.name.charAt(0).toUpperCase()}
+          </div>
+          <div>
+            <p className="text-white font-bold">{user.name}</p>
+            <p className="text-neutral-400 text-sm">{user.email}</p>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <InputField
+            label="Tu nombre"
+            id="nombre"
+            placeholder="Juan Pérez"
+            register={register}
+            errors={errors}
+          />
+          <InputField
+            label="Tu correo"
+            id="email"
+            type="email"
+            placeholder="ejemplo@email.com"
+            register={register}
+            errors={errors}
+          />
+        </div>
+      )}
 
       {/* Servicio a domicilio */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">

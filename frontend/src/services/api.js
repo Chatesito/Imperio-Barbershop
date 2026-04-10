@@ -18,17 +18,31 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Interceptor to catch 401 Unauthorized globally
+// Interceptor para manejar 401 y refrescar token
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      // Si recibimos 401 significa que el token expiró o es inválido
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      // Opcional pero recomendando: forzar recarga frontal para limpiar estados
-      if (window.location.pathname !== "/") {
-        window.location.href = "/";
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const refreshToken = localStorage.getItem("refreshToken");
+
+      if (refreshToken) {
+        try {
+          const { data } = await axios.post(`${API_URL}/auth/refresh`, { refreshToken });
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("refreshToken", data.refreshToken);
+          
+          originalRequest.headers.Authorization = `Bearer ${data.token}`;
+          return api(originalRequest);
+        } catch (refreshError) {
+          // Si falla el refresh, cerramos sesión
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+          localStorage.removeItem("user");
+          window.location.href = "/";
+        }
       }
     }
     return Promise.reject(error);

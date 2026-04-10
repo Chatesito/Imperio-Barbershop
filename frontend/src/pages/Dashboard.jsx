@@ -12,6 +12,7 @@ import StaffManager from "../components/admin/StaffManager";
 import ReviewsManager from "../components/admin/ReviewsManager";
 import GalleryManager from "../components/admin/GalleryManager";
 import CategoriesManager from "../components/admin/CategoriesManager";
+import UsersManager from "../components/admin/UsersManager";
 import UserReviewForm from "../components/UserReviewForm";
 import { confirmAction } from "../utils/alerts";
 
@@ -241,6 +242,7 @@ export default function Dashboard() {
 
   const TABS = [
     { id: "overview", label: "Resumen", icon: LayoutDashboard },
+    { id: "users", label: "Usuarios", icon: Users },
     { id: "categories", label: "Categorías", icon: Tag },
     { id: "services", label: "Servicios", icon: Scissors },
     { id: "staff", label: "Personal", icon: Users },
@@ -252,6 +254,7 @@ export default function Dashboard() {
   const renderAdminCMSContent = () => {
     switch (activeTab) {
       case "overview": return renderAdminOverview();
+      case "users": return <UsersManager />;
       case "categories": return <CategoriesManager />;
       case "services": return <ServicesManager />;
       case "staff": return <StaffManager />;

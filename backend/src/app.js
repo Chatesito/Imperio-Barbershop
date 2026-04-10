@@ -1,8 +1,12 @@
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
+import mongoSanitize from "express-mongo-sanitize";
+import rateLimit from "express-rate-limit";
 
 // Routes imports
 import authRoutes from "./routes/auth.routes.js";
+// ... (omitted imports for brevity in target search, but I'll replace the block)
 import reservationRoutes from "./routes/reservation.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
 import staffRoutes from "./routes/staff.routes.js";
@@ -14,7 +18,18 @@ import categoryRoutes from "./routes/category.routes.js";
 
 const app = express();
 
-// Middlewares
+// Middlewares de Seguridad
+app.use(helmet());
+app.use(mongoSanitize());
+
+// Rate Limiting (100 peticiones cada 15 min)
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: { message: "Demasiadas peticiones desde esta IP, por favor intenta de nuevo en 15 minutos." }
+});
+app.use("/api/", limiter);
+
 app.use(cors());
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ limit: "20mb", extended: true }));

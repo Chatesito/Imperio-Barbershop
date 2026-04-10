@@ -57,6 +57,9 @@ export default function AuthModal({ isOpen, onClose }) {
                                         type="text"
                                         name="name"
                                         required={!isLogin}
+                                        minLength={3}
+                                        pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"
+                                        title="El nombre debe tener al menos 3 caracteres y no contener números"
                                         className="w-full px-4 py-3 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-neutral-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors"
                                         placeholder="Tu nombre completo"
                                     />

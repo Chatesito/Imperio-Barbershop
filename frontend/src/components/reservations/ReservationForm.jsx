@@ -9,9 +9,11 @@ import TimeInput from "./TimeInput";
 import SelectInput from "./SelectInput";
 import TextArea from "./TextArea";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const ReservationForm = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -56,10 +58,13 @@ const ReservationForm = () => {
     label: `${branch.name} - ${branch.address}`
   }));
 
-  const staffOptions = staff.map(member => ({
-    value: member.name,
-    label: `${member.name} (${member.role})`
-  }));
+  // Filtrar gerencia y ocultar roles en el label
+  const staffOptions = staff
+    .filter(member => !member.role.toLowerCase().includes("gerencia") && !member.role.toLowerCase().includes("gerente"))
+    .map(member => ({
+      value: member.name,
+      label: member.name
+    }));
 
 
   const today = new Date();
@@ -111,6 +116,13 @@ const ReservationForm = () => {
   }, [domicilio, setValue]);
 
   const onSubmit = async (data) => {
+    // Auth Guard
+    if (!user) {
+      toast.error("Debes iniciar sesión o registrarte para completar tu reserva.");
+      navigate("/login", { state: { from: "/Reservations" } });
+      return;
+    }
+
     try {
       if (user) {
         data.nombre = user.name;
@@ -119,6 +131,21 @@ const ReservationForm = () => {
       
       const date = new Date(data.fecha + 'T00:00:00');
       const dayOfWeek = date.getDay();
+      
+      // Validación estricta de tiempo futuro si es hoy
+      const now = new Date();
+      const todayStr = now.toISOString().split('T')[0];
+      if (data.fecha === todayStr) {
+        const [h, m] = data.hora.split(':').map(Number);
+        const reservationTime = new Date();
+        reservationTime.setHours(h, m, 0, 0);
+        
+        if (reservationTime < now) {
+          toast.error("No puedes reservar para una hora que ya ha pasado hoy.");
+          return;
+        }
+      }
+
       const [hours, minutes] = data.hora.split(':').map(Number);
       const timeInMinutes = hours * 60 + minutes;
       

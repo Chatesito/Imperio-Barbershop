@@ -20,6 +20,15 @@ export const registerUser = async (req, res) => {
   try {
     const { email, password, name } = req.body;
 
+    // Validaciones de nombre
+    if (!name || name.trim().length < 3) {
+      return res.status(400).json({ message: "El nombre debe tener al menos 3 caracteres" });
+    }
+    const nameRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+    if (!nameRegex.test(name)) {
+      return res.status(400).json({ message: "El nombre no puede contener números ni símbolos" });
+    }
+
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "El usuario ya existe" });
 

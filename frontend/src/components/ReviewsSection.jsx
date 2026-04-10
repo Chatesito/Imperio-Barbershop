@@ -4,6 +4,7 @@ import { Star } from "lucide-react";
 export default function ReviewsSection() {
     const [reviews, setReviews] = useState([]);
     const [index, setIndex] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(3);
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -18,117 +19,141 @@ export default function ReviewsSection() {
         fetchReviews();
     }, []);
 
-    // maxIndex calculation protects against empty array
-    const maxIndex = Math.max(0, reviews.length > 0 ? reviews.length - 3 : 0);
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth < 640) setItemsPerPage(1);
+            else if (window.innerWidth < 1024) setItemsPerPage(2);
+            else setItemsPerPage(3);
+        };
+        handleResize();
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    const maxIndex = Math.max(0, reviews.length - itemsPerPage);
 
     const next = () => setIndex((prev) => (prev < maxIndex ? prev + 1 : 0));
     const prev = () => setIndex((prev) => (prev > 0 ? prev - 1 : maxIndex));
 
     // scroll automático
     useEffect(() => {
-        const interval = setInterval(next, 4000);
+        if (reviews.length === 0) return;
+        const interval = setInterval(next, 5000);
         return () => clearInterval(interval);
-    }, []);
+    }, [reviews.length, maxIndex]);
 
     return (
-        <section className="bg-neutral-100 text-neutral-800 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-4 py-14 md:py-20">
-
+        <section className="bg-neutral-950 text-white overflow-hidden py-24 px-6 border-t border-white/5 relative">
+            <div className="absolute top-0 left-0 w-1/3 h-full bg-brand-gold/5 blur-[120px] -z-10" />
+            
+            <div className="max-w-7xl mx-auto">
                 {/* -------- ENCABEZADO -------- */}
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-                    <div>
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-brand-gold tracking-wide">
-                            Opiniones de nuestros clientes
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-10 mb-20 animate-fade-in-up">
+                    <div className="space-y-4">
+                        <span className="text-brand-gold text-xs font-bold tracking-[0.4em] uppercase">Testimonios</span>
+                        <h2 className="text-6xl md:text-8xl font-extrabold font-karantina uppercase leading-[0.8] tracking-tighter">
+                            A LA ALTURA DEL <br />
+                            <span className="text-brand-gold">IMPERIO</span>
                         </h2>
-                        <p className="mt-3 max-w-md text-neutral-600">
-                            Lo que dicen nuestros clientes nos motiva a seguir mejorando cada día.
+                        <p className="max-w-md text-neutral-500 font-light text-lg">
+                            Lo que dicen nuestros clientes nos motiva a mantener la excelencia en cada corte.
                         </p>
                     </div>
 
-                    <div className="bg-white border border-neutral-300 rounded-2xl px-6 py-4 shadow text-center">
-                        <p className="text-sm text-neutral-600 mb-1">Calificación general</p>
-                        <div className="flex items-center justify-center gap-2">
-                            <span className="text-4xl font-extrabold text-neutral-900">4.7</span>
-                            <Star className="text-yellow-400 fill-yellow-400" />
+                    <div className="bg-neutral-900 border border-neutral-800 rounded-[2rem] px-10 py-8 shadow-2xl flex flex-col items-center gap-2 group hover:border-brand-gold/20 transition-all duration-500">
+                        <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Calificación Real</p>
+                        <div className="flex items-center gap-4">
+                            <span className="text-6xl font-karantina font-extrabold text-white">4.9</span>
+                            <div className="flex flex-col">
+                                <Star className="text-brand-gold fill-brand-gold size-6" />
+                                <span className="text-[10px] font-bold text-brand-gold uppercase tracking-widest mt-1">Verified</span>
+                            </div>
                         </div>
-                        <p className="text-xs text-neutral-500 mt-1">Basado en reseñas verificadas</p>
                     </div>
                 </div>
 
                 {/* -------- SLIDER -------- */}
-                <div className="relative overflow-hidden">
-
-                    <div
-                        className="flex transition-transform duration-500"
-                        style={{ transform: `translateX(-${index * (100 / 3)}%)` }}
-                    >
-                        {reviews.map((review, i) => (
-                            <div
-                                key={i}
-                                className="w-full sm:w-1/2 lg:w-1/3 px-4 shrink-0 flex"
-                            >
-                                <article className="bg-white border border-neutral-300 rounded-2xl p-6 shadow-sm w-full flex flex-col">
-                                    
-                                    {/* perfil */}
-                                    <div className="flex items-center gap-4">
-                                        <img
-                                            src={review.img}
-                                            alt={review.name}
-                                            className="w-14 h-14 rounded-full object-cover border shadow-sm"
-                                        />
-                                        <div className="flex flex-col">
-                                            <p className="font-bold text-neutral-900">{review.name}</p>
-                                            <p className="text-sm text-neutral-500">{review.date}</p>
-                                            <div className="flex mt-1">
-                                                {Array.from({ length: review.rating }).map((_, j) => (
+                <div className="relative group">
+                    <div className="overflow-hidden">
+                        <div
+                            className="flex transition-transform duration-700 cubic-bezier(0.4, 0, 0.2, 1)"
+                            style={{ transform: `translateX(-${index * (100 / itemsPerPage)}%)` }}
+                        >
+                            {reviews.map((review, i) => (
+                                <div
+                                    key={i}
+                                    style={{ width: `${100 / itemsPerPage}%` }}
+                                    className="px-4 shrink-0 flex h-full"
+                                >
+                                    <article className="bg-neutral-900/50 backdrop-blur-md border border-neutral-800 rounded-[2.5rem] p-8 md:p-10 flex flex-col justify-between transition-all duration-500 hover:border-brand-gold/20 group/card min-h-[320px]">
+                                        <div>
+                                            {/* estrellas */}
+                                            <div className="flex gap-1 mb-8">
+                                                {Array.from({ length: 5 }).map((_, j) => (
                                                     <Star
                                                         key={j}
-                                                        className="size-4 text-yellow-400 fill-yellow-400"
+                                                        className={`size-4 ${j < (review.rating || 5) ? 'text-brand-gold fill-brand-gold' : 'text-neutral-700'}`}
                                                     />
                                                 ))}
                                             </div>
-                                        </div>
-                                    </div>
 
-                                    {/* comentario */}
-                                    <p className="mt-4 text-neutral-700 text-sm leading-relaxed line-clamp-4">
-                                        {review.comment}
-                                    </p>
-                                </article>
-                            </div>
-                        ))}
+                                            {/* comentario */}
+                                            <p className="text-neutral-300 text-lg md:text-xl font-light leading-relaxed italic mb-10">
+                                                "{review.comment}"
+                                            </p>
+                                        </div>
+
+                                        {/* perfil */}
+                                        <div className="flex items-center gap-5 pt-8 border-t border-white/5">
+                                            <div className="size-14 rounded-2xl overflow-hidden border border-brand-gold/20">
+                                                <img
+                                                    src={review.img || "https://ui-avatars.com/api/?name=" + review.name}
+                                                    alt={review.name}
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            </div>
+                                            <div>
+                                                <p className="font-bold text-white text-base tracking-wide uppercase">{review.name}</p>
+                                                <p className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em]">{review.date || 'Cliente Leal'}</p>
+                                            </div>
+                                        </div>
+                                    </article>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
-                    {/* botones */}
-                    <button
-                        onClick={prev}
-                        className="absolute left-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow border hover:bg-neutral-50"
-                    >
-                        ‹
-                    </button>
-                    <button
-                        onClick={next}
-                        className="absolute right-0 top-1/2 -translate-y-1/2 bg-white rounded-full p-2 shadow border hover:bg-neutral-50"
-                    >
-                        ›
-                    </button>
+                    {/* botones navegacion */}
+                    <div className="hidden md:block">
+                        <button
+                            onClick={prev}
+                            className="absolute -left-6 top-1/2 -translate-y-1/2 size-14 bg-neutral-900 border border-neutral-800 rounded-2xl flex items-center justify-center text-white hover:bg-brand-gold hover:text-neutral-950 hover:border-brand-gold transition-all duration-500 shadow-2xl opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0"
+                        >
+                            <span className="text-2xl">←</span>
+                        </button>
+                        <button
+                            onClick={next}
+                            className="absolute -right-6 top-1/2 -translate-y-1/2 size-14 bg-neutral-900 border border-neutral-800 rounded-2xl flex items-center justify-center text-white hover:bg-brand-gold hover:text-neutral-950 hover:border-brand-gold transition-all duration-500 shadow-2xl opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0"
+                        >
+                            <span className="text-2xl">→</span>
+                        </button>
+                    </div>
                 </div>
 
                 {/* -------- BULLETS -------- */}
-                <div className="flex justify-center mt-6 gap-2">
+                <div className="flex justify-center mt-16 gap-3">
                     {Array.from({ length: maxIndex + 1 }).map((_, i) => (
                         <button
                             key={i}
                             onClick={() => setIndex(i)}
-                            className={`w-3 h-3 rounded-full transition-all ${
+                            className={`h-1.5 transition-all duration-500 rounded-full ${
                                 i === index
-                                    ? "bg-brand-gold scale-110"
-                                    : "bg-neutral-400"
+                                    ? "w-12 bg-brand-gold"
+                                    : "w-4 bg-neutral-800 hover:bg-neutral-700"
                             }`}
                         />
                     ))}
                 </div>
-
             </div>
         </section>
     );

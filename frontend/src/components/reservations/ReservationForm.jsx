@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Scissors } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import InputField from "./InputField";
@@ -163,29 +164,38 @@ const ReservationForm = () => {
 
   return (
     <div
-      className="bg-neutral-950 text-white rounded-[2rem] p-6 sm:p-10 md:p-12 lg:p-14 xl:p-16 w-full max-w-4xl mx-auto flex flex-col gap-8 shadow-[0_8px_25px_rgba(0,0,0,0.15)] transition-all duration-500 hover:shadow-[0_12px_35px_rgba(0,0,0,0.25)]"
+      className="bg-neutral-900/50 backdrop-blur-md border border-neutral-800 rounded-[2.5rem] p-8 md:p-12 w-full max-w-4xl mx-auto flex flex-col gap-10 shadow-2xl relative overflow-hidden group transition-all duration-700 hover:border-brand-gold/20"
       aria-labelledby="form-reservation-title"
     >
+      <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+        <Scissors className="size-40 text-brand-gold" />
+      </div>
+
       <h2
         id="form-reservation-title"
-        className="text-3xl sm:text-4xl md:text-5xl font-karantina font-extrabold text-center uppercase text-[#C5A253]"
+        className="text-4xl md:text-6xl font-karantina font-extrabold text-center uppercase tracking-tight text-white leading-none"
       >
-        Agenda tu cita
+        AGENDA TU <span className="text-brand-gold">RITUAL</span>
       </h2>
 
-      {/* Nombre y Correo */}
+      {/* Perfil de Usuario */}
       {user ? (
-        <div className="bg-neutral-900 border border-brand-gold/30 p-4 rounded-lg flex items-center gap-4">
-          <div className="size-12 bg-brand-gold text-black font-karantina text-3xl tracking-widest rounded-full flex items-center justify-center">
+        <div className="bg-white/5 border border-white/10 p-6 rounded-2xl flex items-center gap-6 animate-fade-in">
+          <div className="size-16 bg-brand-gold text-neutral-950 font-karantina text-4xl tracking-widest rounded-2xl flex items-center justify-center transform -rotate-3 hover:rotate-0 transition-transform duration-500">
             {user.name.charAt(0).toUpperCase()}
           </div>
-          <div>
-            <p className="text-white font-bold">{user.name}</p>
-            <p className="text-neutral-400 text-sm">{user.email}</p>
+          <div className="flex-1">
+            <p className="text-white font-bold text-lg">{user.name}</p>
+            <p className="text-neutral-500 text-sm tracking-wider">{user.email}</p>
+          </div>
+          <div className="hidden sm:block">
+            <span className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.3em] bg-brand-gold/10 px-3 py-1 rounded-full border border-brand-gold/20">
+              Cliente Premium
+            </span>
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           <InputField
             label="Tu nombre"
             id="nombre"
@@ -205,68 +215,69 @@ const ReservationForm = () => {
       )}
 
       {/* Servicio a domicilio */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start">
-        <div>
-          <label className="block text-sm font-semibold mb-2 tracking-wide">
-            ¿Servicio a domicilio?
-          </label>
-          <div className="flex items-center gap-6">
-            <label className="inline-flex items-center gap-2">
-              <input
-                type="radio"
-                value="No"
-                className="h-4 w-4 accent-[#C5A253]"
-                {...register("domicilio", { required: "Selecciona una opción" })}
-              />
-              <span>No</span>
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-6 rounded-2xl bg-white/5 border border-white/10">
+          <div>
+            <label className="block text-xs font-bold uppercase tracking-[0.2em] mb-3 text-brand-gold">
+              ¿Servicio a domicilio?
             </label>
-            <label className="inline-flex items-center gap-2">
-              <input
-                type="radio"
-                value="Sí"
-                className="h-4 w-4 accent-[#C5A253]"
-                {...register("domicilio", { required: "Selecciona una opción" })}
-              />
-              <span>Sí</span>
-            </label>
+            <div className="flex items-center gap-8">
+              <label className="inline-flex items-center gap-3 cursor-pointer group">
+                <input
+                  type="radio"
+                  value="No"
+                  className="size-5 accent-brand-gold"
+                  {...register("domicilio", { required: "Selecciona una opción" })}
+                />
+                <span className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors">No, iré a la sede</span>
+              </label>
+              <label className="inline-flex items-center gap-3 cursor-pointer group">
+                <input
+                  type="radio"
+                  value="Sí"
+                  className="size-5 accent-brand-gold"
+                  {...register("domicilio", { required: "Selecciona una opción" })}
+                />
+                <span className="text-sm font-medium text-neutral-300 group-hover:text-white transition-colors">Sí, lo prefiero aquí</span>
+              </label>
+            </div>
+            {errors.domicilio && (
+              <span className="text-red-500 text-xs font-medium mt-3 block animate-pulse">
+                {errors.domicilio.message}
+              </span>
+            )}
           </div>
-          {errors.domicilio && (
-            <span className="text-red-500 text-sm mt-2 block">
-              {errors.domicilio.message}
-            </span>
-          )}
-          <p className="text-xs text-neutral-400 mt-2">
-            Al elegir “Sí” se solicitará la dirección y no es necesario seleccionar sede.
-          </p>
-        </div>
 
-        {domicilio === "Sí" && (
-          <InputField
-            label="Dirección"
-            id="direccion"
-            placeholder="Ej: Calle 10 #5-23 Barrio Centro"
-            register={register}
-            errors={errors}
-          />
+          {domicilio === "Sí" && (
+            <div className="flex-1 animate-fade-in">
+              <InputField
+                label="Dirección Completa"
+                id="direccion"
+                placeholder="Calle 10 #5-23, Barrio..."
+                register={register}
+                errors={errors}
+              />
+            </div>
+          )}
+        </div>
+        {domicilio !== "Sí" && (
+          <div className="animate-fade-in">
+            <SelectInput
+              label="Sede del Imperio"
+              id="sede"
+              register={register}
+              errors={errors}
+              options={branchOptions}
+              placeholder="Selecciona una sede"
+            />
+          </div>
         )}
       </div>
 
-      {/* Sede */}
-      {domicilio !== "Sí" && (
-        <SelectInput
-          label="Selecciona la sede"
-          id="sede"
-          register={register}
-          errors={errors}
-          options={branchOptions}
-          placeholder="Selecciona una sede"
-        />
-      )}
-
       {/* Fecha y Hora */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <DateInput
-          label="Fecha"
+          label="Fecha del Ritual"
           id="fecha"
           register={register}
           errors={errors}
@@ -275,19 +286,19 @@ const ReservationForm = () => {
           validate={validateDate}
         />
         <TimeInput
-          label="Hora"
+          label="Hora Preferida"
           id="hora"
           register={register}
           errors={errors}
           minTime={minTime}
           maxTime={maxTime}
           showSchedule={!!selectedDate}
-          scheduleText={`Horario disponible: ${minTime} - ${maxTime}`}
+          scheduleText={`Disponibilidad: ${minTime} - ${maxTime}`}
         />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        {/* Servicio personalizado */}
+      {/* Selección Profesional */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <Controller
           name="servicio"
           control={control}
@@ -299,39 +310,48 @@ const ReservationForm = () => {
               onChange={field.onChange}
               options={services}
               error={errors.servicio?.message}
-              placeholder="Selecciona un servicio"
+              placeholder="Escoge tu experiencia"
             />
           )}
         />
         
-        {/* Selector de Barbero */}
         <SelectInput
-          label="Tu profesional (Opcional)"
+          label="Maestro Barbero (Opcional)"
           id="barbero"
           register={register}
           errors={errors}
           options={staffOptions}
-          placeholder="Cualquiera / Sin Preferencia"
+          placeholder="Sin preferencia / El mejor disponible"
         />
       </div>
 
       {/* Comentarios */}
       <TextArea
-        label="Comentarios adicionales"
+        label="Instrucciones Especiales"
         id="mensaje"
         register={register}
-        placeholder="Ej: Prefiero atención con cierto barbero..."
+        placeholder="Ej: Prefiero atención en silencio o algún producto específico..."
       />
 
-      {/* Botón */}
-      <button
-        type="button"
-        onClick={handleSubmit(onSubmit)}
-        disabled={isSubmitting}
-        className="bg-[#C5A253] text-black font-extrabold uppercase tracking-wider py-4 rounded-md hover:bg-[#b89440] transition-all focus:outline-none focus:ring-4 focus:ring-[#C5A253] disabled:opacity-70"
-      >
-        {isSubmitting ? "Enviando..." : "Confirmar Reservación"}
-      </button>
+      {/* Botón de Acción */}
+      <div className="pt-4">
+        <button
+          type="button"
+          onClick={handleSubmit(onSubmit)}
+          disabled={isSubmitting}
+          className="w-full bg-brand-gold text-neutral-950 font-bold uppercase tracking-[0.2em] py-5 rounded-2xl hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-[0_0_25px_rgba(200,162,86,0.2)] hover:shadow-[0_0_35px_rgba(200,162,86,0.4)] disabled:opacity-50 disabled:grayscale cursor-pointer"
+        >
+          {isSubmitting ? (
+            <span className="flex items-center justify-center gap-3">
+              <div className="size-5 border-2 border-neutral-950 border-t-transparent animate-spin rounded-full" />
+              FORJANDO TU CITA...
+            </span>
+          ) : "CONFIRMAR RESERVACIÓN"}
+        </button>
+        <p className="text-center text-[10px] text-neutral-500 mt-4 uppercase tracking-widest font-medium">
+          Al confirmar, aceptas nuestras políticas de puntualidad.
+        </p>
+      </div>
     </div>
   );
 };

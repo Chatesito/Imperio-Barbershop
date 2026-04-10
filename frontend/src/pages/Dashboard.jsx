@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 import toast from "react-hot-toast";
-import { Trash2, Calendar, Mail, Loader2, LayoutDashboard, Scissors, Users, Images, MessageSquare, MapPin } from "lucide-react";
+import { Trash2, Calendar, Mail, Loader2, LayoutDashboard, Scissors, Users, Images, MessageSquare, MapPin, Tag } from "lucide-react";
 
 // Admin Managers
 import ServicesManager from "../components/admin/ServicesManager";
@@ -11,6 +11,7 @@ import BranchesManager from "../components/admin/BranchesManager";
 import StaffManager from "../components/admin/StaffManager";
 import ReviewsManager from "../components/admin/ReviewsManager";
 import GalleryManager from "../components/admin/GalleryManager";
+import CategoriesManager from "../components/admin/CategoriesManager";
 import UserReviewForm from "../components/UserReviewForm";
 import { confirmAction } from "../utils/alerts";
 
@@ -240,6 +241,7 @@ export default function Dashboard() {
 
   const TABS = [
     { id: "overview", label: "Resumen", icon: LayoutDashboard },
+    { id: "categories", label: "Categorías", icon: Tag },
     { id: "services", label: "Servicios", icon: Scissors },
     { id: "staff", label: "Personal", icon: Users },
     { id: "branches", label: "Sedes", icon: MapPin },
@@ -250,6 +252,7 @@ export default function Dashboard() {
   const renderAdminCMSContent = () => {
     switch (activeTab) {
       case "overview": return renderAdminOverview();
+      case "categories": return <CategoriesManager />;
       case "services": return <ServicesManager />;
       case "staff": return <StaffManager />;
       case "branches": return <BranchesManager />;

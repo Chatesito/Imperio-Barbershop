@@ -2,6 +2,16 @@ import Reservation from "../models/Reservation.js";
 
 export const createReservation = async (req, res) => {
   try {
+    const { fecha, hora, sede, barbero } = req.body;
+
+    // Verificar unicidad
+    const existingReservation = await Reservation.findOne({ fecha, hora, sede, barbero });
+    if (existingReservation) {
+        return res.status(400).json({ 
+            message: "Lo sentimos, este horario ya ha sido reservado. Por favor elige otro." 
+        });
+    }
+
     const reservationData = { ...req.body, userId: req.user.id };
     const newReservation = await Reservation.create(reservationData);
     res.status(201).json({ message: "Reservación creada con éxito", reservation: newReservation });

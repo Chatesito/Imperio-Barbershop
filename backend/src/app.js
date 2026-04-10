@@ -10,6 +10,7 @@ import serviceRoutes from "./routes/service.routes.js";
 import branchRoutes from "./routes/branch.routes.js";
 import reviewRoutes from "./routes/review.routes.js";
 import galleryRoutes from "./routes/gallery.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/branches", branchRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/gallery", galleryRoutes);
+app.use("/api/categories", categoryRoutes);
 
 // General Error Handling
 app.use((err, req, res, next) => {

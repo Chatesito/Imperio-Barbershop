@@ -1,13 +1,12 @@
 import { Router } from "express";
 import { createReservation, getReservations, getMyReservations, deleteReservation } from "../controllers/reservation.controller.js";
-import { protectRoute } from "../middlewares/auth.middleware.js";
-import { adminRoute, staffRoute } from "../middlewares/admin.middleware.js";
+import { verifyToken, isAdmin } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
-router.post("/", protectRoute, createReservation);
-router.get("/me", protectRoute, getMyReservations);
-router.get("/", protectRoute, staffRoute, getReservations);
-router.delete("/:id", protectRoute, deleteReservation);
+router.post("/", verifyToken, createReservation);
+router.get("/me", verifyToken, getMyReservations);
+router.get("/", verifyToken, getReservations);
+router.delete("/:id", verifyToken, deleteReservation);
 
 export default router;

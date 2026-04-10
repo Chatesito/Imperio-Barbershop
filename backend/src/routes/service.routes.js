@@ -1,12 +1,11 @@
 import { Router } from "express";
 import { getServices, createService, deleteService } from "../controllers/service.controller.js";
-import { protectRoute } from "../middlewares/auth.middleware.js";
-import { adminRoute } from "../middlewares/admin.middleware.js";
+import { verifyToken, isAdmin } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
 router.get("/", getServices);
-router.post("/", protectRoute, adminRoute, createService);
-router.delete("/:id", protectRoute, adminRoute, deleteService);
+router.post("/", verifyToken, isAdmin, createService);
+router.delete("/:id", verifyToken, isAdmin, deleteService);
 
 export default router;

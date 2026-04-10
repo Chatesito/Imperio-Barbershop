@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { getStaff, createStaffMember, deleteStaffMember } from "../controllers/staff.controller.js";
-import { protectRoute } from "../middlewares/auth.middleware.js";
-import { adminRoute } from "../middlewares/admin.middleware.js";
+import { verifyToken, isAdmin } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
@@ -9,7 +8,7 @@ const router = Router();
 router.get("/", getStaff);
 
 // Protected Admin: Add or delete staff
-router.post("/", protectRoute, adminRoute, createStaffMember);
-router.delete("/:id", protectRoute, adminRoute, deleteStaffMember);
+router.post("/", verifyToken, isAdmin, createStaffMember);
+router.delete("/:id", verifyToken, isAdmin, deleteStaffMember);
 
 export default router;

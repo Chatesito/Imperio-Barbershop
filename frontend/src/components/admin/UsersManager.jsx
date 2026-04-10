@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "../../services/api";
 import toast from "react-hot-toast";
-import { Users, UserShield, UserCircle, ShieldCheck, Mail, Calendar } from "lucide-react";
+import { Users, UserCircle, ShieldCheck, Mail, Calendar, Scissors } from "lucide-react";
 
 export default function UsersManager() {
     const [users, setUsers] = useState([]);
@@ -79,7 +79,7 @@ export default function UsersManager() {
                                         u.role === 'barber' ? 'bg-blue-500/10 text-blue-500' : 
                                         'bg-neutral-800 text-neutral-400'
                                     }`}>
-                                        {u.role === 'admin' && <UserShield className="size-3" />}
+                                        {u.role === 'admin' && <ShieldCheck className="size-3" />}
                                         {u.role === 'barber' && <Scissors className="size-3" />}
                                         {u.role}
                                     </span>

@@ -1,12 +1,11 @@
 import { Router } from "express";
 import { getGallery, createGalleryImage, deleteGalleryImage } from "../controllers/gallery.controller.js";
-import { protectRoute } from "../middlewares/auth.middleware.js";
-import { adminRoute } from "../middlewares/admin.middleware.js";
+import { verifyToken, isAdmin } from "../middlewares/auth.middleware.js";
 
 const router = Router();
 
 router.get("/", getGallery);
-router.post("/", protectRoute, adminRoute, createGalleryImage);
-router.delete("/:id", protectRoute, adminRoute, deleteGalleryImage);
+router.post("/", verifyToken, isAdmin, createGalleryImage);
+router.delete("/:id", verifyToken, isAdmin, deleteGalleryImage);
 
 export default router;

@@ -1,53 +1,59 @@
 import { useEffect, useState } from "react";
-import { Facebook, Instagram, Twitter } from "lucide-react";
+import { Facebook, Instagram, Twitter, Award, Star, Scissors, Users } from "lucide-react";
 
 function TeamCard({ img, name, role, bio }) {
     return (
-        <article className="relative rounded-3xl overflow-hidden shadow-lg ring-1 ring-black/5">
-        {/* Imagen */}
-        <img
-            src={img}
-            alt={name}
-            className="absolute inset-0 w-full h-full object-cover"
-            loading="lazy"
-            decoding="async"
-        />
-        {/* Overlay oscuro */}
-        <div className="absolute inset-0 bg-black/40" />
-        {/* Contenido inferior con gradiente */}
-        <div className="relative z-10 p-5 md:p-6 mt-auto min-h-[400px] flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/30 to-transparent">
-            <h3 className="text-white font-extrabold text-lg md:text-xl tracking-wide uppercase">{name}</h3>
-            <p className="text-brand-gold font-semibold text-sm mt-1">{role}</p>
-            <p className="text-neutral-200 text-sm mt-3 leading-relaxed">{bio}</p>
-
-            <div className="mt-4 flex items-center gap-4 text-neutral-200">
-                <a href="#" aria-label="Facebook" className="hover:text-white">
-                    <Facebook className="size-5" />
-                </a>
-                <a href="#" aria-label="Twitter" className="hover:text-white">
-                    <Twitter className="size-5" />
-                </a>
-                <a href="#" aria-label="Instagram" className="hover:text-white">
-                    <Instagram className="size-5" />
-                </a>
+        <article className="relative rounded-[2.5rem] overflow-hidden group border border-neutral-800 transition-all duration-700 hover:border-brand-gold/40 shadow-2xl">
+            {/* Imagen con zoom y filtro */}
+            <div className="absolute inset-0 overflow-hidden">
+                <img
+                    src={img}
+                    alt={name}
+                    className="w-full h-full object-cover transform scale-105 group-hover:scale-100 transition duration-700 grayscale group-hover:grayscale-0 opacity-60 group-hover:opacity-100"
+                    loading="lazy"
+                    decoding="async"
+                />
             </div>
-        </div>
-    </article>
+            
+            {/* Overlay gradiente */}
+            <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+            
+            {/* Contenido */}
+            <div className="relative z-10 p-8 pt-64 min-h-[460px] flex flex-col justify-end">
+                <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <span className="text-brand-gold font-bold text-xs uppercase tracking-[0.3em] mb-2 block">{role}</span>
+                    <h3 className="text-white font-karantina font-extrabold text-4xl leading-none uppercase mb-4">{name}</h3>
+                    <p className="text-neutral-400 text-sm leading-relaxed mb-6 font-light overflow-hidden line-clamp-2 group-hover:line-clamp-none transition-all duration-500">
+                        {bio}
+                    </p>
+
+                    <div className="flex items-center gap-4 text-neutral-500 group-hover:text-brand-gold transition-colors duration-500">
+                        <a href="#" aria-label="Facebook" className="hover:scale-110 transition-transform">
+                            <Facebook className="size-5" />
+                        </a>
+                        <a href="#" aria-label="Twitter" className="hover:scale-110 transition-transform">
+                            <Twitter className="size-5" />
+                        </a>
+                        <a href="#" aria-label="Instagram" className="hover:scale-110 transition-transform">
+                            <Instagram className="size-5" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </article>
     );
 }
 
 function SkeletonCard() {
     return (
-        <article className="relative rounded-3xl overflow-hidden shadow-lg ring-1 ring-black/5">
-            <div className="absolute inset-0 bg-neutral-200 animate-pulse" />
-            <div className="relative z-10 p-5 md:p-6 mt-auto min-h-[260px] flex flex-col justify-end bg-gradient-to-t from-black/40 via-black/10 to-transparent">
-                <div className="h-6 w-2/3 bg-neutral-300 rounded animate-pulse" />
-                <div className="h-4 w-1/3 bg-neutral-300 rounded mt-2 animate-pulse" />
-                <div className="h-16 w-full bg-neutral-300 rounded mt-3 animate-pulse" />
-                <div className="mt-4 flex items-center gap-4">
-                    <div className="h-5 w-5 bg-neutral-300 rounded-full animate-pulse" />
-                    <div className="h-5 w-5 bg-neutral-300 rounded-full animate-pulse" />
-                    <div className="h-5 w-5 bg-neutral-300 rounded-full animate-pulse" />
+        <article className="relative rounded-[2.5rem] overflow-hidden bg-neutral-900/50 border border-neutral-800 animate-pulse">
+            <div className="p-8 pt-64 min-h-[460px] flex flex-col justify-end gap-4">
+                <div className="h-4 w-1/4 bg-neutral-800 rounded-full" />
+                <div className="h-10 w-3/4 bg-neutral-800 rounded-xl" />
+                <div className="h-20 w-full bg-neutral-800 rounded-xl" />
+                <div className="flex gap-4">
+                    <div className="size-6 bg-neutral-800 rounded-full" />
+                    <div className="size-6 bg-neutral-800 rounded-full" />
                 </div>
             </div>
         </article>
@@ -55,33 +61,6 @@ function SkeletonCard() {
 }
 
 export default function OurTeam() {
-    const staticTeam = [
-        {
-            role: "Gerencia",
-            bio: "Dirección y visión integral del servicio, asegurando calidad consistente.",
-        },
-        {
-            role: "Estilista",
-            bio: "Creatividad en estilismo y adaptación a tendencias actuales de grooming.",
-        },
-        {
-            role: "Estilista",
-            bio: "Atención minuciosa a simetría, transición y armonía del estilo completo.",
-        },
-        {
-            role: "Especialista en Barbería",
-            bio: "Optimización de textura y forma para looks versátiles y fáciles de mantener.",
-        },
-        {
-            role: "Especialista en Barbería",
-            bio: "Enfoque en cortes clásicos y afeitado preciso con técnicas modernas.",
-        },
-        {
-            role: "Especialista en Barbería",
-            bio: "Especialización en fades y detalles limpios orientados a acabado profesional.",
-        },
-    ];
-
     const [characters, setCharacters] = useState([]);
     const [gallery, setGallery] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -92,23 +71,20 @@ export default function OurTeam() {
             try {
                 setLoading(true);
                 setError("");
-                
                 const { default: api } = await import("../services/api.js");
                 const [staffRes, galleryRes] = await Promise.all([
                     api.get("/staff"),
                     api.get("/gallery")
                 ]);
-                
                 setCharacters(staffRes.data);
                 setGallery(galleryRes.data);
             } catch (e) {
                 console.error(e);
-                setError("Ocurrió un error cargando los datos.");
+                setError("Ocurrió un error cargando los datos del Imperio.");
             } finally {
                 setLoading(false);
             }
         };
-
         fetchData();
     }, []);
 
@@ -120,65 +96,75 @@ export default function OurTeam() {
     }));
 
     return (
-        <div className="flex flex-col">
-            {/* Título */}
-            <section className="bg-white">
-                    <div className="max-w-7xl mx-auto px-4 py-10 md:py-12">
-                    <h1 className="text-center text-4xl md:text-5xl font-extrabold tracking-wide text-neutral-900" style={{ fontFamily: "inherit" }}>
-                        Nuestro Equipo
+        <main className="bg-neutral-950 text-white selection:bg-brand-gold selection:text-neutral-950">
+            {/* Título SECCION */}
+            <section className="relative py-24 px-6 overflow-hidden">
+                <div className="absolute top-0 right-0 w-1/3 h-full bg-brand-gold/5 blur-[120px] -z-10" />
+                <div className="max-w-7xl mx-auto text-center space-y-4 animate-fade-in-up">
+                    <span className="text-brand-gold text-xs font-bold tracking-[0.4em] uppercase">Los Maestros</span>
+                    <h1 className="text-6xl md:text-8xl font-extrabold font-karantina uppercase leading-[0.8] tracking-tighter">
+                        NUESTRO <br />
+                        <span className="text-brand-gold">EQUIPO</span>
                     </h1>
+                    <p className="max-w-xl mx-auto text-neutral-500 font-light text-lg">
+                        Artistas del corte y guardianes de la tradición. Conoce a los profesionales que forjan cada estilo con precisión imperial.
+                    </p>
 
                     {/* Grid de tarjetas */}
-                    <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="mt-20 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                         {loading &&
-                            Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={`sk-${i}`} />)}
+                            Array.from({ length: 3 }).map((_, i) => <SkeletonCard key={`sk-${i}`} />)}
 
-                            {!loading && !error &&
-                            mergedTeam.map((p, idx) => (
-                                <TeamCard key={p.name + idx} {...p} />
-                            ))}
+                        {!loading && !error &&
+                        mergedTeam.map((p, idx) => (
+                            <TeamCard key={p.name + idx} {...p} />
+                        ))}
 
-                            {!loading && error && (
-                            <div className="sm:col-span-2 lg:col-span-3 text-center text-red-600 font-semibold">
-                                {error}
+                        {!loading && error && (
+                            <div className="sm:col-span-2 lg:col-span-3 text-center p-20 border border-red-500/20 rounded-3xl bg-red-500/5">
+                                <p className="text-red-500 font-bold">{error}</p>
                             </div>
                         )}
                     </div>
                 </div>
             </section>
 
-            {/* Métricas */}
-            <section className="bg-neutral-900 text-white">
-                <div className="max-w-7xl mx-auto px-4 py-12 md:py-16 grid gap-8 md:grid-cols-3 text-center">
-                    <div>
-                        <div className="text-5xl md:text-6xl font-extrabold text-brand-gold">2500</div>
-                        <div className="mt-2 tracking-widest text-sm md:text-base">AFEITADAS</div>
-                    </div>
-                    <div>
-                        <div className="text-5xl md:text-6xl font-extrabold text-brand-gold">4500</div>
-                        <div className="mt-2 tracking-widest text-sm md:text-base">CORTES DE PELO</div>
-                    </div>
-                    <div>
-                        <div className="text-5xl md:text-6xl font-extrabold text-brand-gold">4</div>
-                        <div className="mt-2 tracking-widest text-sm md:text-base">BARBERIAS ABIERTAS</div>
-                    </div>
+            {/* Métricas / Stats */}
+            <section className="py-24 bg-neutral-900/50 border-y border-white/5 relative">
+                <div className="max-w-7xl mx-auto px-6 grid gap-12 md:grid-cols-3 text-center">
+                    {[
+                        { icon: Scissors, value: "4500+", label: "Cortes Maestros" },
+                        { icon: Star, value: "2500+", label: "Afeitados de Lujo" },
+                        { icon: Users, value: "4", label: "Sedes Reales" }
+                    ].map((stat, i) => (
+                        <div key={i} className="space-y-4 group">
+                            <div className="flex justify-center">
+                                <div className="size-16 rounded-2xl bg-brand-gold/10 flex items-center justify-center text-brand-gold group-hover:bg-brand-gold group-hover:text-neutral-950 transition-all duration-500 transform group-hover:rotate-12">
+                                    <stat.icon className="size-8" />
+                                </div>
+                            </div>
+                            <div className="text-5xl md:text-7xl font-karantina font-extrabold text-white tracking-tight">{stat.value}</div>
+                            <div className="text-xs font-bold text-brand-gold uppercase tracking-[0.4em]">{stat.label}</div>
+                        </div>
+                    ))}
                 </div>
             </section>
 
-            {/* Galería */}
-            <section className="bg-white">
-                <div className="max-w-7xl mx-auto px-4 py-12 md:py-16">
-                    <h2 className="text-center text-3xl md:text-4xl font-extrabold text-neutral-900 tracking-wide">
-                        Experimenta los mejores servicios y estilos en cortes de cabello
-                    </h2>
+            {/* Galería Premium */}
+            <section className="py-32 px-6">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-20 space-y-4">
+                        <h2 className="text-brand-gold text-sm font-bold uppercase tracking-[0.5em]">El Arte en Detalle</h2>
+                        <h3 className="text-4xl md:text-6xl font-karantina font-extrabold text-white uppercase leading-none">GALERÍA DEL <span className="text-brand-gold">TRONO</span></h3>
+                    </div>
 
-                    <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                    <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                         {gallery.map((item, i) => (
-                            <div key={item.url || i} className="rounded-3xl overflow-hidden">
+                            <div key={item.url || i} className="group overflow-hidden rounded-[2.5rem] border border-neutral-800 aspect-square shadow-2xl">
                                 <img
                                     src={item.url}
-                                    alt={`Gallery ${i + 1}`}
-                                    className="w-full h-64 object-cover"
+                                    alt={`Momentos Imperio ${i + 1}`}
+                                    className="w-full h-full object-cover transform group-hover:scale-110 transition duration-700 grayscale hover:grayscale-0"
                                     loading="lazy"
                                     decoding="async"
                                 />
@@ -187,6 +173,6 @@ export default function OurTeam() {
                     </div>
                 </div>
             </section>
-        </div>
+        </main>
     );
-}
+}

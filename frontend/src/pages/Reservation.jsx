@@ -5,13 +5,17 @@ import ReservationForm from "../components/reservations/ReservationForm.jsx";
 import ReservationAside from "../components/reservations/ReservationAside.jsx";
 
 const Reservation = () => (
-  <main className="w-full bg-white text-neutral-900">
+  <main className="min-h-screen bg-neutral-950 text-white selection:bg-brand-gold selection:text-neutral-950">
     <HeroSection />
     <DecorativeLine />
 
-    <section className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-20 pb-24 grid grid-cols-1 lg:grid-cols-2 gap-14 items-start">
-      <ReservationForm />
-      <ReservationAside />
+    <section className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-20 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-14 items-start">
+      <div className="lg:col-span-7">
+        <ReservationForm />
+      </div>
+      <div className="lg:col-span-5 sticky top-24">
+        <ReservationAside />
+      </div>
     </section>
   </main>
 );

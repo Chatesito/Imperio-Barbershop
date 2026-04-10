@@ -202,6 +202,12 @@ const ReservationForm = () => {
             placeholder="Juan Pérez"
             register={register}
             errors={errors}
+            validation={{
+              pattern: {
+                value: /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/,
+                message: "El nombre no puede contener números ni símbolos"
+              }
+            }}
           />
           <InputField
             label="Tu correo"

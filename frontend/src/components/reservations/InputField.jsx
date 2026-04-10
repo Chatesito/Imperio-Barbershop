@@ -9,9 +9,12 @@ const InputField = ({ label, id, type = "text", placeholder, register, errors, .
       id={id}
       type={type}
       placeholder={placeholder}
-      {...register(id, { required: `${label} es requerido` })}
-      className={`w-full px-4 py-3 rounded-md bg-white text-black placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
-        errors[id] ? "ring-red-500" : "focus:ring-[#C5A253]"
+      {...register(id, { 
+        required: `${label} es requerido`,
+        ...props.validation 
+      })}
+      className={`w-full px-5 py-4 rounded-2xl bg-white/5 border text-white placeholder-neutral-500 focus:outline-none focus:ring-2 transition-all duration-300 ${
+        errors[id] ? "border-red-500 ring-red-500/20" : "border-white/10 focus:ring-brand-gold focus:border-brand-gold"
       }`}
       {...props}
     />

@@ -55,7 +55,9 @@ export default function Navbar() {
                     {/* Login outline */}
                     {user ? (
                         <div className="hidden lg:flex items-center gap-4">
-                            <span className="text-sm font-semibold text-neutral-300">Hola, {user.name}</span>
+                            <span className="text-sm font-semibold text-neutral-300">
+    Hola, {user.name.length > 10 ? user.name.slice(0, 1) + '.' + user.name.split(' ').pop() : user.name}
+</span>
                             <Link 
                                 to="/Dashboard"
                                 className="text-sm text-brand-gold hover:text-white transition-colors font-semibold border border-brand-gold hover:border-white px-3 py-1.5 rounded-md"
@@ -107,7 +109,9 @@ export default function Navbar() {
                             {/* Login mobile */}
                             {user ? (
                                 <div className="mt-2 flex flex-col gap-2 border-t border-neutral-700 pt-3">
-                                    <span className="text-sm font-semibold text-neutral-300 px-2">Hola, {user.name}</span>
+                                    <span className="text-sm font-semibold text-neutral-300 px-2">
+    Hola, {user.name.length > 10 ? user.name.slice(0, 1) + '.' + user.name.split(' ').pop() : user.name}
+</span>
                                     <Link 
                                         to="/Dashboard"
                                         onClick={() => setOpen(false)}

@@ -77,4 +77,12 @@ app.use((err, req, res, next) => {
   });
 });
 
+// Catch-all route to debug 404s
+app.use((req, res) => {
+  res.status(404).json({ 
+    message: `Ruta no encontrada: ${req.originalUrl}`,
+    hint: "Verifica los prefijos en app.js y las rutas en src/routes/" 
+  });
+});
+
 export default app;

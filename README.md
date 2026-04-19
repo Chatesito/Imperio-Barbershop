@@ -11,8 +11,8 @@
 ## 🌐 Live Demo & Deploy
 
 El proyecto se encuentra desplegado y funcional en el siguientes enlaces:
-- **Frontend (Vercel):** [🔗 https://imperiobarbershop.vercel.app](https://#)
-- **Backend API (Render):** [🔗 https://imperio-barbershop-backend.onrender.com](https://#)
+- **Frontend (Vercel):** [🔗 Imperio Barbeshop](https://imperiobarbershop.vercel.app)
+- **Backend API (Render):** [🔗 Imperio Barbershop BACK](https://imperio-barbershop-backend.onrender.com)
 
 *(Nota: Como el backend está alojado en el plan gratuito de Render, la primera petición podría tardar unos 50 segundos en despertar el servidor).*
 

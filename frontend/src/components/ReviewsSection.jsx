@@ -72,90 +72,49 @@ export default function ReviewsSection() {
                     </div>
                 </div>
 
-                {/* -------- SLIDER -------- */}
-                <div className="relative group">
-                    <div className="overflow-hidden">
-                        <div
-                            className="flex items-stretch transition-transform duration-700 cubic-bezier(0.4, 0, 0.2, 1)"
-                            style={{ transform: `translateX(-${index * (100 / itemsPerPage)}%)` }}
+                {/* -------- GRID DE RESEÑAS -------- */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {reviews.map((review, i) => (
+                        <article 
+                            key={i} 
+                            className="bg-neutral-900/50 backdrop-blur-md border border-neutral-800 rounded-[2.5rem] p-8 md:p-10 flex flex-col transition-all duration-500 hover:border-brand-gold/20 hover:bg-neutral-900/80 group shadow-lg"
                         >
-                            {reviews.map((review, i) => (
-                                <div
-                                    key={i}
-                                    style={{ width: `${100 / itemsPerPage}%` }}
-                                    className="px-4 shrink-0 flex items-stretch"
-                                >
-                                    <article className="bg-neutral-900/50 backdrop-blur-md border border-neutral-800 rounded-[2.5rem] p-8 md:p-10 flex flex-col transition-all duration-500 hover:border-brand-gold/20 hover:bg-neutral-900/80 group/card w-full shadow-lg">
-                                        <div className="flex-1">
-                                            {/* estrellas */}
-                                            <div className="flex gap-1 mb-8">
-                                                {Array.from({ length: 5 }).map((_, j) => (
-                                                    <Star
-                                                        key={j}
-                                                        className={`size-4 ${j < (review.rating || 5) ? 'text-brand-gold fill-brand-gold' : 'text-neutral-700'}`}
-                                                    />
-                                                ))}
-                                            </div>
-
-                                            {/* comentario */}
-                                            <p className="text-neutral-300 text-lg md:text-xl font-light leading-relaxed italic mb-10 line-clamp-6">
-                                                "{review.comment}"
-                                            </p>
-                                        </div>
-
-                                        {/* perfil */}
-                                        <div className="flex items-center gap-5 pt-8 border-t border-white/5 mt-auto">
-                                            <div className="size-14 rounded-2xl overflow-hidden border border-brand-gold/10 group-hover/card:border-brand-gold/30 transition-colors">
-                                                <img
-                                                    src={review.img || "https://ui-avatars.com/api/?name=" + review.name}
-                                                    alt={review.name}
-                                                    className="w-full h-full object-cover grayscale group-hover/card:grayscale-0 transition-all duration-500"
-                                                />
-                                            </div>
-                                            <div>
-                                                <p className="font-bold text-white text-base tracking-wide uppercase">{review.name}</p>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em]">{review.date || 'Cliente Fiel'}</span>
-                                                    <span className="size-1 rounded-full bg-neutral-700" />
-                                                    <span className="text-[9px] text-neutral-500 font-bold uppercase tracking-widest">Verified</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </article>
+                            <div className="flex-1">
+                                {/* estrellas */}
+                                <div className="flex gap-1 mb-8">
+                                    {Array.from({ length: 5 }).map((_, j) => (
+                                        <Star
+                                            key={j}
+                                            className={`size-4 ${j < (review.rating || 5) ? 'text-brand-gold fill-brand-gold' : 'text-neutral-700'}`}
+                                        />
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
-                    </div>
 
-                    {/* botones navegacion */}
-                    <div className="hidden md:block">
-                        <button
-                            onClick={prev}
-                            className="absolute -left-6 top-1/2 -translate-y-1/2 size-14 bg-neutral-900 border border-neutral-800 rounded-2xl flex items-center justify-center text-white hover:bg-brand-gold hover:text-neutral-950 hover:border-brand-gold transition-all duration-500 shadow-2xl opacity-0 group-hover:opacity-100 -translate-x-4 group-hover:translate-x-0"
-                        >
-                            <span className="text-2xl">←</span>
-                        </button>
-                        <button
-                            onClick={next}
-                            className="absolute -right-6 top-1/2 -translate-y-1/2 size-14 bg-neutral-900 border border-neutral-800 rounded-2xl flex items-center justify-center text-white hover:bg-brand-gold hover:text-neutral-950 hover:border-brand-gold transition-all duration-500 shadow-2xl opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0"
-                        >
-                            <span className="text-2xl">→</span>
-                        </button>
-                    </div>
-                </div>
+                                {/* comentario */}
+                                <p className="text-neutral-300 text-lg font-light leading-relaxed italic mb-10">
+                                    "{review.comment}"
+                                </p>
+                            </div>
 
-                {/* -------- BULLETS -------- */}
-                <div className="flex justify-center mt-16 gap-3">
-                    {Array.from({ length: maxIndex + 1 }).map((_, i) => (
-                        <button
-                            key={i}
-                            onClick={() => setIndex(i)}
-                            className={`h-1.5 transition-all duration-500 rounded-full ${
-                                i === index
-                                    ? "w-12 bg-brand-gold"
-                                    : "w-4 bg-neutral-800 hover:bg-neutral-700"
-                            }`}
-                        />
+                            {/* perfil */}
+                            <div className="flex items-center gap-5 pt-8 border-t border-white/5 mt-auto">
+                                <div className="size-14 rounded-2xl overflow-hidden border border-brand-gold/10 group-hover:border-brand-gold/30 transition-colors">
+                                    <img
+                                        src={review.img || "https://ui-avatars.com/api/?name=" + review.name}
+                                        alt={review.name}
+                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                                    />
+                                </div>
+                                <div>
+                                    <p className="font-bold text-white text-base tracking-wide uppercase">{review.name}</p>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-[10px] font-bold text-brand-gold uppercase tracking-[0.2em]">{review.date || 'Cliente Fiel'}</span>
+                                        <span className="size-1 rounded-full bg-neutral-700" />
+                                        <span className="text-[9px] text-neutral-500 font-bold uppercase tracking-widest">Verified</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
                     ))}
                 </div>
             </div>

@@ -1,5 +1,4 @@
 import { Facebook, Instagram, Scissors, Star, Clock, Trophy, ShieldCheck, MapPin, ChevronRight } from "lucide-react";
-import ReviewsSection from "../components/ReviewsSection";
 
 export default function Home() {
     return (
@@ -172,11 +171,6 @@ export default function Home() {
                     </div>
                 </div>
             </section>
-
-            {/* TESTIMONIOS */}
-            <div className="bg-neutral-900/50">
-                <ReviewsSection />
-            </div>
 
             {/* UBICACIÓN FINAL */}
             <section className="py-24 bg-neutral-950 relative">

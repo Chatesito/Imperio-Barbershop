@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { User, LogOut } from "lucide-react";
 import AuthModal from "./AuthModal";
 import { useAuth } from "../context/AuthContext";
@@ -17,6 +17,7 @@ export default function Navbar() {
     const [open, setOpen] = useState(false);
     const [showAuthModal, setShowAuthModal] = useState(false);
     const { user, logout } = useAuth();
+    const location = useLocation();
 
     const desktopLinkClass = ({ isActive }) =>
         [
@@ -58,12 +59,14 @@ export default function Navbar() {
                             <span className="text-sm font-semibold text-neutral-300">
     Hola, {user.name.length > 10 ? user.name.slice(0, 1) + '.' + user.name.split(' ').pop() : user.name}
 </span>
-                            <Link 
-                                to="/Dashboard"
-                                className="text-sm text-brand-gold hover:text-white transition-colors font-semibold border border-brand-gold hover:border-white px-3 py-1.5 rounded-md"
-                            >
-                                Panel
-                            </Link>
+                            {location.pathname !== "/Dashboard" && (
+                                <Link 
+                                    to="/Dashboard"
+                                    className="text-sm text-brand-gold hover:text-white transition-colors font-semibold border border-brand-gold hover:border-white px-3 py-1.5 rounded-md"
+                                >
+                                    Panel
+                                </Link>
+                            )}
                             <button 
                                 onClick={logout}
                                 className="flex items-center gap-2 px-3 py-1.5 rounded-md border border-red-500 text-red-500 font-semibold text-sm tracking-wide hover:bg-red-500 hover:text-white transition-colors"
@@ -112,13 +115,15 @@ export default function Navbar() {
                                     <span className="text-sm font-semibold text-neutral-300 px-2">
     Hola, {user.name.length > 10 ? user.name.slice(0, 1) + '.' + user.name.split(' ').pop() : user.name}
 </span>
-                                    <Link 
-                                        to="/Dashboard"
-                                        onClick={() => setOpen(false)}
-                                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-brand-gold text-brand-gold font-semibold text-sm tracking-wide hover:bg-brand-gold hover:text-black transition-colors"
-                                    >
-                                        Panel
-                                    </Link>
+                                    {location.pathname !== "/Dashboard" && (
+                                        <Link 
+                                            to="/Dashboard"
+                                            onClick={() => setOpen(false)}
+                                            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-brand-gold text-brand-gold font-semibold text-sm tracking-wide hover:bg-brand-gold hover:text-black transition-colors"
+                                        >
+                                            Panel
+                                        </Link>
+                                    )}
                                     <button 
                                         onClick={() => { logout(); setOpen(false); }}
                                         className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-red-500 text-red-500 font-semibold text-sm tracking-wide hover:bg-red-500 hover:text-white transition-colors"

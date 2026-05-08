@@ -22,6 +22,7 @@ export default function Dashboard() {
 
   const [reservations, setReservations] = useState([]);
   const [messages, setMessages] = useState([]);
+  const [myReviews, setMyReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   
   // Tab System
@@ -35,27 +36,78 @@ export default function Dashboard() {
     fetchData();
   }, [user, navigate]);
 
+  const [newPassword, setNewPassword] = useState("");
+  const [passwordUpdating, setPasswordUpdating] = useState(false);
+  const [profileData, setProfileData] = useState({ name: user?.name || "", email: user?.email || "" });
+  const [profileUpdating, setProfileUpdating] = useState(false);
+
   const fetchData = async () => {
     try {
       setLoading(true);
+      const promises = [];
+      
       if (user.role === "admin") {
-        const [resRes, msgRes] = await Promise.all([
-          api.get("/reservations"),
-          api.get("/contact"),
-        ]);
-        setReservations(resRes.data);
-        setMessages(msgRes.data);
+        promises.push(api.get("/reservations"), api.get("/contact"));
       } else if (user.role === "barber") {
-        const resRes = await api.get("/reservations");
-        setReservations(resRes.data);
+        promises.push(api.get("/reservations"));
       } else {
-        const resRes = await api.get("/reservations/me");
-        setReservations(resRes.data);
+        promises.push(api.get("/reservations/me"), api.get("/reviews/my-reviews"));
+      }
+      
+      const results = await Promise.all(promises);
+      
+      if (user.role === "admin") {
+        setReservations(results[0].data);
+        setMessages(results[1].data);
+      } else if (user.role === "barber") {
+        setReservations(results[0].data);
+      } else {
+        setReservations(results[0].data);
+        setMyReviews(results[1].data);
       }
     } catch (error) {
-      toast.error("Error al cargar información base.");
+      toast.error("Error al cargar información.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUpdatePassword = async (e) => {
+    e.preventDefault();
+    try {
+      setPasswordUpdating(true);
+      await api.put("/auth/change-password", { newPassword });
+      toast.success("Contraseña actualizada con éxito");
+      setNewPassword("");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error al actualizar");
+    } finally {
+      setPasswordUpdating(false);
+    }
+  };
+
+  const handleUpdateProfile = async (e) => {
+    e.preventDefault();
+    try {
+      setProfileUpdating(true);
+      await api.put("/auth/update-profile", profileData);
+      toast.success("Perfil actualizado con éxito");
+      // Update local context if needed (requires useAuth to have a method for it)
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error al actualizar perfil");
+    } finally {
+      setProfileUpdating(false);
+    }
+  };
+
+  const handleDeleteReview = async (id) => {
+    if (!(await confirmAction("¿Eliminar reseña?", "Ya no será visible en la web."))) return;
+    try {
+      await api.delete(`/reviews/${id}`);
+      setMyReviews(myReviews.filter(r => r._id !== id));
+      toast.success("Reseña eliminada");
+    } catch (error) {
+      toast.error("Error al eliminar");
     }
   };
 
@@ -91,29 +143,43 @@ export default function Dashboard() {
 
   // --- RENDERS ---
   const renderUserDashboard = () => (
-    <div className="w-full max-w-4xl mx-auto space-y-8">
-      <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl">
+    <div className="w-full max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      {/* 1. Reservaciones */}
+      <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 shadow-2xl overflow-hidden relative group">
+        <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+          <Calendar className="size-24 text-brand-gold" />
+        </div>
         <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-          <Calendar className="text-brand-gold" />
+          <div className="size-10 bg-brand-gold/10 rounded-xl flex items-center justify-center">
+            <Calendar className="size-5 text-brand-gold" />
+          </div>
           Mis Próximas Citas
         </h2>
         
         {reservations.length === 0 ? (
-          <p className="text-neutral-400">No tienes citas próximas agendadas.</p>
+          <div className="text-center py-8">
+            <p className="text-neutral-500 italic mb-4">Aún no has agendado tu próximo ritual.</p>
+            <button onClick={() => navigate("/Reservations")} className="text-brand-gold font-bold text-sm uppercase tracking-widest border border-brand-gold/30 px-6 py-2 rounded-xl hover:bg-brand-gold hover:text-black transition-all">Agendar Ahora</button>
+          </div>
         ) : (
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-4">
             {reservations.map((r) => (
-              <div key={r._id} className="bg-neutral-800 p-4 rounded-md flex flex-wrap justify-between items-center gap-4 border border-neutral-700">
-                <div>
-                  <p className="text-brand-gold font-bold">{r.servicio}</p>
-                  <p className="text-white text-sm">Sede: {r.sede || "A domicilio"} - {r.fecha} a las {r.hora}</p>
-                  {r.barbero && <p className="text-xs text-brand-gold mt-1">Con: {r.barbero}</p>}
+              <div key={r._id} className="bg-neutral-950/50 p-6 rounded-2xl flex flex-wrap justify-between items-center gap-6 border border-neutral-800 hover:border-brand-gold/30 transition-all group/item">
+                <div className="flex items-center gap-4">
+                  <div className="size-12 bg-neutral-800 rounded-xl flex items-center justify-center font-bold text-brand-gold">
+                    {r.fecha.split("-")[2]}
+                  </div>
+                  <div>
+                    <p className="text-white font-bold">{Array.isArray(r.servicio) ? r.servicio.join(" + ") : r.servicio}</p>
+                    <p className="text-neutral-500 text-xs tracking-wider uppercase">{r.fecha} a las {r.hora}</p>
+                    {r.barbero && <p className="text-[10px] text-brand-gold font-bold mt-1 uppercase tracking-widest">Barbero: {r.barbero}</p>}
+                  </div>
                 </div>
                 <button
                   onClick={() => handleCancelReservation(r._id)}
-                  className="flex items-center gap-2 text-sm text-red-400 hover:text-red-300 transition-colors bg-red-400/10 px-3 py-1.5 rounded-md"
+                  className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-red-500/70 hover:text-red-500 transition-colors bg-red-500/5 px-4 py-2 rounded-xl border border-red-500/10"
                 >
-                  <Trash2 className="size-4" /> Cancelar Cita
+                  <Trash2 className="size-3" /> Cancelar
                 </button>
               </div>
             ))}
@@ -121,12 +187,103 @@ export default function Dashboard() {
         )}
       </div>
 
-      <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl">
-         <h2 className="text-2xl font-bold text-white mb-2 flex items-center gap-3">
-           <MessageSquare className="text-brand-gold" />
-           Tu Experiencia es Importante
-         </h2>
-         <UserReviewForm />
+      {/* 2. Perfil y Seguridad */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 shadow-2xl">
+          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+             <div className="size-10 bg-brand-gold/10 rounded-xl flex items-center justify-center">
+              <Users className="size-5 text-brand-gold" />
+            </div>
+            Mi Perfil
+          </h2>
+          <form onSubmit={handleUpdateProfile} className="space-y-4">
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest ml-1">Nombre</label>
+              <input 
+                type="text" 
+                value={profileData.name} 
+                onChange={(e) => setProfileData({...profileData, name: e.target.value})}
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white text-sm focus:border-brand-gold/50 outline-none transition-all"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest ml-1">Correo</label>
+              <input 
+                type="email" 
+                value={profileData.email} 
+                onChange={(e) => setProfileData({...profileData, email: e.target.value})}
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white text-sm focus:border-brand-gold/50 outline-none transition-all"
+              />
+            </div>
+            <button type="submit" disabled={profileUpdating} className="w-full bg-neutral-800 hover:bg-neutral-700 text-white font-bold py-3 rounded-xl transition-all text-xs uppercase tracking-widest mt-2">
+              {profileUpdating ? "Guardando..." : "Actualizar Datos"}
+            </button>
+          </form>
+        </div>
+
+        <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 shadow-2xl">
+          <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+             <div className="size-10 bg-brand-gold/10 rounded-xl flex items-center justify-center">
+              <Tag className="size-5 text-brand-gold" />
+            </div>
+            Seguridad
+          </h2>
+          <form onSubmit={handleUpdatePassword} className="space-y-4">
+            <div className="space-y-1">
+              <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest ml-1">Nueva Contraseña</label>
+              <input 
+                type="password" 
+                placeholder="Mínimo 6 caracteres"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white text-sm focus:border-brand-gold/50 outline-none transition-all"
+              />
+            </div>
+            <button type="submit" disabled={passwordUpdating} className="w-full bg-brand-gold/10 border border-brand-gold/30 hover:bg-brand-gold hover:text-black text-brand-gold font-bold py-3 rounded-xl transition-all text-xs uppercase tracking-widest mt-2">
+              {passwordUpdating ? "Procesando..." : "Cambiar Contraseña"}
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* 3. Mis Reseñas */}
+      <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 shadow-2xl">
+        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <div className="size-10 bg-brand-gold/10 rounded-xl flex items-center justify-center">
+            <MessageSquare className="size-5 text-brand-gold" />
+          </div>
+          Mis Reseñas Publicadas
+        </h2>
+        
+        {myReviews.length === 0 ? (
+          <div className="text-center py-6 border-2 border-dashed border-neutral-800 rounded-2xl">
+            <p className="text-neutral-500 text-sm">Aún no has compartido tu experiencia.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {myReviews.map((rev) => (
+              <div key={rev._id} className="bg-neutral-950/30 p-6 rounded-2xl border border-neutral-800 relative group/rev">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="flex gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <span key={i} className={i < rev.rating ? "text-brand-gold text-lg" : "text-neutral-700 text-lg"}>★</span>
+                    ))}
+                  </div>
+                  <button onClick={() => handleDeleteReview(rev._id)} className="opacity-0 group-hover/rev:opacity-100 p-2 text-neutral-500 hover:text-red-500 transition-all">
+                    <Trash2 className="size-4" />
+                  </button>
+                </div>
+                <p className="text-neutral-300 text-sm italic line-clamp-3">"{rev.comment}"</p>
+                <p className="text-neutral-500 text-[10px] mt-4 uppercase tracking-widest">{rev.date}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="mt-10 pt-8 border-t border-neutral-800">
+           <h3 className="text-lg font-bold text-white mb-4">Publicar Nueva Reseña</h3>
+           <UserReviewForm />
+        </div>
       </div>
     </div>
   );
@@ -154,6 +311,29 @@ export default function Dashboard() {
           ))}
         </div>
       )}
+
+      {/* Barber Password Change */}
+      <div className="mt-8 pt-6 border-t border-neutral-800">
+        <h3 className="text-lg font-bold text-white mb-4">Actualizar Contraseña</h3>
+        <form onSubmit={handleUpdatePassword} className="flex flex-col sm:flex-row gap-4">
+          <input 
+            type="password" 
+            placeholder="Nueva Contraseña (min 6 caracteres)"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            className="flex-1 bg-neutral-800 border border-neutral-700 rounded-md px-4 py-2 text-white"
+            minLength="6"
+            required
+          />
+          <button 
+            type="submit" 
+            disabled={passwordUpdating}
+            className="bg-neutral-800 border border-neutral-700 hover:border-brand-gold hover:text-brand-gold text-white px-6 py-2 rounded-md transition-colors"
+          >
+            {passwordUpdating ? "Actualizando..." : "Cambiar Contraseña"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 
@@ -183,7 +363,15 @@ export default function Dashboard() {
 
       {/* Citas */}
       <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl overflow-x-auto">
-        <h2 className="text-xl font-bold text-white mb-6 border-b border-neutral-800 pb-2">Gestión de Reservaciones</h2>
+        <div className="flex justify-between items-center mb-6 border-b border-neutral-800 pb-2">
+            <h2 className="text-xl font-bold text-white">Gestión de Reservaciones</h2>
+            <button 
+                onClick={() => navigate("/reservations")}
+                className="bg-brand-gold text-neutral-950 font-bold px-4 py-2 rounded-md text-sm hover:scale-105 transition-transform"
+            >
+                + Crear Cita (Walk-in)
+            </button>
+        </div>
         <table className="w-full text-left text-sm text-neutral-300">
           <thead className="bg-neutral-800 text-brand-gold uppercase text-xs">
             <tr>

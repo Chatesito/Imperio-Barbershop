@@ -7,6 +7,7 @@ const reviewSchema = new mongoose.Schema(
     date: { type: String, required: true },
     img: { type: String, required: true },
     comment: { type: String, required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );

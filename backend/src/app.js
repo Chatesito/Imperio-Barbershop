@@ -21,33 +21,38 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173", 
   "http://localhost:5174",
-  process.env.FRONTEND_URL // Permitir la URL de producción configurada en el servidor
-];
+  "https://imperiobarbershop.vercel.app",
+  process.env.FRONTEND_URL
+].filter(Boolean); // Elimina valores undefined
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development') {
+    // Permitir peticiones sin origen (como apps móviles o curl) o si está en la lista
+    if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      const error = new Error("Not allowed by CORS");
-      error.status = 403; // Forbidden
-      callback(error);
+      callback(new Error(`CORS Error: Origin ${origin} not allowed`));
     }
   },
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
+
 app.use(express.json({ limit: "20mb" }));
 app.use(express.urlencoded({ limit: "20mb", extended: true }));
 
 // 2. Middlewares de Seguridad
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "cross-origin" } // Permitir imágenes/recursos cruzados
+}));
 app.use(mongoSanitize());
 
 // 3. Rate Limiting (100 peticiones cada 15 min)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 100,
-  message: { message: "Demasiadas peticiones desde esta IP, por favor intenta de nuevo en 15 minutos." }
+  max: 1000, // Aumentado para evitar bloqueos en pruebas
+  message: { message: "Demasiadas peticiones desde esta IP." }
 });
 app.use("/api", limiter);
 
@@ -69,22 +74,16 @@ app.use("/api/categories", categoryRoutes);
 
 // General Error Handling
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error("🔴 Server Error:", err.message);
   
-  let status = err.status || 500;
-  let message = err.message || "Algo salió mal en el servidor.";
+  const status = err.status || 500;
+  const message = err.message || "Algo salió mal en el servidor.";
 
-  // Mongoose Validation Error
-  if (err.name === "ValidationError") {
-    status = 400;
-    message = Object.values(err.errors).map((val) => val.message).join(", ");
-  }
-  
-  // Mongoose Duplicate Key Error
-  if (err.code === 11000) {
-    status = 400;
-    const field = Object.keys(err.keyValue)[0];
-    message = `El ${field} ingresado ya está en uso.`;
+  // Asegurarnos de que las cabeceras de CORS estén presentes en el error
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
   }
 
   res.status(status).json({ 

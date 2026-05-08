@@ -45,11 +45,16 @@ const ReservationForm = () => {
           api.get("/branches"),
           api.get("/staff")
         ]);
-        // Remove invalid services like 'sdsdsds' and ensure price exists
-        const validServices = servicesRes.data.filter(s => s.name && s.name !== "sdsdsds" && s.price);
+        // Remove invalid services and ensure basic data exists
+        const validServices = (servicesRes.data || []).filter(s => 
+          s.name && 
+          s.name.trim() !== "" && 
+          !s.name.toLowerCase().includes("sdsds") && 
+          s.price
+        );
         setServices(validServices);
-        setBranches(branchesRes.data);
-        setStaff(staffRes.data);
+        setBranches(branchesRes.data || []);
+        setStaff(staffRes.data || []);
       } catch (error) {
         console.error("Error fetching reservation options:", error);
       }

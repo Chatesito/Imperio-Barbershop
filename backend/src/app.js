@@ -18,13 +18,20 @@ import categoryRoutes from "./routes/category.routes.js";
 const app = express();
 
 // 1. Middlewares de base (CORS y Parsing)
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins = [
+  "http://localhost:5173", 
+  "http://localhost:5174",
+  process.env.FRONTEND_URL // Permitir la URL de producción configurada en el servidor
+];
+
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV === 'development') {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      const error = new Error("Not allowed by CORS");
+      error.status = 403; // Forbidden
+      callback(error);
     }
   },
   credentials: true

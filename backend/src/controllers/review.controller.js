@@ -1,4 +1,5 @@
 import Review from "../models/Review.js";
+import User from "../models/User.js";
 
 const seedReviews = [
     {
@@ -58,7 +59,6 @@ export const getReviews = async (req, res) => {
   }
 };
 
-import User from "../models/User.js";
 
 export const createReview = async (req, res) => {
   try {

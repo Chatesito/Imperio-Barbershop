@@ -129,7 +129,8 @@ export const deleteReservation = async (req, res) => {
       return res.status(404).json({ message: "Reservación no encontrada" });
     }
     // Allow cancellation if admin or is owner
-    if (req.user.role !== "admin" && reservation.userId.toString() !== req.user.id) {
+    const isOwner = reservation.userId && reservation.userId.toString() === req.user.id;
+    if (req.user.role !== "admin" && !isOwner) {
        return res.status(403).json({ message: "No puedes cancelar esta reservación" });
     }
     await Reservation.findByIdAndDelete(req.params.id);

@@ -289,50 +289,82 @@ export default function Dashboard() {
   );
 
   const renderBarberDashboard = () => (
-    <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl w-full max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-        <Scissors className="text-brand-gold" />
-        Agenda de Hoy - Profesional
-      </h2>
-      
-      {reservations.length === 0 ? (
-        <p className="text-neutral-400">Excelente, no tienes citas asignadas de momento.</p>
-      ) : (
-        <div className="space-y-4">
-          {reservations.map((r) => (
-            <div key={r._id} className="bg-neutral-800 p-4 rounded-md flex flex-wrap justify-between items-center gap-4 border border-neutral-700">
-              <div>
-                <p className="text-brand-gold font-bold">{r.servicio}</p>
-                <p className="text-white text-sm">Cliente: {r.nombre}</p>
-                <p className="text-neutral-400 text-xs mt-1">Sede: {r.sede || "A domicilio (Ver mapa)"} - {r.fecha} @ {r.hora}</p>
-                {r.mensaje && <p className="text-neutral-500 text-xs italic mt-1">Nota: {r.mensaje}</p>}
-              </div>
-            </div>
-          ))}
+    <div className="w-full max-w-4xl mx-auto space-y-8 animate-fade-in">
+      {/* Resumen Profesional */}
+      <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+          <Scissors className="size-24 text-brand-gold" />
         </div>
-      )}
+        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <div className="size-12 rounded-2xl bg-brand-gold/10 flex items-center justify-center text-brand-gold">
+            <Calendar className="size-6" />
+          </div>
+          Mi Agenda de Hoy
+        </h2>
+        
+        {reservations.length === 0 ? (
+          <div className="text-center py-10 border-2 border-dashed border-neutral-800 rounded-[2rem]">
+            <p className="text-neutral-500 italic">No tienes citas programadas para hoy. ¡Aprovecha para descansar!</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-4">
+            {reservations.map((r) => (
+              <div key={r._id} className="bg-neutral-950/50 p-6 rounded-2xl border border-neutral-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-brand-gold/20 transition-all">
+                <div className="flex items-center gap-4">
+                  <div className="size-14 bg-neutral-900 rounded-2xl flex flex-col items-center justify-center border border-neutral-800">
+                    <span className="text-brand-gold font-bold text-lg leading-none">{r.hora}</span>
+                  </div>
+                  <div>
+                    <p className="text-white font-bold text-lg tracking-tight uppercase">{r.servicio}</p>
+                    <p className="text-neutral-500 text-sm font-medium">Cliente: <span className="text-neutral-300">{r.nombre}</span></p>
+                    <div className="flex items-center gap-3 mt-2">
+                        <span className="text-[10px] bg-neutral-800 text-neutral-400 px-2 py-0.5 rounded-full uppercase tracking-widest">{r.sede || "Domicilio"}</span>
+                        {r.guests > 1 && <span className="text-[10px] bg-brand-gold/10 text-brand-gold px-2 py-0.5 rounded-full uppercase tracking-widest">+{r.guests - 1} Acompañantes</span>}
+                    </div>
+                  </div>
+                </div>
+                {r.mensaje && (
+                  <div className="bg-neutral-900/80 p-3 rounded-xl border-l-2 border-brand-gold text-xs text-neutral-400 italic max-w-xs">
+                    "{r.mensaje}"
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
 
-      {/* Barber Password Change */}
-      <div className="mt-8 pt-6 border-t border-neutral-800">
-        <h3 className="text-lg font-bold text-white mb-4">Actualizar Contraseña</h3>
-        <form onSubmit={handleUpdatePassword} className="flex flex-col sm:flex-row gap-4">
-          <input 
-            type="password" 
-            placeholder="Nueva Contraseña (min 6 caracteres)"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            className="flex-1 bg-neutral-800 border border-neutral-700 rounded-md px-4 py-2 text-white"
-            minLength="6"
-            required
-          />
-          <button 
-            type="submit" 
-            disabled={passwordUpdating}
-            className="bg-neutral-800 border border-neutral-700 hover:border-brand-gold hover:text-brand-gold text-white px-6 py-2 rounded-md transition-colors"
-          >
-            {passwordUpdating ? "Actualizando..." : "Cambiar Contraseña"}
-          </button>
-        </form>
+      {/* Perfil y Seguridad (Barber) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+         <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 shadow-2xl">
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-3 uppercase tracking-tight">
+                Actualizar Perfil
+            </h2>
+            <form onSubmit={handleUpdateProfile} className="space-y-4">
+                <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest ml-1">Nombre</label>
+                    <input type="text" value={profileData.name} onChange={e => setProfileData({...profileData, name: e.target.value})} className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white text-sm focus:border-brand-gold/50 outline-none transition-all" />
+                </div>
+                <button type="submit" disabled={profileUpdating} className="w-full bg-neutral-800 hover:bg-neutral-700 text-white font-bold py-3 rounded-xl transition-all text-xs uppercase tracking-widest">
+                    {profileUpdating ? "Guardando..." : "Guardar Cambios"}
+                </button>
+            </form>
+         </div>
+
+         <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 shadow-2xl">
+            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-3 uppercase tracking-tight">
+                Seguridad
+            </h2>
+            <form onSubmit={handleUpdatePassword} className="space-y-4">
+                <div className="space-y-1">
+                    <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest ml-1">Nueva Contraseña</label>
+                    <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)} placeholder="Mínimo 6 caracteres" className="w-full bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-3 text-white text-sm focus:border-brand-gold/50 outline-none transition-all" />
+                </div>
+                <button type="submit" disabled={passwordUpdating} className="w-full bg-brand-gold/10 border border-brand-gold/30 hover:bg-brand-gold hover:text-black text-brand-gold font-bold py-3 rounded-xl transition-all text-xs uppercase tracking-widest">
+                    {passwordUpdating ? "Actualizando..." : "Cambiar Contraseña"}
+                </button>
+            </form>
+         </div>
       </div>
     </div>
   );

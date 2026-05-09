@@ -23,15 +23,17 @@ const allowedOrigins = [
   "http://localhost:5174",
   "https://imperiobarbershop.vercel.app",
   process.env.FRONTEND_URL
-].filter(Boolean); // Elimina valores undefined
+].filter(Boolean);
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Permitir peticiones sin origen (como apps móviles o curl) o si está en la lista
-    if (!origin || allowedOrigins.includes(origin)) {
+    // En desarrollo o pruebas, permitimos todo si es necesario
+    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== "production") {
       callback(null, true);
     } else {
-      callback(new Error(`CORS Error: Origin ${origin} not allowed`));
+      const error = new Error(`CORS Error: Origin ${origin} not allowed`);
+      error.status = 403;
+      callback(error);
     }
   },
   credentials: true,
@@ -44,21 +46,25 @@ app.use(express.urlencoded({ limit: "20mb", extended: true }));
 
 // 2. Middlewares de Seguridad
 app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" } // Permitir imágenes/recursos cruzados
+  crossOriginResourcePolicy: { policy: "cross-origin" }
 }));
 app.use(mongoSanitize());
 
-// 3. Rate Limiting (100 peticiones cada 15 min)
+// 3. Rate Limiting (Aumentado para evitar bloqueos en pruebas)
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 1000, // Aumentado para evitar bloqueos en pruebas
-  message: { message: "Demasiadas peticiones desde esta IP." }
+  max: 2000, 
+  message: { message: "Demasiadas peticiones." }
 });
 app.use("/api", limiter);
 
 // 4. Health Check
 app.get("/api/health", (req, res) => {
-  res.status(200).json({ status: "ok", uptime: process.uptime() });
+  res.status(200).json({ 
+    status: "ok", 
+    uptime: process.uptime(),
+    dbConnected: mongoose.connection.readyState === 1
+  });
 });
 
 // 5. Main Routes
@@ -74,14 +80,18 @@ app.use("/api/categories", categoryRoutes);
 
 // General Error Handling
 app.use((err, req, res, next) => {
-  console.error("🔴 Server Error:", err.message);
+  console.error("🔴 Server Error:", {
+    message: err.message,
+    stack: process.env.NODE_ENV === "development" ? err.stack : "🔒",
+    path: req.path
+  });
   
   const status = err.status || 500;
   const message = err.message || "Algo salió mal en el servidor.";
 
   // Asegurarnos de que las cabeceras de CORS estén presentes en el error
   const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
+  if (origin && (allowedOrigins.includes(origin) || process.env.NODE_ENV !== "production")) {
     res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Access-Control-Allow-Credentials", "true");
   }

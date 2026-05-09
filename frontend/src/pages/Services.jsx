@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Scissors, SprayCan, Sparkles, ChevronRight, Clock, Star, MapPin, MousePointerClick } from "lucide-react";
+import api from "../services/api.js";
 
 export default function Services() {
     const Object = globalThis.Object; // Prevent local shadowing errors
@@ -14,16 +15,17 @@ export default function Services() {
     useEffect(() => {
         const fetchServices = async () => {
           try {
-            const { default: api } = await import("../services/api.js");
             const { data } = await api.get("/services");
             
             // Group flat data back into categories for accordion
             const grouped = data.reduce((acc, current) => {
               const { category, ...rest } = current;
-              if (!acc[category]) {
-                acc[category] = [];
+              const catName = (typeof category === 'object' && category !== null) ? category.name : (category || "Sin Categoría");
+              
+              if (!acc[catName]) {
+                acc[catName] = [];
               }
-              acc[category].push(rest);
+              acc[catName].push(rest);
               return acc;
             }, {});
 

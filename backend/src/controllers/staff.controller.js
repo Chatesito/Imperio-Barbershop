@@ -48,7 +48,10 @@ export const getStaff = async (req, res) => {
       await Staff.insertMany(seedStaff);
     }
     
-    const staff = await Staff.find().sort({ createdAt: 1 });
+    const staff = await Staff.find()
+      .populate("branches")
+      .populate("services")
+      .sort({ createdAt: 1 });
     res.status(200).json(staff);
   } catch (error) {
     res.status(500).json({ message: "Error obteniendo el personal", error: error.message });

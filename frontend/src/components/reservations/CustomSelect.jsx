@@ -5,13 +5,14 @@ const CustomSelect = ({ label, value = [], onChange, options, error, placeholder
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredOptions = options.filter(opt => 
-    opt.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    (opt.category && opt.category.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredOptions = options.filter(opt => {
+    const catName = (typeof opt.category === 'object' && opt.category !== null) ? opt.category.name : (opt.category || "");
+    return opt.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           catName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   const groupedOptions = filteredOptions.reduce((acc, service) => {
-    const cat = service.category || "Otros";
+    const cat = (typeof service.category === 'object' && service.category !== null) ? service.category.name : (service.category || "Otros");
     if (!acc[cat]) {
       acc[cat] = [];
     }

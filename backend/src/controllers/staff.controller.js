@@ -42,12 +42,6 @@ const seedStaff = [
 
 export const getStaff = async (req, res) => {
   try {
-    // Si la db está vacía, hacemos un auto-seed
-    let staffCount = await Staff.countDocuments();
-    if (staffCount === 0) {
-      await Staff.insertMany(seedStaff);
-    }
-    
     const staff = await Staff.find()
       .populate("branches")
       .populate("services")

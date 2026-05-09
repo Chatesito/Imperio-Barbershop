@@ -6,8 +6,8 @@ const staffSchema = new mongoose.Schema(
     role: { type: String, required: true, trim: true },
     bio: { type: String, default: "" },
     imageUrl: { type: String, default: "/images/staff/barber_default.png" },
-    branches: [{ type: String }], 
-    services: [{ type: String }],
+    branches: [{ type: mongoose.Schema.Types.ObjectId, ref: "Branch" }], 
+    services: [{ type: mongoose.Schema.Types.ObjectId, ref: "Service" }],
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }

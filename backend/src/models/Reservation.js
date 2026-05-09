@@ -11,6 +11,8 @@ const reservationSchema = new mongoose.Schema(
     fecha: { type: String, required: true },
     hora: { type: String, required: true },
     servicio: { type: [String], required: true },
+    duration: { type: Number, default: 30 }, // Duración total en minutos
+    totalPrice: { type: Number, default: 0 },
     barbero: { type: String, trim: true, default: "" },
     mensaje: { type: String, trim: true },
     guests: { type: Number, default: 1, min: [1, "Mínimo 1 persona"], max: [4, "Máximo 4 personas"] },

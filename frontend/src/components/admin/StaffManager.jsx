@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import toast from "react-hot-toast";
-import { Edit2, Trash2, Loader2, X, Check, Image as ImageIcon, MapPin, Briefcase } from "lucide-react";
+import { Edit2, Trash2, Loader2, X, Check, Image as ImageIcon, MapPin, Briefcase, Scissors } from "lucide-react";
 import { compressImageToBase64 } from "../../utils/imageHelper";
 import { confirmAction } from "../../utils/alerts";
 
@@ -168,9 +168,9 @@ export default function StaffManager() {
                                     {branches.map(b => (
                                         <label key={b._id} className="flex items-center justify-between p-4 bg-neutral-950 rounded-2xl border border-neutral-800 cursor-pointer hover:border-brand-gold/30 transition-all">
                                             <span className="text-xs font-bold text-neutral-300 uppercase">{b.name}</span>
-                                            <input type="checkbox" checked={editingMember.branches?.includes(b.name)} onChange={e => {
+                                            <input type="checkbox" checked={editingMember.branches?.some(branch => (branch._id || branch) === b._id)} onChange={e => {
                                                 const current = editingMember.branches || [];
-                                                setEditingMember({...editingMember, branches: e.target.checked ? [...current, b.name] : current.filter(x => x !== b.name)});
+                                                setEditingMember({...editingMember, branches: e.target.checked ? [...current, b._id] : current.filter(x => (x._id || x) !== b._id)});
                                             }} className="accent-brand-gold size-4 rounded-md" />
                                         </label>
                                     ))}
@@ -186,9 +186,9 @@ export default function StaffManager() {
                                     {services.map(s => (
                                         <label key={s._id} className="flex items-center justify-between p-4 bg-neutral-950 rounded-2xl border border-neutral-800 cursor-pointer hover:border-brand-gold/30 transition-all">
                                             <span className="text-xs font-bold text-neutral-300 uppercase">{s.name}</span>
-                                            <input type="checkbox" checked={editingMember.services?.includes(s.name)} onChange={e => {
+                                            <input type="checkbox" checked={editingMember.services?.some(service => (service._id || service) === s._id)} onChange={e => {
                                                 const current = editingMember.services || [];
-                                                setEditingMember({...editingMember, services: e.target.checked ? [...current, s.name] : current.filter(x => x !== s.name)});
+                                                setEditingMember({...editingMember, services: e.target.checked ? [...current, s._id] : current.filter(x => (x._id || x) !== s._id)});
                                             }} className="accent-brand-gold size-4 rounded-md" />
                                         </label>
                                     ))}

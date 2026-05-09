@@ -9,6 +9,7 @@ import TimeInput from "./TimeInput";
 import SelectInput from "./SelectInput";
 import TextArea from "./TextArea";
 import { useAuth } from "../../context/AuthContext";
+import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 
 const ReservationForm = () => {
@@ -63,22 +64,61 @@ const ReservationForm = () => {
   }, []);
 
   const branchOptions = branches.map(branch => ({
-    value: branch.name,
+    value: branch._id, // Usamos ID en lugar de nombre
     label: `${branch.name} - ${branch.address}`
   }));
 
   // Filtrar barberos por sede y servicio
   const staffOptions = staff
     .filter(member => {
+      // 1. No mostrar gerencia en la lista de reservas
       const isNotGerente = !member.role.toLowerCase().includes("gerencia") && !member.role.toLowerCase().includes("gerente");
-      const worksInBranch = !selectedBranch || (member.branches && member.branches.includes(selectedBranch)) || domicilio === "Sí";
-      const providesService = selectedServices.length === 0 || !member.services || selectedServices.every(s => member.services.includes(s.split(" - ")[0]));
-      return isNotGerente && worksInBranch && (domicilio === "Sí" ? true : worksInBranch);
+      
+      // 2. Verificar que el barbero trabaje en la sede seleccionada (por ID)
+      const worksInBranch = domicilio === "Sí" || !selectedBranch || (member.branches && member.branches.some(b => (b._id || b) === selectedBranch));
+      
+      // 3. Verificar que el barbero ofrezca TODOS los servicios seleccionados (por nombre o ID)
+      const providesAllServices = selectedServices.length === 0 || selectedServices.every(sValue => {
+        const sName = sValue.split(" - $")[0];
+        return member.services && member.services.some(s => s.name === sName);
+      });
+
+      return isNotGerente && worksInBranch && providesAllServices;
     })
     .map(member => ({
       value: member.name,
-      label: member.name // Eliminamos el rol del label para evitar confusión
+      label: member.name
     }));
+
+  const guestsCount = watch("guests") || 1;
+
+  // Calcular duración y precio total
+  const totalDuration = selectedServices.reduce((acc, sValue) => {
+    const sName = sValue.split(" - ")[0];
+    const serviceObj = services.find(s => s.name === sName);
+    return acc + (serviceObj?.duration || 30);
+  }, 0) * guestsCount;
+
+  const totalPrice = selectedServices.reduce((acc, sValue) => {
+    const pricePart = sValue.split(" - ")[1];
+    if (!pricePart) return acc;
+    const priceNum = parseInt(pricePart.replace(/\D/g, ""));
+    return acc + priceNum;
+  }, 0) * guestsCount;
+
+  // Actualizar filtro de staff para manejar servicios poblados
+  const staffOptionsFiltered = staff
+    .filter(member => {
+      const isNotGerente = !member.role.toLowerCase().includes("gerencia") && !member.role.toLowerCase().includes("gerente");
+      const worksInBranch = domicilio === "Sí" || !selectedBranch || (member.branches && member.branches.some(b => (b._id || b) === selectedBranch));
+      
+      const providesAllServices = selectedServices.length === 0 || selectedServices.every(sValue => {
+        const sName = sValue.split(" - ")[0];
+        return member.services && member.services.some(s => s.name === sName);
+      });
+
+      return isNotGerente && worksInBranch && providesAllServices;
+    })
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -164,8 +204,12 @@ const ReservationForm = () => {
         }
       }
 
-      const api = (await import("../../services/api.js")).default;
-      await api.post("/reservations", data);
+      const reservationPayload = {
+        ...data,
+        duration: totalDuration,
+        totalPrice: totalPrice
+      };
+      await api.post("/reservations", reservationPayload);
       toast.success("Reserva confirmada. ¡Te esperamos!");
       reset();
     } catch (error) {
@@ -264,6 +308,23 @@ const ReservationForm = () => {
       </div>
 
       <TextArea label="Instrucciones Especiales (Opcional)" id="mensaje" register={register} placeholder="Ej: Algún detalle que el barbero deba saber..." />
+
+      {/* Resumen de la Reserva */}
+      {(selectedServices.length > 0) && (
+        <div className="p-6 rounded-2xl bg-brand-gold/5 border border-brand-gold/20 flex flex-col sm:flex-row justify-between items-center gap-4 animate-fade-in">
+          <div>
+            <p className="text-neutral-500 text-[10px] uppercase tracking-widest font-bold mb-1">Resumen Estimado</p>
+            <div className="flex items-center gap-3">
+              <span className="text-white font-bold">{totalDuration} min</span>
+              <span className="size-1 rounded-full bg-neutral-700" />
+              <span className="text-brand-gold font-bold text-xl">${totalPrice.toLocaleString('es-CO')}</span>
+            </div>
+          </div>
+          <p className="text-[10px] text-neutral-500 italic max-w-[200px] text-center sm:text-right">
+            * El tiempo puede variar ligeramente según la complejidad del servicio.
+          </p>
+        </div>
+      )}
 
       <div className="pt-4">
         <button type="submit" onClick={handleSubmit(onSubmit)} disabled={isSubmitting} className="w-full bg-brand-gold text-neutral-950 font-bold uppercase tracking-[0.2em] py-5 rounded-2xl hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-xl disabled:opacity-50">

@@ -38,22 +38,44 @@ export const createReservation = async (req, res) => {
       }
     }
 
-    // 2. Verificar conflicto del Barbero (mismo barbero, fecha y hora)
+    const timeToMins = (t) => {
+      const [h, m] = t.split(":").map(Number);
+      return h * 60 + m;
+    };
+
+    const minsToTime = (m) => {
+      const hh = Math.floor(m / 60).toString().padStart(2, '0');
+      const mm = (m % 60).toString().padStart(2, '0');
+      return `${hh}:${mm}`;
+    };
+
+    const newStart = timeToMins(hora);
+    const newDuration = req.body.duration || 30;
+    const newEnd = newStart + newDuration;
+
+    // 2. Verificar conflicto del Barbero (Solapamiento temporal)
     if (barbero && barbero !== "Sin preferencia / El mejor disponible") {
-        const barberConflict = await Reservation.findOne({ 
+        const existingReservations = await Reservation.find({ 
           fecha, 
-          hora, 
           barbero,
           status: { $in: ["pending", "confirmed"] }
         });
-        if (barberConflict) {
+
+        for (const resv of existingReservations) {
+          const resStart = timeToMins(resv.hora);
+          const resEnd = resStart + (resv.duration || 30);
+
+          if ((newStart >= resStart && newStart < resEnd) || 
+              (newEnd > resStart && newEnd <= resEnd) ||
+              (newStart <= resStart && newEnd >= resEnd)) {
             return res.status(400).json({ 
-                message: "Lo sentimos, este barbero ya tiene una cita reservada en ese horario." 
+              message: `Lo sentimos, este barbero ya tiene una cita de ${minsToTime(resStart)} a ${minsToTime(resEnd)}.` 
             });
+          }
         }
     }
 
-    // 3. Verificar conflicto del Usuario (mismo email/usuario, fecha y hora)
+    // 3. Verificar conflicto del Usuario (mismo email/usuario, fecha y hora exacta para evitar spam)
     const userConflictQuery = { 
       fecha, 
       hora, 
@@ -68,22 +90,30 @@ export const createReservation = async (req, res) => {
     const userConflict = await Reservation.findOne(userConflictQuery);
     if (userConflict) {
         return res.status(400).json({ 
-            message: "Ya hay una cita agendada para este mismo horario con estos datos." 
+            message: "Ya tienes una cita agendada para este mismo horario." 
         });
     }
 
     // 4. Verificar conflicto general de Sede si no hay barbero asignado (Capacidad limitada por sede)
-    // Para simplificar, asumiremos que una sede puede atender máximo N personas a la vez (e.g. 5)
     if (!barbero || barbero === "Sin preferencia / El mejor disponible") {
-      const concurrentReservations = await Reservation.countDocuments({ 
+      const concurrentReservations = await Reservation.find({ 
         fecha, 
-        hora, 
         sede,
         status: { $in: ["pending", "confirmed"] }
       });
-      if (concurrentReservations >= 5) { // Asumimos 5 barberos por sede
+
+      let overlaps = 0;
+      for (const resv of concurrentReservations) {
+        const resStart = timeToMins(resv.hora);
+        const resEnd = resStart + (resv.duration || 30);
+        if ((newStart >= resStart && newStart < resEnd) || (newEnd > resStart && newEnd <= resEnd)) {
+          overlaps++;
+        }
+      }
+
+      if (overlaps >= 5) { // Asumimos 5 barberos por sede
           return res.status(400).json({ 
-              message: "Lo sentimos, no hay barberos disponibles en este horario para esta sede." 
+              message: "Lo sentimos, no hay barberos disponibles en este intervalo de tiempo para esta sede." 
           });
       }
     }

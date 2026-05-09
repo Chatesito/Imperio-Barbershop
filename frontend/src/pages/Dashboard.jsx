@@ -389,7 +389,7 @@ export default function Dashboard() {
                   <p className="font-semibold text-white">{r.nombre}</p>
                   <p className="text-xs text-neutral-500">{r.email}</p>
                 </td>
-                <td className="px-4 py-4">{r.servicio}</td>
+                <td className="px-4 py-4">{Array.isArray(r.servicio) ? r.servicio.join(", ") : r.servicio}</td>
                 <td className="px-4 py-4 whitespace-nowrap">{r.fecha} - {r.hora}</td>
                 <td className="px-4 py-4">{r.sede || "Domicilio: " + r.direccion}</td>
                 <td className="px-4 py-4 text-right">

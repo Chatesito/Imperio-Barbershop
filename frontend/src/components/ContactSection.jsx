@@ -48,7 +48,7 @@ const ContactSection = () => {
                 Oficina
               </h3>
               <p className="text-base leading-relaxed mt-2">
-                Cll 14a # 34-20, Barrio Las Catleyas<br />Neiva - Huila, Colombia
+                Su Dirección Aquí<br />Ciudad, País
               </p>
             </section>
 
@@ -62,7 +62,7 @@ const ContactSection = () => {
                     href="mailto:info@barberapp.com"
                     className="hover:underline focus:outline-none focus:ring-2 focus:ring-black transition-all"
                   >
-                    imperio.barbershop@gmail.com
+                    email@ejemplo.com
                   </a>
                 </li>
                 <li>
@@ -70,7 +70,7 @@ const ContactSection = () => {
                     href="tel:+573009735155"
                     className="hover:underline focus:outline-none focus:ring-2 focus:ring-black transition-all"
                   >
-                    (+57) 300 973 5155
+                    (+00) 000 000 0000
                   </a>
                 </li>
               </ul>

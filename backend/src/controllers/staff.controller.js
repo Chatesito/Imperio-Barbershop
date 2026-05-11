@@ -1,44 +1,7 @@
 import Staff from "../models/Staff.js";
 import User from "../models/User.js";
 
-const seedStaff = [
-    {
-        name: "Carlos Mendoza",
-        role: "Gerencia",
-        bio: "Dirección y visión integral del servicio, asegurando calidad consistente.",
-        imageUrl: "/images/staff/barber_1.png"
-    },
-    {
-        name: "David 'El Rápido' Silva",
-        role: "Estilista Maestro",
-        bio: "Creatividad en estilismo y adaptación a tendencias actuales de grooming.",
-        imageUrl: "/images/staff/barber_2.png"
-    },
-    {
-        name: "Mateo Herrera",
-        role: "Colorista & Estilista",
-        bio: "Atención minuciosa a simetría, transición y armonía del estilo completo.",
-        imageUrl: "/images/staff/barber_3.png"
-    },
-    {
-        name: "Valeria Reyes",
-        role: "Especialista en Estilismo Femenino y Barbería",
-        bio: "Optimización de textura y forma para looks versátiles y modernos.",
-        imageUrl: "/images/staff/barber_4.png"
-    },
-    {
-        name: "Julián 'Navaja' Ortiz",
-        role: "Especialista en Afeitado",
-        bio: "Enfoque en cortes clásicos y afeitado preciso con técnicas modernas.",
-        imageUrl: "/images/staff/barber_5.png"
-    },
-    {
-        name: "Andrés Montes",
-        role: "Especialista Fades",
-        bio: "Especialización en fades y detalles limpios orientados a acabado profesional.",
-        imageUrl: "/images/staff/barber_6.png"
-    }
-];
+
 
 export const getStaff = async (req, res) => {
   try {

@@ -63,7 +63,11 @@ export default function ReviewsSection() {
                     <div className="bg-neutral-900 border border-neutral-800 rounded-[2rem] px-10 py-8 shadow-2xl flex flex-col items-center gap-2 group hover:border-brand-gold/20 transition-all duration-500">
                         <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest">Calificación Real</p>
                         <div className="flex items-center gap-4">
-                            <span className="text-6xl font-karantina font-extrabold text-white">4.9</span>
+                            <span className="text-6xl font-karantina font-extrabold text-white">
+                                {reviews.length > 0 
+                                    ? (reviews.reduce((acc, r) => acc + (r.rating || 5), 0) / reviews.length).toFixed(1)
+                                    : "5.0"}
+                            </span>
                             <div className="flex flex-col">
                                 <Star className="text-brand-gold fill-brand-gold size-6" />
                                 <span className="text-[10px] font-bold text-brand-gold uppercase tracking-widest mt-1">Verified</span>

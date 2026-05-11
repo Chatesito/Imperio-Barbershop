@@ -47,8 +47,8 @@ export default function Home() {
                                         <MapPin className="size-6" />
                                     </div>
                                     <div>
-                                        <h4 className="text-white font-bold">Sede por Configurar</h4>
-                                        <p className="text-neutral-500 text-sm">Su Dirección Aquí.</p>
+                                        <h4 className="text-white font-bold">Nuestra Sede Principal</h4>
+                                        <p className="text-neutral-500 text-sm">Cll 14A #34-20, Barrio Las Catleyas, Neiva.</p>
                                     </div>
                                  </div>
                              )}

@@ -133,9 +133,9 @@ export default function OurTeam() {
             <section className="py-24 bg-neutral-900/50 border-y border-white/5 relative">
                 <div className="max-w-7xl mx-auto px-6 grid gap-12 md:grid-cols-3 text-center">
                     {[
-                        { icon: Scissors, value: "0", label: "Cortes Realizados" },
-                        { icon: Star, value: "0", label: "Clientes Felices" },
-                        { icon: Users, value: "0", label: "Sedes Activas" }
+                        { icon: Scissors, value: "4500+", label: "Cortes Maestros" },
+                        { icon: Star, value: "2500+", label: "Afeitados de Lujo" },
+                        { icon: Users, value: "4", label: "Sedes Reales" }
                     ].map((stat, i) => (
                         <div key={i} className="space-y-4 group">
                             <div className="flex justify-center">

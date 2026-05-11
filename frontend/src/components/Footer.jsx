@@ -33,9 +33,9 @@ export default function Footer() {
                         label="DIRECCIÓN"
                         content={
                             <>
-                                Su Dirección Aquí
+                                Cll 14a # 34-20
                                 <br />
-                                Ciudad, País
+                                Barrio Las Catleyas
                                 <br />
                                             <a
                                     href="/contact#branches"
@@ -51,10 +51,10 @@ export default function Footer() {
                         label="EMAIL"
                         content={
                             <a
-                                href="mailto:email@ejemplo.com"
+                                href="mailto:ImperioBarbershop@gmail.com"
                                 className="hover:text-white transition-colors"
                             >
-                                email@ejemplo.com
+                                Imperio.barbershop@gmail.com
                             </a>
                         }
                     />
@@ -63,10 +63,10 @@ export default function Footer() {
                         label="TELÉFONO"
                         content={
                             <a
-                                href="tel:+0000000000"
+                                href="tel:+573009735155"
                                 className="hover:text-white transition-colors"
                             >
-                                (+00) 000 000 0000
+                                (+57) 300 973 51 55
                             </a>
                         }
                     />

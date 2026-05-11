@@ -15,7 +15,6 @@ const ContactSection = () => {
       toast.success("Mensaje enviado con éxito");
       e.target.reset();
     } catch (error) {
-      console.error(error);
       toast.error("Error al enviar el mensaje.");
     } finally {
       setIsSubmitting(false);

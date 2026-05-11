@@ -56,7 +56,7 @@ const ReservationForm = () => {
         setBranches(branchesRes.data || []);
         setStaff(staffRes.data || []);
       } catch (error) {
-        console.error("Error fetching reservation options:", error);
+        toast.error("No pudimos cargar las opciones de reserva. Por favor recarga la página.");
       }
     };
     fetchData();

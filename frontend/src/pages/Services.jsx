@@ -37,7 +37,7 @@ export default function Services() {
             setCategories(categoriesArray);
             if (categoriesArray.length > 0) setOpenCategory(0); // Open first by default
           } catch (error) {
-            console.error("Error loading services:", error);
+            // Error loading services - handled by UI fallback
           } finally {
             setLoading(false);
           }

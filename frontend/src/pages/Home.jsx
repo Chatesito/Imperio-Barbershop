@@ -11,7 +11,7 @@ export default function Home() {
                 const { data } = await api.get("/branches");
                 setBranches(data || []);
             } catch (error) {
-                console.error("Error loading branches:", error);
+                // Silently handle error - UI has fallbacks
             }
         };
         fetchBranches();

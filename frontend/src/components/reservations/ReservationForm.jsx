@@ -40,7 +40,6 @@ const ReservationForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { default: api } = await import("../../services/api.js");
         const [servicesRes, branchesRes, staffRes] = await Promise.all([
           api.get("/services"),
           api.get("/branches"),
@@ -57,7 +56,7 @@ const ReservationForm = () => {
         setBranches(branchesRes.data || []);
         setStaff(staffRes.data || []);
       } catch (error) {
-        console.error("Error fetching reservation options:", error);
+        toast.error("No pudimos cargar las opciones de reserva. Por favor recarga la página.");
       }
     };
     fetchData();
@@ -75,12 +74,13 @@ const ReservationForm = () => {
       const isNotGerente = !member.role.toLowerCase().includes("gerencia") && !member.role.toLowerCase().includes("gerente");
       
       // 2. Verificar que el barbero trabaje en la sede seleccionada (por ID)
-      const worksInBranch = domicilio === "Sí" || !selectedBranch || (member.branches && member.branches.some(b => (b._id || b) === selectedBranch));
+      const worksInBranch = domicilio === "Sí" || !selectedBranch || 
+        (member.branches && member.branches.some(b => String(b._id || b) === String(selectedBranch)));
       
-      // 3. Verificar que el barbero ofrezca TODOS los servicios seleccionados (por nombre o ID)
+      // 3. Verificar que el barbero ofrezca TODOS los servicios seleccionados
       const providesAllServices = selectedServices.length === 0 || selectedServices.every(sValue => {
-        const sName = sValue.split(" - $")[0];
-        return member.services && member.services.some(s => s.name === sName);
+        const sName = sValue.split(" - ")[0];
+        return member.services && member.services.some(s => (s.name || s) === sName);
       });
 
       return isNotGerente && worksInBranch && providesAllServices;

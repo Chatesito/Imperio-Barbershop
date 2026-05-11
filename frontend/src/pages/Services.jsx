@@ -37,7 +37,7 @@ export default function Services() {
             setCategories(categoriesArray);
             if (categoriesArray.length > 0) setOpenCategory(0); // Open first by default
           } catch (error) {
-            console.error("Error loading services:", error);
+            // Error loading services - handled by UI fallback
           } finally {
             setLoading(false);
           }
@@ -181,7 +181,7 @@ export default function Services() {
                     </div>
 
                     <div className="space-y-6">
-                        {categories.map((cat, index) => (
+                        {categories.length > 0 ? categories.map((cat, index) => (
                             <div
                                 key={index}
                                 className="group bg-neutral-900/50 border border-neutral-800 rounded-3xl overflow-hidden transition-all duration-500 hover:border-brand-gold/20"
@@ -211,7 +211,7 @@ export default function Services() {
                                                         <h5 className="text-white font-bold group-hover/item:text-brand-gold transition-colors">{srv.name}</h5>
                                                         <div className="flex-1 border-b border-dotted border-white/20 mx-2 -translate-y-1" />
                                                         <span className="text-brand-gold font-bold text-xl font-karantina tracking-wider transition-transform group-hover/item:scale-110">
-                                                            ${srv.price.toLocaleString()}
+                                                            ${(srv.price || 0).toLocaleString()}
                                                         </span>
                                                     </div>
                                                     {srv.description && (
@@ -223,7 +223,12 @@ export default function Services() {
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        )) : (
+                            <div className="text-center py-20 border-2 border-dashed border-neutral-800 rounded-[2.5rem]">
+                                <Scissors className="size-12 text-neutral-800 mx-auto mb-4" />
+                                <p className="text-neutral-500 italic">Nuestro menú de gala se está preparando. Vuelve pronto.</p>
+                            </div>
+                        )}
                     </div>
 
                     <div className="mt-20 text-center">

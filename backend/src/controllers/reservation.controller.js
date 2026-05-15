@@ -150,8 +150,10 @@ export const getReservations = async (req, res) => {
       const barberName = staffMember ? staffMember.name : req.user.name;
       
       if (barberName) {
+        // Escape special characters for Regex
+        const escapedName = barberName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         query.$or = [
-          { barbero: { $regex: new RegExp(`^${barberName}$`, "i") } }
+          { barbero: { $regex: new RegExp(escapedName, "i") } }
         ];
         if (staffMember) {
           query.$or.push({ barbero: staffMember._id.toString() });

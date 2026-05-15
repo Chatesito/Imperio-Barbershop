@@ -297,7 +297,6 @@ export default function Dashboard() {
       if (dateCompare !== 0) return dateCompare;
       return a.hora.localeCompare(b.hora);
     });
-
     const todayReservations = sortedReservations.filter(r => r.fecha === todayStr && r.status !== 'cancelled');
     const upcomingReservations = sortedReservations.filter(r => r.fecha > todayStr && r.status !== 'cancelled');
     const pastReservations = sortedReservations.filter(r => r.fecha < todayStr && r.status !== 'cancelled').reverse();
@@ -335,6 +334,9 @@ export default function Dashboard() {
 
     return (
       <div className="w-full max-w-4xl mx-auto space-y-12 animate-fade-in">
+        <p className="text-[10px] text-neutral-800 text-center uppercase tracking-widest font-bold">
+          Sincronizando: {reservations.length} entradas encontradas
+        </p>
         {/* Hoy Section */}
         <section className="space-y-6">
           <div className="flex items-center justify-between border-b border-neutral-800 pb-4">

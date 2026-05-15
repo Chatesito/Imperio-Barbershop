@@ -18,7 +18,9 @@ export default function Services() {
             const { data } = await api.get("/services");
             
             // Group flat data back into categories for accordion
-            const grouped = data.reduce((acc, current) => {
+            const grouped = data
+              .filter(s => s.price > 0) // Filter out placeholder services
+              .reduce((acc, current) => {
               const { category, ...rest } = current;
               const catName = (typeof category === 'object' && category !== null) ? category.name : (category || "Sin Categoría");
               

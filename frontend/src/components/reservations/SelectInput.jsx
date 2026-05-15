@@ -1,6 +1,6 @@
 import React from "react";
 
-const SelectInput = ({ label, id, register, errors, options, placeholder }) => (
+const SelectInput = ({ label, id, register, errors, options, placeholder, validation = { required: `Selecciona ${label.toLowerCase()}` } }) => (
   <div>
     <label htmlFor={id} className="block text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-2 ml-1">
       {label}
@@ -8,7 +8,7 @@ const SelectInput = ({ label, id, register, errors, options, placeholder }) => (
     <div className="relative">
       <select
         id={id}
-        {...register(id, { required: `Selecciona ${label.toLowerCase()}` })}
+        {...register(id, validation)}
         className={`w-full px-5 py-4 rounded-2xl bg-neutral-950 border text-white text-sm appearance-none focus:outline-none focus:ring-1 transition-all duration-300 ${
           errors[id] ? "border-red-500 ring-red-500/20" : "border-neutral-800 focus:border-brand-gold/50 focus:ring-brand-gold/10"
         }`}

@@ -4,15 +4,11 @@ export const createReservation = async (req, res) => {
   try {
     const { fecha, hora, sede, barbero } = req.body;
     
-    // For admins, allow walk-ins which won't be tied to their personal userId
-    // Optionally, the frontend could pass a specific userId if they want to book for an existing user.
-    // For simplicity, if it's an admin and they don't pass a userId, we'll leave it null or undefined.
     let userId = req.user.id;
     if (req.user.role === "admin" && req.body.isWalkIn) {
       userId = null;
     }
 
-    // 1. Validar que no sea una fecha pasada
     const now = new Date();
     const [year, month, day] = fecha.split("-").map(Number);
     const [hours, minutes] = hora.split(":").map(Number);
@@ -24,7 +20,6 @@ export const createReservation = async (req, res) => {
       });
     }
 
-    // Anti-Spam: max 2 appointments per day per user (unless Admin)
     if (req.user.role !== "admin") {
       const dailyCount = await Reservation.countDocuments({
         userId,
@@ -53,7 +48,6 @@ export const createReservation = async (req, res) => {
     const newDuration = req.body.duration || 30;
     const newEnd = newStart + newDuration;
 
-    // 2. Verificar conflicto del Barbero (Solapamiento temporal)
     if (barbero && barbero !== "Sin preferencia / El mejor disponible") {
         const existingReservations = await Reservation.find({ 
           fecha, 
@@ -75,7 +69,6 @@ export const createReservation = async (req, res) => {
         }
     }
 
-    // 3. Verificar conflicto del Usuario (mismo email/usuario, fecha y hora exacta para evitar spam)
     const userConflictQuery = { 
       fecha, 
       hora, 
@@ -94,7 +87,6 @@ export const createReservation = async (req, res) => {
         });
     }
 
-    // 4. Verificar conflicto general de Sede si no hay barbero asignado (Capacidad limitada por sede)
     if (!barbero || barbero === "Sin preferencia / El mejor disponible") {
       const concurrentReservations = await Reservation.find({ 
         fecha, 
@@ -111,7 +103,7 @@ export const createReservation = async (req, res) => {
         }
       }
 
-      if (overlaps >= 5) { // Asumimos 5 barberos por sede
+      if (overlaps >= 5) {
           return res.status(400).json({ 
               message: "Lo sentimos, no hay barberos disponibles en este intervalo de tiempo para esta sede." 
           });
@@ -158,7 +150,6 @@ export const deleteReservation = async (req, res) => {
     if (!reservation) {
       return res.status(404).json({ message: "Reservación no encontrada" });
     }
-    // Allow cancellation if admin or is owner
     const isOwner = reservation.userId && reservation.userId.toString() === req.user.id;
     if (req.user.role !== "admin" && !isOwner) {
        return res.status(403).json({ message: "No puedes cancelar esta reservación" });

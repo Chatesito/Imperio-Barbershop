@@ -288,54 +288,97 @@ export default function Dashboard() {
     </div>
   );
 
-  const renderBarberDashboard = () => (
-    <div className="w-full max-w-4xl mx-auto space-y-8 animate-fade-in">
-      {/* Resumen Profesional */}
-      <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden group">
-        <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-          <Scissors className="size-24 text-brand-gold" />
+  const renderBarberDashboard = () => {
+    const todayStr = new Date().toLocaleDateString('en-CA');
+    
+    // Filter and sort reservations
+    const sortedReservations = [...reservations].sort((a, b) => {
+      const dateCompare = a.fecha.localeCompare(b.fecha);
+      if (dateCompare !== 0) return dateCompare;
+      return a.hora.localeCompare(b.hora);
+    });
+
+    const todayReservations = sortedReservations.filter(r => r.fecha === todayStr && r.status !== 'cancelled');
+    const upcomingReservations = sortedReservations.filter(r => r.fecha > todayStr && r.status !== 'cancelled');
+
+    const renderReservationCard = (r) => (
+      <div key={r._id} className="bg-neutral-950/50 p-6 rounded-2xl border border-neutral-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-brand-gold/20 transition-all group/card">
+        <div className="flex items-center gap-4">
+          <div className="size-14 bg-neutral-900 rounded-2xl flex flex-col items-center justify-center border border-neutral-800">
+            <span className="text-brand-gold font-bold text-lg leading-none">{r.hora}</span>
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <p className="text-white font-bold text-lg tracking-tight uppercase">{Array.isArray(r.servicio) ? r.servicio.join(" + ") : r.servicio}</p>
+              <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold uppercase tracking-widest ${
+                r.status === 'confirmed' ? 'bg-green-500/10 text-green-500' : 'bg-brand-gold/10 text-brand-gold animate-pulse'
+              }`}>
+                {r.status === 'confirmed' ? 'Confirmado' : 'Pendiente'}
+              </span>
+            </div>
+            <p className="text-neutral-500 text-sm font-medium">Cliente: <span className="text-neutral-300">{r.nombre}</span></p>
+            <div className="flex flex-wrap items-center gap-3 mt-2">
+                <span className="text-[10px] bg-neutral-800 text-neutral-400 px-2 py-0.5 rounded-full uppercase tracking-widest">{r.sede || "Domicilio"}</span>
+                {r.guests > 1 && <span className="text-[10px] bg-brand-gold/10 text-brand-gold px-2 py-0.5 rounded-full uppercase tracking-widest">+{r.guests - 1} Acompañantes</span>}
+                {r.fecha !== todayStr && <span className="text-[10px] bg-white/5 text-neutral-500 px-2 py-0.5 rounded-full uppercase tracking-widest font-bold">{r.fecha}</span>}
+            </div>
+          </div>
         </div>
-        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-          <div className="size-12 rounded-2xl bg-brand-gold/10 flex items-center justify-center text-brand-gold">
-            <Calendar className="size-6" />
-          </div>
-          Mi Agenda de Hoy
-        </h2>
-        
-        {reservations.length === 0 ? (
-          <div className="text-center py-10 border-2 border-dashed border-neutral-800 rounded-[2rem]">
-            <p className="text-neutral-500 italic">No tienes citas programadas para hoy. ¡Aprovecha para descansar!</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4">
-            {reservations.map((r) => (
-              <div key={r._id} className="bg-neutral-950/50 p-6 rounded-2xl border border-neutral-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-brand-gold/20 transition-all">
-                <div className="flex items-center gap-4">
-                  <div className="size-14 bg-neutral-900 rounded-2xl flex flex-col items-center justify-center border border-neutral-800">
-                    <span className="text-brand-gold font-bold text-lg leading-none">{r.hora}</span>
-                  </div>
-                  <div>
-                    <p className="text-white font-bold text-lg tracking-tight uppercase">{r.servicio}</p>
-                    <p className="text-neutral-500 text-sm font-medium">Cliente: <span className="text-neutral-300">{r.nombre}</span></p>
-                    <div className="flex items-center gap-3 mt-2">
-                        <span className="text-[10px] bg-neutral-800 text-neutral-400 px-2 py-0.5 rounded-full uppercase tracking-widest">{r.sede || "Domicilio"}</span>
-                        {r.guests > 1 && <span className="text-[10px] bg-brand-gold/10 text-brand-gold px-2 py-0.5 rounded-full uppercase tracking-widest">+{r.guests - 1} Acompañantes</span>}
-                    </div>
-                  </div>
-                </div>
-                {r.mensaje && (
-                  <div className="bg-neutral-900/80 p-3 rounded-xl border-l-2 border-brand-gold text-xs text-neutral-400 italic max-w-xs">
-                    "{r.mensaje}"
-                  </div>
-                )}
-              </div>
-            ))}
+        {r.mensaje && (
+          <div className="bg-neutral-900/80 p-3 rounded-xl border-l-2 border-brand-gold text-xs text-neutral-400 italic max-w-xs">
+            "{r.mensaje}"
           </div>
         )}
       </div>
+    );
 
-      {/* Perfil y Seguridad (Barber) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    return (
+      <div className="w-full max-w-4xl mx-auto space-y-12 animate-fade-in">
+        {/* Hoy Section */}
+        <section className="space-y-6">
+          <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
+            <h2 className="text-2xl font-bold text-white flex items-center gap-3 uppercase font-karantina tracking-wider">
+              <div className="size-10 rounded-xl bg-brand-gold/10 flex items-center justify-center text-brand-gold">
+                <Calendar className="size-5" />
+              </div>
+              Agenda de Hoy
+            </h2>
+            <span className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest bg-neutral-900 px-3 py-1 rounded-full border border-neutral-800">
+              {todayStr}
+            </span>
+          </div>
+          
+          {todayReservations.length === 0 ? (
+            <div className="text-center py-12 border-2 border-dashed border-neutral-800 rounded-[2.5rem] bg-neutral-900/20">
+              <p className="text-neutral-500 italic text-sm">No tienes citas programadas para hoy.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4">
+              {todayReservations.map(renderReservationCard)}
+            </div>
+          )}
+        </section>
+
+        {/* Proximas Section */}
+        {upcomingReservations.length > 0 && (
+          <section className="space-y-6">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-3 uppercase font-karantina tracking-wider">
+                <div className="size-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-500">
+                  <Calendar className="size-5" />
+                </div>
+                Próximas Reservaciones
+              </h2>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4">
+              {upcomingReservations.map(renderReservationCard)}
+            </div>
+          </section>
+        )}
+
+        {/* Perfil y Seguridad (Barber) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-neutral-800">
          <div className="bg-neutral-900 border border-neutral-800 rounded-3xl p-8 shadow-2xl">
             <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-3 uppercase tracking-tight">
                 Actualizar Perfil
@@ -367,7 +410,8 @@ export default function Dashboard() {
          </div>
       </div>
     </div>
-  );
+    );
+  };
 
   const renderAdminOverview = () => (
     <div className="space-y-8 fade-in">

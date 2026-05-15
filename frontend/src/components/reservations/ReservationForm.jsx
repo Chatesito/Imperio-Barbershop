@@ -112,13 +112,14 @@ const ReservationForm = () => {
     return acc + (isNaN(priceNum) ? 0 : priceNum);
   }, 0) * guestsCount;
 
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const minDate = today.toISOString().split('T')[0];
+  const now = new Date();
+  // Get local ISO date string (YYYY-MM-DD)
+  const todayStr = now.toLocaleDateString('en-CA'); // en-CA gives YYYY-MM-DD
+  const minDate = todayStr;
   
-  const maxDate = new Date(today);
+  const maxDate = new Date(now);
   maxDate.setMonth(maxDate.getMonth() + 6);
-  const maxDateStr = maxDate.toISOString().split('T')[0];
+  const maxDateStr = maxDate.toLocaleDateString('en-CA');
 
   useEffect(() => {
     if (selectedDate) {
@@ -167,11 +168,11 @@ const ReservationForm = () => {
   };
 
   const validateDate = (value) => {
-    const selectedDate = new Date(value + 'T00:00:00');
-    const todayDate = new Date();
-    todayDate.setHours(0, 0, 0, 0);
+    if (!value) return true;
+    const now = new Date();
+    const todayStr = now.toLocaleDateString('en-CA');
     
-    if (selectedDate < todayDate) {
+    if (value < todayStr) {
       return "No puedes reservar en fechas pasadas";
     }
     return true;
@@ -201,13 +202,13 @@ const ReservationForm = () => {
       }
       
       const now = new Date();
-      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const selectedDateObj = new Date(data.fecha + 'T00:00:00');
+      const todayStr = now.toLocaleDateString('en-CA');
+      const [h, m] = data.hora.split(':').map(Number);
+      
+      // Create a date object for the reservation in local time
+      const reservationTime = new Date(data.fecha + 'T' + data.hora + ':00');
 
-      if (selectedDateObj.getTime() === today.getTime()) {
-        const [h, m] = data.hora.split(':').map(Number);
-        const reservationTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
-        
+      if (data.fecha === todayStr) {
         if (reservationTime < now) {
           toast.error("No puedes reservar para una hora que ya ha pasado.");
           return;
@@ -218,6 +219,9 @@ const ReservationForm = () => {
           toast.error("Por políticas del Imperio, las citas el mismo día deben reservarse con al menos 1 hora de anticipación.");
           return;
         }
+      } else if (data.fecha < todayStr) {
+        toast.error("No puedes reservar para una fecha que ya ha pasado.");
+        return;
       }
 
       const reservationPayload = {

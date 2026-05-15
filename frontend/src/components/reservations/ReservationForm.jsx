@@ -5,7 +5,6 @@ import toast from "react-hot-toast";
 import InputField from "./InputField";
 import CustomSelect from "./CustomSelect";
 import DateInput from "./DateInput";
-import TimeInput from "./TimeInput";
 import SelectInput from "./SelectInput";
 import TextArea from "./TextArea";
 import { useAuth } from "../../context/AuthContext";
@@ -110,7 +109,7 @@ const ReservationForm = () => {
     const pricePart = sValue.split(" - ")[1];
     if (!pricePart) return acc;
     const priceNum = parseInt(pricePart.replace(/\D/g, ""));
-    return acc + priceNum;
+    return acc + (isNaN(priceNum) ? 0 : priceNum);
   }, 0) * guestsCount;
 
   const today = new Date();
@@ -196,6 +195,7 @@ const ReservationForm = () => {
         data.nombre = user.name;
         data.email = user.email;
       }
+      
       if (user && user.role === "admin") {
         data.isWalkIn = true;
       }
@@ -234,6 +234,33 @@ const ReservationForm = () => {
       <h2 className="text-4xl md:text-6xl font-karantina font-extrabold text-center uppercase tracking-tight text-white leading-none">
         AGENDA TU <span className="text-brand-gold">RITUAL</span>
       </h2>
+
+      {user && user.role === "admin" && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in">
+          <InputField 
+            label="Nombre del Cliente" 
+            id="nombre" 
+            placeholder="Nombre completo" 
+            register={register} 
+            errors={errors} 
+            validation={{ required: "El nombre es obligatorio" }} 
+          />
+          <InputField 
+            label="Email del Cliente" 
+            id="email" 
+            placeholder="correo@ejemplo.com" 
+            register={register} 
+            errors={errors} 
+            validation={{ 
+              required: "El email es obligatorio",
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: "Email inválido"
+              }
+            }} 
+          />
+        </div>
+      )}
 
       <div className="space-y-6">
         <label className="block text-xs font-bold uppercase tracking-[0.2em] mb-3 text-brand-gold">¿Dónde prefieres tu servicio?</label>

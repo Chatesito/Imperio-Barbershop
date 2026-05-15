@@ -1,4 +1,5 @@
 import Reservation from "../models/Reservation.js";
+import Staff from "../models/Staff.js";
 
 export const createReservation = async (req, res) => {
   try {
@@ -145,9 +146,14 @@ export const getReservations = async (req, res) => {
   try {
     let query = {};
     if (req.user.role === "barber") {
-      query.barbero = req.user.name;
+      const staffMember = await Staff.findOne({ userId: req.user.id });
+      if (staffMember) {
+        query.barbero = staffMember.name;
+      } else {
+        query.barbero = req.user.name;
+      }
     }
-    const reservations = await Reservation.find(query).sort({ createdAt: -1 });
+    const reservations = await Reservation.find(query).sort({ fecha: 1, hora: 1 });
     res.status(200).json(reservations);
   } catch (error) {
     res.status(500).json({ message: "Error obteniendo reservaciones", error: error.message });

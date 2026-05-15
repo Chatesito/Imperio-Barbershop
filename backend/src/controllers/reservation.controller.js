@@ -10,9 +10,7 @@ export const createReservation = async (req, res) => {
     }
 
     const now = new Date();
-    const [year, month, day] = fecha.split("-").map(Number);
-    const [hours, minutes] = hora.split(":").map(Number);
-    const reservationDate = new Date(year, month - 1, day, hours, minutes);
+    const reservationDate = new Date(`${fecha}T${hora}:00-05:00`);
 
     if (reservationDate < now) {
       return res.status(400).json({ 

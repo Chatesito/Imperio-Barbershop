@@ -14,6 +14,12 @@ export const createReservation = async (req, res) => {
     const [hours, minutes] = hora.split(":").map(Number);
     const reservationDate = new Date(year, month - 1, day, hours, minutes);
 
+    if (reservationDate < now) {
+      return res.status(400).json({ 
+        message: "No puedes agendar una cita para una fecha u hora que ya ha pasado." 
+      });
+    }
+
     const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
     if (reservationDate < oneHourLater) {
       return res.status(400).json({ 

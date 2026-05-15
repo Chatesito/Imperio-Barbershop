@@ -10,15 +10,29 @@ export const createReservation = async (req, res) => {
     }
 
     const now = new Date();
-    const reservationDate = new Date(`${fecha}T${hora}:00-05:00`);
+    
+    // Convert fecha and hora to a Date object in -05:00 (Barbershop local time)
+    // We do this manually to avoid platform-specific parsing issues with string offsets
+    const [y, mon, d] = fecha.split('-').map(Number);
+    const [hh, mm] = hora.split(':').map(Number);
+    
+    // -05:00 means UTC = Local + 5 hours
+    const reservationDate = new Date(Date.UTC(y, mon - 1, d, hh + 5, mm));
 
-    if (reservationDate < now) {
+    if (isNaN(reservationDate.getTime())) {
+      return res.status(400).json({ message: "Fecha u hora inválida." });
+    }
+
+    // Allow a 5-minute grace period for server clock drift
+    const nowWithGrace = new Date(now.getTime() - 5 * 60 * 1000);
+
+    if (reservationDate < nowWithGrace) {
       return res.status(400).json({ 
         message: "No puedes agendar una cita para una fecha u hora que ya ha pasado." 
       });
     }
 
-    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+    const oneHourLater = new Date(now.getTime() + 55 * 60 * 1000); // 55 mins instead of 60 to be more flexible
     if (reservationDate < oneHourLater) {
       return res.status(400).json({ 
         message: "Las citas para el mismo día deben reservarse con al menos 1 hora de anticipación." 

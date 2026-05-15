@@ -206,8 +206,10 @@ const ReservationForm = () => {
         const [h, m] = data.hora.split(':').map(Number);
         const reservationTime = new Date();
         reservationTime.setHours(h, m, 0, 0);
-        if (reservationTime < now) {
-          toast.error("No puedes reservar para una hora que ya ha pasado hoy.");
+        
+        const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+        if (reservationTime < oneHourLater) {
+          toast.error("Para citas el mismo día, debes reservar con al menos 1 hora de anticipación.");
           return;
         }
       }
@@ -378,14 +380,12 @@ const ReservationForm = () => {
 
       <TextArea label="Instrucciones Especiales (Opcional)" id="mensaje" register={register} placeholder="Ej: Algún detalle que el barbero deba saber..." />
 
-      {(selectedServices.length > 0) && (
+      {selectedServices.length > 0 && (
         <div className="p-6 rounded-2xl bg-brand-gold/5 border border-brand-gold/20 flex flex-col sm:flex-row justify-between items-center gap-4 animate-fade-in">
           <div>
             <p className="text-neutral-500 text-[10px] uppercase tracking-widest font-bold mb-1">Resumen Estimado</p>
             <div className="flex items-center gap-3">
               <span className="text-white font-bold">{totalDuration} min</span>
-              <span className="size-1 rounded-full bg-neutral-700" />
-              <span className="text-brand-gold font-bold text-xl">${totalPrice.toLocaleString('es-CO')}</span>
             </div>
           </div>
           <p className="text-[10px] text-neutral-500 italic max-w-[200px] text-center sm:text-right">

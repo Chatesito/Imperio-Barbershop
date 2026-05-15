@@ -67,7 +67,6 @@ export const deleteStaffMember = async (req, res) => {
     const member = await Staff.findByIdAndDelete(req.params.id);
     if (!member) return res.status(404).json({ message: "Personal no encontrado" });
 
-    // Si se borra desde aquí, cambiamos el rol del usuario a 'user'
     if (member.userId) {
         await User.findByIdAndUpdate(member.userId, { role: 'user' });
     }

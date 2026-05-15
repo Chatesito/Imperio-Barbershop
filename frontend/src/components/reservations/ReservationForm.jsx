@@ -49,8 +49,7 @@ const ReservationForm = () => {
         
         const validServices = (servicesRes.data || []).filter(s => 
           s.name && 
-          s.name.trim() !== "" && 
-          s.price > 0 
+          s.name.trim() !== ""
         );
         setServices(validServices);
         setBranches(branchesRes.data || []);
@@ -67,7 +66,6 @@ const ReservationForm = () => {
     label: `${branch.name} - ${branch.address}`
   }));
 
-  // Filtrar servicios disponibles según el profesional seleccionado
   const displayServices = services.filter(service => {
     if (!selectedBarbero || selectedBarbero === "" || selectedBarbero === "Sin preferencia / El mejor disponible") {
       return true;
@@ -75,11 +73,12 @@ const ReservationForm = () => {
     const professional = staff.find(s => s.name === selectedBarbero);
     if (!professional || !professional.services) return true;
     
-    // Comparar por ID o nombre
-    return professional.services.some(s => (s._id || s) === service._id || s.name === service.name);
+    return professional.services.some(s => 
+      String(s._id || s) === String(service._id) || 
+      (s.name && s.name === service.name)
+    );
   });
 
-  // Filtrar profesionales según la sede y servicios seleccionados
   const staffOptions = staff
     .filter(member => {
       const isNotGerente = !member.role.toLowerCase().includes("gerencia") && !member.role.toLowerCase().includes("gerente");
@@ -101,7 +100,6 @@ const ReservationForm = () => {
 
   const guestsCount = watch("guests") || 1;
 
-  // Calcular duración y precio total
   const totalDuration = selectedServices.reduce((acc, sValue) => {
     const sName = sValue.split(" - ")[0];
     const serviceObj = services.find(s => s.name === sName);
@@ -114,20 +112,6 @@ const ReservationForm = () => {
     const priceNum = parseInt(pricePart.replace(/\D/g, ""));
     return acc + priceNum;
   }, 0) * guestsCount;
-
-  // Actualizar filtro de staff para manejar servicios poblados
-  const staffOptionsFiltered = staff
-    .filter(member => {
-      const isNotGerente = !member.role.toLowerCase().includes("gerencia") && !member.role.toLowerCase().includes("gerente");
-      const worksInBranch = domicilio === "Sí" || !selectedBranch || (member.branches && member.branches.some(b => (b._id || b) === selectedBranch));
-      
-      const providesAllServices = selectedServices.length === 0 || selectedServices.every(sValue => {
-        const sName = sValue.split(" - ")[0];
-        return member.services && member.services.some(s => s.name === sName);
-      });
-
-      return isNotGerente && worksInBranch && providesAllServices;
-    })
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -152,14 +136,13 @@ const ReservationForm = () => {
     }
   }, [selectedDate]);
 
-  // Sincronizar servicios seleccionados cuando cambia el profesional
   useEffect(() => {
     if (selectedBarbero && selectedBarbero !== "" && selectedBarbero !== "Sin preferencia / El mejor disponible" && staff.length > 0) {
       const professional = staff.find(s => s.name === selectedBarbero);
       if (professional && professional.services) {
         const stillValidServices = selectedServices.filter(sValue => {
           const sName = sValue.split(" - ")[0];
-          return professional.services.some(s => (s.name || s) === sName || (s._id || s) === sName);
+          return professional.services.some(s => (s.name || s) === sName || String(s._id || s) === sName);
         });
         
         if (stillValidServices.length !== selectedServices.length) {
@@ -169,7 +152,6 @@ const ReservationForm = () => {
     }
   }, [selectedBarbero, staff, selectedServices, setValue]);
 
-  // Generar slots de 30 minutos
   const generateTimeSlots = () => {
     const slots = [];
     let current = parseInt(minTime.split(":")[0]) * 60 + parseInt(minTime.split(":")[1]);
@@ -253,7 +235,6 @@ const ReservationForm = () => {
         AGENDA TU <span className="text-brand-gold">RITUAL</span>
       </h2>
 
-      {/* 1. Modalidad: Sede o Domicilio */}
       <div className="space-y-6">
         <label className="block text-xs font-bold uppercase tracking-[0.2em] mb-3 text-brand-gold">¿Dónde prefieres tu servicio?</label>
         <div className="flex flex-col sm:flex-row gap-6 p-6 rounded-2xl bg-white/5 border border-white/10">
@@ -280,7 +261,6 @@ const ReservationForm = () => {
         )}
       </div>
 
-      {/* 2. Profesional y Servicios */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <SelectInput 
           label="Tu Profesional" 
@@ -310,7 +290,6 @@ const ReservationForm = () => {
         />
       </div>
 
-      {/* 3. Fecha y Hora */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <DateInput label="Fecha de la Cita" id="fecha" register={register} errors={errors} minDate={minDate} maxDate={maxDateStr} validate={validateDate} />
         <SelectInput 
@@ -336,7 +315,6 @@ const ReservationForm = () => {
 
       <TextArea label="Instrucciones Especiales (Opcional)" id="mensaje" register={register} placeholder="Ej: Algún detalle que el barbero deba saber..." />
 
-      {/* Resumen de la Reserva */}
       {(selectedServices.length > 0) && (
         <div className="p-6 rounded-2xl bg-brand-gold/5 border border-brand-gold/20 flex flex-col sm:flex-row justify-between items-center gap-4 animate-fade-in">
           <div>

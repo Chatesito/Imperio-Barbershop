@@ -201,11 +201,12 @@ const ReservationForm = () => {
       }
       
       const now = new Date();
-      const todayStr = now.toISOString().split('T')[0];
-      if (data.fecha === todayStr) {
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const selectedDateObj = new Date(data.fecha + 'T00:00:00');
+
+      if (selectedDateObj.getTime() === today.getTime()) {
         const [h, m] = data.hora.split(':').map(Number);
-        const reservationTime = new Date();
-        reservationTime.setHours(h, m, 0, 0);
+        const reservationTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m);
         
         if (reservationTime < now) {
           toast.error("No puedes reservar para una hora que ya ha pasado.");

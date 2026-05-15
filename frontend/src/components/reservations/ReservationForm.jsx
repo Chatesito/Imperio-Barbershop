@@ -207,9 +207,14 @@ const ReservationForm = () => {
         const reservationTime = new Date();
         reservationTime.setHours(h, m, 0, 0);
         
+        if (reservationTime < now) {
+          toast.error("No puedes reservar para una hora que ya ha pasado.");
+          return;
+        }
+
         const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
         if (reservationTime < oneHourLater) {
-          toast.error("Para citas el mismo día, debes reservar con al menos 1 hora de anticipación.");
+          toast.error("Por políticas del Imperio, las citas el mismo día deben reservarse con al menos 1 hora de anticipación.");
           return;
         }
       }

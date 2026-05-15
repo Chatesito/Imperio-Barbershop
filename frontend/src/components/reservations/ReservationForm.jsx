@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Scissors } from "lucide-react";
+import { Scissors, Lock, LogIn, ChevronRight } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import InputField from "./InputField";
@@ -224,6 +224,42 @@ const ReservationForm = () => {
       toast.error(error.response?.data?.message || "Error al procesar la reserva");
     }
   };
+
+  if (!user) {
+    return (
+      <div className="bg-neutral-900/50 backdrop-blur-md border border-neutral-800 rounded-[2.5rem] p-12 w-full max-w-2xl mx-auto flex flex-col items-center text-center gap-8 shadow-2xl relative overflow-hidden group">
+        <div className="absolute -top-10 -right-10 opacity-5 group-hover:opacity-10 transition-opacity">
+          <Scissors className="size-60 text-brand-gold" />
+        </div>
+        
+        <div className="size-24 rounded-3xl bg-brand-gold/10 flex items-center justify-center text-brand-gold mb-4 border border-brand-gold/20 animate-pulse">
+          <Lock className="size-12" />
+        </div>
+
+        <div className="space-y-4">
+          <h2 className="text-4xl md:text-5xl font-karantina font-extrabold text-white uppercase tracking-tight leading-none">
+            ACCESO <span className="text-brand-gold">EXCLUSIVO</span>
+          </h2>
+          <p className="text-neutral-400 text-lg max-w-sm mx-auto font-light leading-relaxed">
+            Para garantizar la calidad de tu ritual, necesitamos que formes parte del Imperio. Inicia sesión para agendar tu visita.
+          </p>
+        </div>
+
+        <button 
+          onClick={() => navigate("/login", { state: { from: "/Reservations" } })}
+          className="group relative inline-flex items-center gap-3 bg-brand-gold text-neutral-950 px-10 py-5 rounded-2xl font-bold uppercase tracking-[0.2em] transition-all hover:scale-105 active:scale-95 shadow-xl"
+        >
+          <LogIn className="size-5" />
+          INGRESAR AL IMPERIO
+          <ChevronRight className="size-5 transition-transform group-hover:translate-x-1" />
+        </button>
+
+        <p className="text-neutral-500 text-xs uppercase tracking-widest mt-4">
+          ¿No tienes cuenta? <a href="/register" className="text-brand-gold font-bold hover:underline">Regístrate aquí</a>
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-neutral-900/50 backdrop-blur-md border border-neutral-800 rounded-[2.5rem] p-8 md:p-12 w-full max-w-4xl mx-auto flex flex-col gap-10 shadow-2xl relative overflow-hidden group transition-all duration-700 hover:border-brand-gold/20">

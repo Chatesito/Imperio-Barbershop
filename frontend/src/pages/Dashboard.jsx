@@ -300,6 +300,7 @@ export default function Dashboard() {
 
     const todayReservations = sortedReservations.filter(r => r.fecha === todayStr && r.status !== 'cancelled');
     const upcomingReservations = sortedReservations.filter(r => r.fecha > todayStr && r.status !== 'cancelled');
+    const pastReservations = sortedReservations.filter(r => r.fecha < todayStr && r.status !== 'cancelled').reverse();
 
     const renderReservationCard = (r) => (
       <div key={r._id} className="bg-neutral-950/50 p-6 rounded-2xl border border-neutral-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 hover:border-brand-gold/20 transition-all group/card">
@@ -373,6 +374,24 @@ export default function Dashboard() {
             
             <div className="grid grid-cols-1 gap-4">
               {upcomingReservations.map(renderReservationCard)}
+            </div>
+          </section>
+        )}
+
+        {/* Pasadas Section */}
+        {pastReservations.length > 0 && (
+          <section className="space-y-6">
+            <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-3 uppercase font-karantina tracking-wider">
+                <div className="size-10 rounded-xl bg-neutral-800 flex items-center justify-center text-neutral-500">
+                  <Calendar className="size-5" />
+                </div>
+                Historial de Citas
+              </h2>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4 opacity-70 hover:opacity-100 transition-opacity">
+              {pastReservations.map(renderReservationCard)}
             </div>
           </section>
         )}

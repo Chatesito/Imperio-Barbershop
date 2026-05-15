@@ -147,10 +147,15 @@ export const getReservations = async (req, res) => {
     let query = {};
     if (req.user.role === "barber") {
       const staffMember = await Staff.findOne({ userId: req.user.id });
-      if (staffMember) {
-        query.barbero = staffMember.name;
-      } else {
-        query.barbero = req.user.name;
+      const barberName = staffMember ? staffMember.name : req.user.name;
+      
+      if (barberName) {
+        query.$or = [
+          { barbero: { $regex: new RegExp(`^${barberName}$`, "i") } }
+        ];
+        if (staffMember) {
+          query.$or.push({ barbero: staffMember._id.toString() });
+        }
       }
     }
     const reservations = await Reservation.find(query).sort({ fecha: 1, hora: 1 });

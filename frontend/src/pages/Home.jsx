@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Facebook, Instagram, Scissors, Star, Clock, Trophy, ShieldCheck, MapPin, ChevronRight } from "lucide-react";
 import api from "../services/api";
+import ReviewsSection from "../components/ReviewsSection";
 
 export default function Home() {
     const [branches, setBranches] = useState([]);
@@ -11,7 +12,7 @@ export default function Home() {
                 const { data } = await api.get("/branches");
                 setBranches(data || []);
             } catch (error) {
-                // Silently handle error - UI has fallbacks
+                // Fail silently - UI has fallbacks
             }
         };
         fetchBranches();
@@ -25,7 +26,6 @@ export default function Home() {
                 className="relative min-h-screen flex items-center overflow-hidden"
                 style={{ backgroundImage: 'url(/images/hero.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
             >
-                {/* Overlay dinámico */}
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-black/40 to-transparent" />
                 <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]" />
                 
@@ -56,7 +56,6 @@ export default function Home() {
                     </div>
                 </div>
 
-                {/* Decoración lateral en desktop */}
                 <div className="hidden lg:block absolute right-20 bottom-20 z-10 animate-fade-in">
                     <div className="flex flex-col gap-8 text-white/40">
                          <a href="#" className="hover:text-brand-gold transform hover:scale-125 transition-all"><Facebook className="size-6" /></a>
@@ -65,7 +64,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* QUIÉNES SOMOS / EXPERIENCIA */}
+            {/* NOSOTROS */}
             <section className="relative py-24 bg-neutral-950 overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-gold/30 to-transparent" />
                 <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
@@ -93,20 +92,20 @@ export default function Home() {
                                 <h4 className="text-white font-bold mb-2 flex items-center gap-2">
                                     <Star className="size-4 text-brand-gold fill-brand-gold" /> Excelencia
                                 </h4>
-                                <p className="text-neutral-500 text-sm">Protocolos de higiene y técnica superior en cada servicio.</p>
+                                <p className="text-neutral-500 text-sm">Técnica superior en cada servicio.</p>
                             </div>
                             <div>
                                 <h4 className="text-white font-bold mb-2 flex items-center gap-2">
                                     <ShieldCheck className="size-4 text-brand-gold fill-brand-gold" /> Confianza
                                 </h4>
-                                <p className="text-neutral-500 text-sm">Más de 500 caballeros nos eligen mensualmente en Neiva.</p>
+                                <p className="text-neutral-500 text-sm">Más de 500 caballeros nos eligen mensualmente.</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* HORARIO Y VALORES (GLASSMORPISM) */}
+            {/* VALORES */}
             <section
                 className="relative py-24 md:py-32"
                 style={{ backgroundImage: 'url(/images/interior.jpg)', backgroundSize: 'cover', backgroundAttachment: 'fixed' }}
@@ -143,7 +142,7 @@ export default function Home() {
                                 <Clock className="size-40 text-brand-gold" />
                             </div>
                             <h3 className="text-3xl font-karantina font-extrabold text-white uppercase tracking-wider mb-8 flex items-center gap-3">
-                                <Clock className="text-brand-gold" /> Horario Real
+                                <Clock className="text-brand-gold" /> Horario
                             </h3>
                             <ul className="space-y-4 text-sm md:text-base border-b border-neutral-800 pb-8 mb-8">
                                 {[
@@ -166,7 +165,7 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* HIGHLIGHTS / GALERIA SUTIL */}
+            {/* PORTAFOLIO */}
             <section className="py-24 bg-neutral-950">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="text-center mb-16">
@@ -188,7 +187,10 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* UBICACIÓN FINAL */}
+            {/* REVIEWS CAROUSEL */}
+            <ReviewsSection />
+
+            {/* UBICACIÓN */}
             <section className="py-24 bg-neutral-950 relative border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
                     <div>
@@ -215,8 +217,8 @@ export default function Home() {
                                         <MapPin className="size-6" />
                                     </div>
                                     <div>
-                                        <h4 className="text-white font-bold">Sede por Configurar</h4>
-                                        <p className="text-neutral-500 text-sm">Su Dirección Aquí.</p>
+                                        <h4 className="text-white font-bold">Sede Central</h4>
+                                        <p className="text-neutral-500 text-sm">Neiva, Huila</p>
                                     </div>
                                  </div>
                              )}

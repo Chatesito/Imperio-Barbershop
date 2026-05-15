@@ -56,6 +56,7 @@ export default function AuthModal({ isOpen, onClose }) {
                                     <input 
                                         type="text"
                                         name="name"
+                                        autoComplete="name"
                                         required={!isLogin}
                                         minLength={3}
                                         pattern="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$"
@@ -77,6 +78,7 @@ export default function AuthModal({ isOpen, onClose }) {
                                 <input 
                                     type="email"
                                     name="email"
+                                    autoComplete="email"
                                     required
                                     className="w-full pl-11 pr-4 py-3 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-neutral-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors"
                                     placeholder="tu@email.com"
@@ -94,6 +96,7 @@ export default function AuthModal({ isOpen, onClose }) {
                                 <input 
                                     type="password"
                                     name="password"
+                                    autoComplete={isLogin ? "current-password" : "new-password"}
                                     required
                                     className="w-full pl-11 pr-4 py-3 bg-neutral-800 border border-neutral-700 rounded-md text-white placeholder-neutral-500 focus:outline-none focus:border-brand-gold focus:ring-1 focus:ring-brand-gold transition-colors"
                                     placeholder="••••••••"

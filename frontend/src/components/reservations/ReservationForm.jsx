@@ -50,7 +50,7 @@ const ReservationForm = () => {
           s.name && 
           s.name.trim() !== "" && 
           !s.name.toLowerCase().includes("sdsds") && 
-          s.price
+          s.price > 0 // Exclude placeholder services with $0 price
         );
         setServices(validServices);
         setBranches(branchesRes.data || []);
@@ -263,6 +263,7 @@ const ReservationForm = () => {
           errors={errors} 
           options={staffOptions} 
           placeholder="Sin preferencia / El mejor disponible" 
+          validation={{ required: false }}
         />
         
         <Controller

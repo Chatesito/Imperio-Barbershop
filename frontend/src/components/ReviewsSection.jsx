@@ -101,19 +101,33 @@ export default function ReviewsSection() {
                         </h2>
                     </div>
 
-                    <div className="flex items-center gap-4">
-                        <button 
-                            onClick={prev}
-                            className="size-14 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-brand-gold/40 transition-all active:scale-95 group"
-                        >
-                            <ChevronLeft className="size-6 text-neutral-400 group-hover:text-brand-gold" />
-                        </button>
-                        <button 
-                            onClick={next}
-                            className="size-14 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-brand-gold/40 transition-all active:scale-95 group"
-                        >
-                            <ChevronRight className="size-6 text-neutral-400 group-hover:text-brand-gold" />
-                        </button>
+                    <div className="flex items-center gap-6">
+                        <div className="hidden md:flex bg-neutral-900 border border-neutral-800 rounded-2xl px-6 py-4 items-center gap-4 hover:border-brand-gold/20 transition-all">
+                            <span className="text-4xl font-karantina font-extrabold text-white">
+                                {reviews.length > 0 
+                                    ? (reviews.reduce((acc, r) => acc + (r.rating || 5), 0) / reviews.length).toFixed(1)
+                                    : "4.9"}
+                            </span>
+                            <div className="flex flex-col">
+                                <Star className="text-brand-gold fill-brand-gold size-4" />
+                                <span className="text-[8px] font-bold text-brand-gold uppercase tracking-widest">Verificado</span>
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                            <button 
+                                onClick={prev}
+                                className="size-14 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-brand-gold/40 transition-all active:scale-95 group"
+                            >
+                                <ChevronLeft className="size-6 text-neutral-400 group-hover:text-brand-gold" />
+                            </button>
+                            <button 
+                                onClick={next}
+                                className="size-14 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-brand-gold/40 transition-all active:scale-95 group"
+                            >
+                                <ChevronRight className="size-6 text-neutral-400 group-hover:text-brand-gold" />
+                            </button>
+                        </div>
                     </div>
                 </div>
 

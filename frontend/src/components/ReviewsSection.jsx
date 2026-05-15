@@ -6,7 +6,7 @@ export default function ReviewsSection() {
     const [reviews, setReviews] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(3);
-    const [direction, setDirection] = useState(0); // -1 for left, 1 for right
+    const [direction, setDirection] = useState(0);
 
     useEffect(() => {
         const fetchReviews = async () => {
@@ -16,7 +16,6 @@ export default function ReviewsSection() {
                 if (data && data.length > 0) {
                     setReviews(data);
                 } else {
-                    // Fallback data for empty state to maintain premium feel
                     setReviews([
                         { name: "Carlos Ruiz", comment: "La mejor atención que he recibido en Neiva. El degradado quedó impecable.", rating: 5, date: "Hace 2 días" },
                         { name: "Andrés Silva", comment: "Excelente ambiente y profesionalismo. Se nota la dedicación en cada detalle.", rating: 5, date: "Hace 1 semana" },
@@ -25,7 +24,6 @@ export default function ReviewsSection() {
                     ]);
                 }
             } catch (error) {
-                // Error handled gracefully
             }
         };
         fetchReviews();
@@ -193,7 +191,6 @@ export default function ReviewsSection() {
                     </AnimatePresence>
                 </div>
 
-                {/* Progress Indicators */}
                 <div className="flex justify-center gap-3 mt-12">
                     {reviews.map((_, i) => (
                         <button

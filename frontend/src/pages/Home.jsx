@@ -12,7 +12,6 @@ export default function Home() {
                 const { data } = await api.get("/branches");
                 setBranches(data || []);
             } catch (error) {
-                // Fail silently - UI has fallbacks
             }
         };
         fetchBranches();
@@ -21,7 +20,6 @@ export default function Home() {
     return (
         <div className="flex flex-col bg-neutral-950">
 
-            {/* HERO SECTION */}
             <section
                 className="relative min-h-screen flex items-center overflow-hidden"
                 style={{ backgroundImage: 'url(/images/hero.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }}
@@ -64,7 +62,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* NOSOTROS */}
             <section className="relative py-24 bg-neutral-950 overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-gold/30 to-transparent" />
                 <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
@@ -105,7 +102,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* VALORES */}
             <section
                 className="relative py-24 md:py-32"
                 style={{ backgroundImage: 'url(/images/interior.jpg)', backgroundSize: 'cover', backgroundAttachment: 'fixed' }}
@@ -165,7 +161,6 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* PORTAFOLIO */}
             <section className="py-24 bg-neutral-950">
                 <div className="max-w-7xl mx-auto px-6">
                     <div className="text-center mb-16">
@@ -187,10 +182,8 @@ export default function Home() {
                 </div>
             </section>
 
-            {/* REVIEWS CAROUSEL */}
             <ReviewsSection />
 
-            {/* UBICACIÓN */}
             <section className="py-24 bg-neutral-950 relative border-t border-white/5">
                 <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
                     <div>

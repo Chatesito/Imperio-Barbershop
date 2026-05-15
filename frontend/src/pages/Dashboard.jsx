@@ -410,7 +410,8 @@ export default function Dashboard() {
          </div>
       </div>
     </div>
-  );
+    );
+  };
 
   const renderAdminOverview = () => (
     <div className="space-y-8 fade-in">

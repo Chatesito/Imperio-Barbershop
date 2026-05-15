@@ -32,6 +32,7 @@ const ReservationForm = () => {
   const domicilio = watch("domicilio");
   const selectedBranch = watch("sede");
   const selectedServices = watch("servicio") || [];
+  const selectedBarbero = watch("barbero");
 
   const [services, setServices] = useState([]);
   const [branches, setBranches] = useState([]);
@@ -45,12 +46,11 @@ const ReservationForm = () => {
           api.get("/branches"),
           api.get("/staff")
         ]);
-        // Remove invalid services and ensure basic data exists
+        
         const validServices = (servicesRes.data || []).filter(s => 
           s.name && 
           s.name.trim() !== "" && 
-          !s.name.toLowerCase().includes("sdsds") && 
-          s.price > 0 // Exclude placeholder services with $0 price
+          s.price > 0 
         );
         setServices(validServices);
         setBranches(branchesRes.data || []);
@@ -63,21 +63,30 @@ const ReservationForm = () => {
   }, []);
 
   const branchOptions = branches.map(branch => ({
-    value: branch._id, // Usamos ID en lugar de nombre
+    value: branch._id,
     label: `${branch.name} - ${branch.address}`
   }));
 
-  // Filtrar barberos por sede y servicio
+  // Filtrar servicios disponibles según el profesional seleccionado
+  const displayServices = services.filter(service => {
+    if (!selectedBarbero || selectedBarbero === "" || selectedBarbero === "Sin preferencia / El mejor disponible") {
+      return true;
+    }
+    const professional = staff.find(s => s.name === selectedBarbero);
+    if (!professional || !professional.services) return true;
+    
+    // Comparar por ID o nombre
+    return professional.services.some(s => (s._id || s) === service._id || s.name === service.name);
+  });
+
+  // Filtrar profesionales según la sede y servicios seleccionados
   const staffOptions = staff
     .filter(member => {
-      // 1. No mostrar gerencia en la lista de reservas
       const isNotGerente = !member.role.toLowerCase().includes("gerencia") && !member.role.toLowerCase().includes("gerente");
       
-      // 2. Verificar que el barbero trabaje en la sede seleccionada (por ID)
       const worksInBranch = domicilio === "Sí" || !selectedBranch || 
         (member.branches && member.branches.some(b => String(b._id || b) === String(selectedBranch)));
       
-      // 3. Verificar que el barbero ofrezca TODOS los servicios seleccionados
       const providesAllServices = selectedServices.length === 0 || selectedServices.every(sValue => {
         const sName = sValue.split(" - ")[0];
         return member.services && member.services.some(s => (s.name || s) === sName);
@@ -142,6 +151,23 @@ const ReservationForm = () => {
       }
     }
   }, [selectedDate]);
+
+  // Sincronizar servicios seleccionados cuando cambia el profesional
+  useEffect(() => {
+    if (selectedBarbero && selectedBarbero !== "" && selectedBarbero !== "Sin preferencia / El mejor disponible" && staff.length > 0) {
+      const professional = staff.find(s => s.name === selectedBarbero);
+      if (professional && professional.services) {
+        const stillValidServices = selectedServices.filter(sValue => {
+          const sName = sValue.split(" - ")[0];
+          return professional.services.some(s => (s.name || s) === sName || (s._id || s) === sName);
+        });
+        
+        if (stillValidServices.length !== selectedServices.length) {
+          setValue("servicio", stillValidServices);
+        }
+      }
+    }
+  }, [selectedBarbero, staff, selectedServices, setValue]);
 
   // Generar slots de 30 minutos
   const generateTimeSlots = () => {
@@ -275,7 +301,7 @@ const ReservationForm = () => {
               label="Servicios"
               value={field.value || []}
               onChange={field.onChange}
-              options={services}
+              options={displayServices}
               error={errors.servicio?.message}
               placeholder="Escoge tu experiencia (puedes elegir varios)"
               isMulti={true}

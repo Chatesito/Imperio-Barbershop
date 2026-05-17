@@ -1,5 +1,6 @@
 import Reservation from "../models/Reservation.js";
 import Staff from "../models/Staff.js";
+import User from "../models/User.js";
 
 export const createReservation = async (req, res) => {
   try {
@@ -7,7 +8,16 @@ export const createReservation = async (req, res) => {
     
     let userId = req.user.id;
     if (req.user.role === "admin" && req.body.isWalkIn) {
-      userId = null;
+      if (!req.body.email) {
+        return res.status(400).json({ message: "El correo electrónico del cliente es obligatorio." });
+      }
+      const client = await User.findOne({ email: req.body.email.toLowerCase() });
+      if (!client) {
+        return res.status(400).json({ 
+          message: "El cliente ingresado no está registrado en el sistema. Debe registrarse primero." 
+        });
+      }
+      userId = client._id;
     }
 
     const now = new Date();
@@ -37,6 +47,15 @@ export const createReservation = async (req, res) => {
     if (reservationDate < oneHourLater) {
       return res.status(400).json({ 
         message: "Las citas para el mismo día deben reservarse con al menos 1 hora de anticipación." 
+      });
+    }
+
+    // Maximum 6 months validation
+    const sixMonthsLater = new Date(now);
+    sixMonthsLater.setMonth(sixMonthsLater.getMonth() + 6);
+    if (reservationDate > sixMonthsLater) {
+      return res.status(400).json({ 
+        message: "No puedes agendar una cita con más de 6 meses de anticipación." 
       });
     }
 
@@ -160,7 +179,15 @@ export const getReservations = async (req, res) => {
         }
       }
     }
-    const reservations = await Reservation.find(query).sort({ fecha: 1, hora: 1 });
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    let reservations;
+    if (page && limit) {
+      const skip = (page - 1) * limit;
+      reservations = await Reservation.find(query).sort({ fecha: 1, hora: 1 }).skip(skip).limit(limit);
+    } else {
+      reservations = await Reservation.find(query).sort({ fecha: 1, hora: 1 });
+    }
     res.status(200).json(reservations);
   } catch (error) {
     res.status(500).json({ message: "Error obteniendo reservaciones", error: error.message });

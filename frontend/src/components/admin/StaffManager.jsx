@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import toast from "react-hot-toast";
-import { Edit2, Trash2, Loader2, X, Check, Image as ImageIcon, MapPin, Briefcase, Scissors } from "lucide-react";
+import { Edit2, Trash2, Loader2, X, Check, Image as ImageIcon, MapPin, Briefcase, Scissors, ChevronLeft, ChevronRight } from "lucide-react";
 import { compressImageToBase64 } from "../../utils/imageHelper";
 import { confirmAction } from "../../utils/alerts";
 
@@ -11,6 +11,9 @@ export default function StaffManager() {
   const [editingMember, setEditingMember] = useState(null);
   const [branches, setBranches] = useState([]);
   const [services, setServices] = useState([]);
+  
+  const [page, setPage] = useState(1);
+  const limit = 6;
 
   useEffect(() => {
     fetchData();
@@ -59,6 +62,13 @@ export default function StaffManager() {
 
   if (loading) return <div className="p-20 text-center animate-pulse text-neutral-500 uppercase tracking-widest">Sincronizando equipo profesional...</div>;
 
+  const paginatedStaff = staff.slice((page - 1) * limit, page * limit);
+  const hasNext = (page * limit) < staff.length;
+
+  if (paginatedStaff.length === 0 && page > 1) {
+      setPage(page - 1);
+  }
+
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="flex items-center gap-4 bg-neutral-900/50 p-6 rounded-3xl border border-neutral-800 shadow-xl">
@@ -72,7 +82,7 @@ export default function StaffManager() {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {staff.map(s => (
+        {paginatedStaff.map(s => (
           <div key={s._id} className="bg-neutral-900 border border-neutral-800 rounded-[2.5rem] p-6 group relative overflow-hidden transition-all hover:border-brand-gold/30 hover:shadow-2xl">
             <div className="flex items-center gap-5 mb-6">
                 <div className="relative">
@@ -108,6 +118,27 @@ export default function StaffManager() {
           </div>
         ))}
       </div>
+
+      {/* Paginación */}
+      {(page > 1 || hasNext) && (
+          <div className="flex items-center justify-center gap-4 mt-8 pt-6 border-t border-neutral-800/50">
+              <button
+                  disabled={page === 1}
+                  onClick={() => setPage(page - 1)}
+                  className="p-2 bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-400 hover:text-brand-gold disabled:opacity-30 disabled:hover:text-neutral-400 transition-all"
+              >
+                  <ChevronLeft className="size-5" />
+              </button>
+              <span className="text-sm font-bold text-neutral-400 uppercase tracking-widest">Página {page}</span>
+              <button
+                  disabled={!hasNext}
+                  onClick={() => setPage(page + 1)}
+                  className="p-2 bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-400 hover:text-brand-gold disabled:opacity-30 disabled:hover:text-neutral-400 transition-all"
+              >
+                  <ChevronRight className="size-5" />
+              </button>
+          </div>
+      )}
 
       {/* Modal de Edición */}
       {editingMember && (

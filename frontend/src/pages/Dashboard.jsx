@@ -588,7 +588,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-[100dvh] bg-neutral-950 py-12 px-4 md:py-20 animate-fade-in">
+    <div className="min-h-[100dvh] bg-neutral-950 py-12 px-6 md:px-10 lg:px-16 md:py-20 animate-fade-in">
       {/* Header Panel */}
       <div className={`max-w-7xl mx-auto mb-8 ${user.role === "admin" ? "" : "max-w-4xl"}`}>
         <h1 className="text-4xl md:text-5xl font-karantina font-extrabold text-white tracking-wide uppercase">

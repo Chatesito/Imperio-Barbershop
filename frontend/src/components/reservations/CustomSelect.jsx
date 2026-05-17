@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-const CustomSelect = ({ label, value = [], onChange, options, error, placeholder, isMulti = false }) => {
+const CustomSelect = ({ label, value = [], onChange, options, error, placeholder, isMulti = false, disabled = false }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -51,10 +51,12 @@ const CustomSelect = ({ label, value = [], onChange, options, error, placeholder
       </label>
       
       <div
-        onClick={() => setIsOpen(!isOpen)}
-        className={`w-full px-4 py-3 rounded-xl bg-neutral-900 border border-neutral-700 text-white cursor-pointer flex items-center justify-between focus:outline-none focus:ring-1 focus:ring-brand-gold transition-all ${
-          error ? "border-red-500" : ""
-        } ${isOpen ? "border-brand-gold" : ""}`}
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        className={`w-full px-4 py-3 rounded-xl border text-white flex items-center justify-between transition-all ${
+          disabled 
+            ? "bg-neutral-900 border-neutral-800 opacity-40 cursor-not-allowed text-neutral-500" 
+            : "bg-neutral-900 border-neutral-700 cursor-pointer focus:outline-none focus:ring-1 focus:ring-brand-gold"
+        } ${error ? "border-red-500" : ""} ${isOpen ? "border-brand-gold" : ""}`}
       >
         <span className={value && (isMulti ? value.length > 0 : value) ? "text-white text-sm" : "text-neutral-500 text-sm"}>
           {getDisplayValue()}

@@ -8,7 +8,7 @@ const staffSchema = new mongoose.Schema(
     imageUrl: { type: String, default: "/images/staff/barber_default.png" },
     branches: [{ type: mongoose.Schema.Types.ObjectId, ref: "Branch" }], 
     services: [{ type: mongoose.Schema.Types.ObjectId, ref: "Service" }],
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );

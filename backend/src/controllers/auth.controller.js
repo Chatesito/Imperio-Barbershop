@@ -119,7 +119,15 @@ export const refreshToken = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}, "-password -refreshToken").sort({ createdAt: -1 });
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    let users;
+    if (page && limit) {
+      const skip = (page - 1) * limit;
+      users = await User.find({}, "-password -refreshToken").sort({ createdAt: -1 }).skip(skip).limit(limit);
+    } else {
+      users = await User.find({}, "-password -refreshToken").sort({ createdAt: -1 });
+    }
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Error cargando usuarios" });

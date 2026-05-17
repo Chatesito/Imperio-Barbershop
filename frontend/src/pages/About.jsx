@@ -9,14 +9,14 @@ export default function About() {
             <section className="relative min-h-[70vh] flex items-center pt-24 pb-16 overflow-hidden">
                 <div className="absolute top-0 right-0 w-1/2 h-full bg-brand-gold/5 blur-[120px] -z-10 animate-pulse" />
                 
-                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+                <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 grid lg:grid-cols-2 gap-16 items-center">
                     
                     {/* Contenido izquierdo */}
                     <div className="space-y-8 animate-fade-in-up">
                         <span className="inline-block py-1 px-4 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold tracking-[0.3em] uppercase">
                             Nuestra Identidad
                         </span>
-                        <h1 className="text-6xl md:text-8xl font-karantina font-extrabold text-white uppercase leading-[0.85] tracking-tighter">
+                        <h1 className="text-6xl md:text-8xl font-karantina font-semibold text-white uppercase leading-[0.85] tracking-tighter">
                             MÁS QUE UNA <br />
                             <span className="text-brand-gold">BARBERÍA</span>, <br />
                             UN LEGADO
@@ -45,7 +45,7 @@ export default function About() {
                             <img
                                 src="/images/about-us.png"
                                 alt="Barbero trabajando con maestría"
-                                className="w-full h-auto object-cover transform scale-105 group-hover:scale-100 transition duration-700"
+                                className="w-full h-auto object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/80 via-transparent to-transparent" />
                         </div>
@@ -65,7 +65,7 @@ export default function About() {
             {/* SECCIÓN - NUESTRA HISTORIA (DARK CONTENT) */}
             <section className="relative py-24 bg-neutral-900/40">
                 <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-gold/20 to-transparent" />
-                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 items-center">
+                <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 grid lg:grid-cols-12 gap-16 items-center">
                     
                     {/* Imagen izquierda */}
                     <div className="lg:col-span-5 relative order-2 lg:order-1">
@@ -73,19 +73,16 @@ export default function About() {
                              <img
                                 src="/images/about-us-NuestraHistoria.png"
                                 alt="Los inicios de Imperio"
-                                className="w-full h-full object-cover grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700"
+                                className="w-full h-full object-cover"
                             />
                             <div className="absolute inset-0 bg-brand-gold/10 mix-blend-overlay" />
-                        </div>
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 size-32 border border-brand-gold/30 rounded-full flex items-center justify-center animate-spin-slow">
-                            <History className="size-10 text-brand-gold/50" />
                         </div>
                     </div>
                     
                     {/* Contenido derecha */}
                     <div className="lg:col-span-7 space-y-8 order-1 lg:order-2">
                         <h2 className="text-sm font-bold text-brand-gold uppercase tracking-[0.5em]">El Origen</h2>
-                        <h3 className="text-5xl md:text-7xl font-karantina font-extrabold text-white uppercase leading-none">
+                        <h3 className="text-5xl md:text-7xl font-karantina font-semibold text-white uppercase leading-none">
                             FUNDADA EN <br />
                             <span className="text-brand-gold">2025</span>
                         </h3>
@@ -104,10 +101,10 @@ export default function About() {
 
             {/* SECCIÓN - NUESTRA FILOSOFÍA (VALORES) */}
             <section className="py-32 bg-neutral-950 relative overflow-hidden">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
                     <div className="text-center mb-24 max-w-2xl mx-auto">
                         <h2 className="text-brand-gold text-sm font-bold uppercase tracking-[0.6em] mb-4">Los Pilares</h2>
-                        <h3 className="text-5xl md:text-7xl font-karantina font-extrabold text-white uppercase leading-none">
+                        <h3 className="text-5xl md:text-7xl font-karantina font-semibold text-white uppercase leading-none">
                             NUESTRA <span className="text-brand-gold">FILOSOFÍA</span>
                         </h3>
                         <p className="mt-8 text-neutral-500 text-lg font-light">
@@ -122,7 +119,7 @@ export default function About() {
                                 <Crown className="size-32" />
                             </div>
                             <h4 className="text-brand-gold font-karantina text-4xl uppercase tracking-widest mb-4">01. EXCELENCIA</h4>
-                            <h5 className="text-white font-bold text-xl mb-4">Sin Concesiones</h5>
+                            <h5 className="text-white font-semibold text-xl mb-4">Sin Concesiones</h5>
                             <p className="text-neutral-500 leading-relaxed text-sm font-light">
                                 Cada corte es una obra de arte. No nos conformamos con lo aceptable; perseguimos la perfección en cada trazo de navaja.
                             </p>
@@ -134,7 +131,7 @@ export default function About() {
                                 <Scissors className="size-32" />
                             </div>
                             <h4 className="text-brand-gold font-karantina text-4xl uppercase tracking-widest mb-4">02. TRADICIÓN</h4>
-                            <h5 className="text-white font-bold text-xl mb-4">Arte y Precisión</h5>
+                            <h5 className="text-white font-semibold text-xl mb-4">Arte y Precisión</h5>
                             <p className="text-neutral-500 leading-relaxed text-sm font-light">
                                 Honramos los rituales clásicos de la barbería, fusionándolos con la vanguardia del estilo masculino contemporáneo.
                             </p>
@@ -146,7 +143,7 @@ export default function About() {
                                 <Gem className="size-32" />
                             </div>
                             <h4 className="text-brand-gold font-karantina text-4xl uppercase tracking-widest mb-4">03. LEALTAD</h4>
-                            <h5 className="text-white font-bold text-xl mb-4">Experiencia de Lujo</h5>
+                            <h5 className="text-white font-semibold text-xl mb-4">Experiencia de Lujo</h5>
                             <p className="text-neutral-500 leading-relaxed text-sm font-light">
                                 Tu tiempo es tu activo más valioso. En el Imperio, cada minuto está diseñado para elevar tu confianza y bienestar.
                             </p>

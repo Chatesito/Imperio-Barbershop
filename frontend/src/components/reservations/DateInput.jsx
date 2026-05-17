@@ -14,7 +14,12 @@ const DateInput = ({ label, id, register, errors, minDate, maxDate, validate }) 
       })}
       min={minDate}
       max={maxDate}
-      className={`w-full px-5 py-4 rounded-2xl bg-neutral-950 border text-white text-sm focus:outline-none focus:ring-1 transition-all duration-300 ${
+      onClick={(e) => {
+        try {
+          e.target.showPicker();
+        } catch (err) {}
+      }}
+      className={`w-full px-5 py-4 rounded-2xl bg-neutral-950 border text-white text-sm focus:outline-none focus:ring-1 transition-all duration-300 cursor-pointer ${
         errors[id] ? "border-red-500 ring-red-500/20" : "border-neutral-800 focus:border-brand-gold/50 focus:ring-brand-gold/10"
       }`}
     />

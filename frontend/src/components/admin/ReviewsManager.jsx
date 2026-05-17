@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import toast from "react-hot-toast";
-import { Trash2, PlusCircle, Loader2, Star } from "lucide-react";
+import { Trash2, PlusCircle, Loader2, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { compressImageToBase64 } from "../../utils/imageHelper";
 import { confirmAction } from "../../utils/alerts";
 
@@ -9,6 +9,9 @@ export default function ReviewsManager() {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({ name: "", rating: 5, date: "", img: "", comment: "" });
+  
+  const [page, setPage] = useState(1);
+  const limit = 4;
 
   useEffect(() => {
     fetchReviews();
@@ -49,6 +52,13 @@ export default function ReviewsManager() {
   };
 
   if (loading) return <div className="p-10 flex justify-center"><Loader2 className="animate-spin text-brand-gold size-8" /></div>;
+
+  const paginatedReviews = reviews.slice((page - 1) * limit, page * limit);
+  const hasNext = (page * limit) < reviews.length;
+
+  if (paginatedReviews.length === 0 && page > 1) {
+      setPage(page - 1);
+  }
 
   return (
     <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl">
@@ -95,7 +105,7 @@ export default function ReviewsManager() {
       </form>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {reviews.map(r => (
+        {paginatedReviews.map(r => (
           <div key={r._id} className="bg-neutral-800 p-4 rounded border border-neutral-700 relative">
             <div className="flex justify-between items-start mb-2">
               <div className="flex items-center gap-3">
@@ -116,6 +126,27 @@ export default function ReviewsManager() {
           </div>
         ))}
       </div>
+
+      {/* Paginación */}
+      {(page > 1 || hasNext) && (
+          <div className="flex items-center justify-center gap-4 mt-8 pt-6 border-t border-neutral-800/50">
+              <button
+                  disabled={page === 1}
+                  onClick={() => setPage(page - 1)}
+                  className="p-2 bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-400 hover:text-brand-gold disabled:opacity-30 disabled:hover:text-neutral-400 transition-all"
+              >
+                  <ChevronLeft className="size-5" />
+              </button>
+              <span className="text-sm font-bold text-neutral-400 uppercase tracking-widest">Página {page}</span>
+              <button
+                  disabled={!hasNext}
+                  onClick={() => setPage(page + 1)}
+                  className="p-2 bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-400 hover:text-brand-gold disabled:opacity-30 disabled:hover:text-neutral-400 transition-all"
+              >
+                  <ChevronRight className="size-5" />
+              </button>
+          </div>
+      )}
     </div>
   );
 }

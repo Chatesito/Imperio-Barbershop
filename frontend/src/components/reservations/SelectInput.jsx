@@ -1,6 +1,6 @@
 import React from "react";
 
-const SelectInput = ({ label, id, register, errors, options, placeholder, validation = { required: `Selecciona ${label.toLowerCase()}` } }) => (
+const SelectInput = ({ label, id, register, errors, options, placeholder, disabled = false, validation = { required: `Selecciona ${label.toLowerCase()}` } }) => (
   <div>
     <label htmlFor={id} className="block text-[10px] font-bold text-neutral-500 uppercase tracking-[0.2em] mb-2 ml-1">
       {label}
@@ -8,10 +8,13 @@ const SelectInput = ({ label, id, register, errors, options, placeholder, valida
     <div className="relative">
       <select
         id={id}
-        {...register(id, validation)}
-        className={`w-full px-5 py-4 rounded-2xl bg-neutral-950 border text-white text-sm appearance-none focus:outline-none focus:ring-1 transition-all duration-300 ${
-          errors[id] ? "border-red-500 ring-red-500/20" : "border-neutral-800 focus:border-brand-gold/50 focus:ring-brand-gold/10"
-        }`}
+        disabled={disabled}
+        {...register(id, disabled ? { required: false } : validation)}
+        className={`w-full px-5 py-4 rounded-2xl border text-white text-sm appearance-none focus:outline-none focus:ring-1 transition-all duration-300 ${
+          disabled 
+            ? "bg-neutral-900 border-neutral-850 opacity-40 cursor-not-allowed text-neutral-500" 
+            : "bg-neutral-950 border-neutral-880 focus:border-brand-gold/50 focus:ring-brand-gold/10"
+        } ${errors[id] ? "border-red-500 ring-red-500/20" : ""}`}
       >
         <option value="" className="bg-neutral-950">{placeholder}</option>
         {options.map((option, index) => (

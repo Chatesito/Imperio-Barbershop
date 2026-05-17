@@ -17,7 +17,7 @@ function FooterItem({ icon, label, content }) {
 export default function Footer() {
     return (
         <footer className="bg-gradient-to-b from-neutral-900 to-neutral-950 border-t border-brand-gold/20 text-neutral-300">
-            <div className="max-w-7xl mx-auto px-8 md:px-16 lg:px-24 py-6 text-center space-y-4">
+            <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-6 text-center space-y-4">
 
                 {/* --- Logo e identidad --- */}
                 <div className="flex flex-col md:flex-row justify-center items-center gap-2">

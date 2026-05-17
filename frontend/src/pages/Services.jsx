@@ -71,7 +71,7 @@ export default function Services() {
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-black/20" />
                 <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
                 
-                <div className="relative z-10 text-center px-6 animate-fade-in-up">
+                <div className="relative z-10 text-center px-6 md:px-10 lg:px-16 animate-fade-in-up">
                     <span className="inline-block py-1 px-4 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold tracking-[0.3em] uppercase mb-6">
                         Menú de Experiencias
                     </span>
@@ -91,7 +91,7 @@ export default function Services() {
             </section>
 
             {/* SECCIÓN DE EXPERIENCIA (HOME SERVICE) */}
-            <section className="py-24 px-6 md:px-12 bg-neutral-950 relative">
+            <section className="py-24 px-6 md:px-10 lg:px-16 bg-neutral-950 relative">
                 <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-gold/20 to-transparent" />
                 
                 <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
@@ -142,7 +142,7 @@ export default function Services() {
             </section>
 
             {/* PASOS PARA RESERVAR */}
-            <section className="bg-neutral-900/30 py-24 px-6 relative overflow-hidden">
+            <section className="bg-neutral-900/30 py-24 px-6 md:px-10 lg:px-16 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto text-center relative z-10">
                     <h3 className="text-4xl md:text-5xl font-karantina font-semibold text-white uppercase tracking-wider mb-16">
                         EL CAMINO AL <span className="text-brand-gold">DOMINIO</span>
@@ -171,7 +171,7 @@ export default function Services() {
             </section>
 
             {/* LISTA DE SERVICIOS - EL MENÚ DE CABALLERO */}
-            <section id="services-list" className="py-24 px-6 bg-neutral-950 relative">
+            <section id="services-list" className="py-24 px-6 md:px-10 lg:px-16 bg-neutral-950 relative">
                 <div className="max-w-4xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-sm font-bold text-brand-gold uppercase tracking-[0.5em] mb-4">Tarifas y Selecciones</h2>

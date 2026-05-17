@@ -26,6 +26,10 @@ export default function ServicesManager() {
       ]);
       
       const srvData = srvRes.data;
+      if (srvData.length === 0 && page > 1) {
+        setPage(page - 1);
+        return;
+      }
       if (srvData.length > limit) {
         setHasNext(true);
         setServices(srvData.slice(0, limit));

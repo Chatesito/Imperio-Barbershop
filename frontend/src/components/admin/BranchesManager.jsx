@@ -23,6 +23,10 @@ export default function BranchesManager() {
       const { data } = await api.get("/branches", {
         params: { page, limit: limit + 1 }
       });
+      if (data.length === 0 && page > 1) {
+        setPage(page - 1);
+        return;
+      }
       if (data.length > limit) {
         setHasNext(true);
         setBranches(data.slice(0, limit));

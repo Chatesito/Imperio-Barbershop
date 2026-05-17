@@ -68,6 +68,10 @@ export default function UsersManager() {
     const paginatedUsers = filteredUsers.slice((page - 1) * limit, page * limit);
     const hasNext = (page * limit) < filteredUsers.length;
 
+    if (paginatedUsers.length === 0 && page > 1) {
+        setPage(page - 1);
+    }
+
     if (loading && users.length === 0) return <div className="p-10 text-center text-neutral-500 uppercase tracking-widest animate-pulse">Cargando base de datos...</div>;
 
     return (

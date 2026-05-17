@@ -30,7 +30,7 @@ export default function Navbar() {
     return (
         <>
             <nav className="bg-neutral-900 border-b border-neutral-700 relative z-40 shadow-md shadow-black/20">
-                <div className="max-w-7xl mx-auto px-8 md:px-16 lg:px-24 h-14 flex items-center justify-between">
+                <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 h-14 flex items-center justify-between">
 
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2">
@@ -95,58 +95,58 @@ export default function Navbar() {
                 </div>
 
                 {/* Mobile dropdown */}
-                {open && (
-                    <div className="lg:hidden bg-neutral-900 border-t border-neutral-700">
-                        <div className="px-4 py-3 flex flex-col gap-1">
-                            {links.map((l) => (
-                                <NavLink
-                                    key={l.label}
-                                    to={l.to}
-                                    onClick={() => setOpen(false)}
-                                    className="block px-2 py-2 rounded-md text-sm font-semibold text-neutral-300 hover:bg-neutral-700 hover:text-white"
-                                >
-                                    {l.label}
-                                </NavLink>
-                            ))}
+                <div 
+                    className={`lg:hidden bg-neutral-900 overflow-hidden transition-all duration-300 ease-in-out ${open ? 'max-h-[500px] opacity-100 border-t border-neutral-700' : 'max-h-0 opacity-0 border-none'}`}
+                >
+                    <div className="px-4 py-3 flex flex-col gap-1">
+                        {links.map((l) => (
+                            <NavLink
+                                key={l.label}
+                                to={l.to}
+                                onClick={() => setOpen(false)}
+                                className="block px-2 py-2 rounded-md text-sm font-semibold text-neutral-300 hover:bg-neutral-700 hover:text-white transition-colors"
+                            >
+                                {l.label}
+                            </NavLink>
+                        ))}
 
-                            {/* Login mobile */}
-                            {user ? (
-                                <div className="mt-2 flex flex-col gap-2 border-t border-neutral-700 pt-3">
-                                    <span className="text-sm font-semibold text-neutral-300 px-2">
-    Hola, {user.name.length > 10 ? user.name.slice(0, 1) + '.' + user.name.split(' ').pop() : user.name}
-</span>
-                                    {location.pathname !== "/Dashboard" && (
-                                        <Link 
-                                            to="/Dashboard"
-                                            onClick={() => setOpen(false)}
-                                            className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-brand-gold text-brand-gold font-semibold text-sm tracking-wide hover:bg-brand-gold hover:text-black transition-colors"
-                                        >
-                                            Panel
-                                        </Link>
-                                    )}
-                                    <button 
-                                        onClick={() => { logout(); setOpen(false); }}
-                                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-red-500 text-red-500 font-semibold text-sm tracking-wide hover:bg-red-500 hover:text-white transition-colors"
+                        {/* Login mobile */}
+                        {user ? (
+                            <div className="mt-2 flex flex-col gap-2 border-t border-neutral-700 pt-3">
+                                <span className="text-sm font-semibold text-neutral-300 px-2">
+                                    Hola, {user.name.length > 10 ? user.name.slice(0, 1) + '.' + user.name.split(' ').pop() : user.name}
+                                </span>
+                                {location.pathname !== "/Dashboard" && (
+                                    <Link 
+                                        to="/Dashboard"
+                                        onClick={() => setOpen(false)}
+                                        className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-brand-gold text-brand-gold font-semibold text-sm tracking-wide hover:bg-brand-gold hover:text-black transition-colors"
                                     >
-                                        <LogOut className="size-4" />
-                                        <span>Salir</span>
-                                    </button>
-                                </div>
-                            ) : (
+                                        Panel
+                                    </Link>
+                                )}
                                 <button 
-                                    onClick={() => {
-                                        setShowAuthModal(true);
-                                        setOpen(false);
-                                    }}
-                                    className="mt-2 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-brand-gold text-brand-gold font-semibold text-sm tracking-wide hover:bg-brand-gold hover:text-black transition-colors"
+                                    onClick={() => { logout(); setOpen(false); }}
+                                    className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-red-500 text-red-500 font-semibold text-sm tracking-wide hover:bg-red-500 hover:text-white transition-colors"
                                 >
-                                    <User className="size-4" />
-                                    <span>Ingresar</span>
+                                    <LogOut className="size-4" />
+                                    <span>Salir</span>
                                 </button>
-                            )}
-                        </div>
+                            </div>
+                        ) : (
+                            <button 
+                                onClick={() => {
+                                    setShowAuthModal(true);
+                                    setOpen(false);
+                                }}
+                                className="mt-2 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md border border-brand-gold text-brand-gold font-semibold text-sm tracking-wide hover:bg-brand-gold hover:text-black transition-colors"
+                            >
+                                <User className="size-4" />
+                                <span>Ingresar</span>
+                            </button>
+                        )}
                     </div>
-                )}
+                </div>
             </nav>
 
             {/* AuthModal separado */}

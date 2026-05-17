@@ -9,7 +9,7 @@ export default function About() {
             <section className="relative min-h-[70vh] flex items-center pt-24 pb-16 overflow-hidden">
                 <div className="absolute top-0 right-0 w-1/2 h-full bg-brand-gold/5 blur-[120px] -z-10 animate-pulse" />
                 
-                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+                <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 grid lg:grid-cols-2 gap-16 items-center">
                     
                     {/* Contenido izquierdo */}
                     <div className="space-y-8 animate-fade-in-up">
@@ -65,7 +65,7 @@ export default function About() {
             {/* SECCIÓN - NUESTRA HISTORIA (DARK CONTENT) */}
             <section className="relative py-24 bg-neutral-900/40">
                 <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-gold/20 to-transparent" />
-                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-16 items-center">
+                <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 grid lg:grid-cols-12 gap-16 items-center">
                     
                     {/* Imagen izquierda */}
                     <div className="lg:col-span-5 relative order-2 lg:order-1">
@@ -101,7 +101,7 @@ export default function About() {
 
             {/* SECCIÓN - NUESTRA FILOSOFÍA (VALORES) */}
             <section className="py-32 bg-neutral-950 relative overflow-hidden">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
                     <div className="text-center mb-24 max-w-2xl mx-auto">
                         <h2 className="text-brand-gold text-sm font-bold uppercase tracking-[0.6em] mb-4">Los Pilares</h2>
                         <h3 className="text-5xl md:text-7xl font-karantina font-semibold text-white uppercase leading-none">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../../services/api";
 import toast from "react-hot-toast";
-import { Trash2, PlusCircle, Loader2 } from "lucide-react";
+import { Trash2, PlusCircle, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { compressImageToBase64 } from "../../utils/imageHelper";
 import { confirmAction } from "../../utils/alerts";
 
@@ -9,6 +9,9 @@ export default function GalleryManager() {
   const [gallery, setGallery] = useState([]);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({ url: "", type: "work" });
+  
+  const [page, setPage] = useState(1);
+  const limit = 8;
 
   useEffect(() => {
     fetchGallery();
@@ -50,6 +53,13 @@ export default function GalleryManager() {
 
   if (loading) return <div className="p-10 flex justify-center"><Loader2 className="animate-spin text-brand-gold size-8" /></div>;
 
+  const paginatedGallery = gallery.slice((page - 1) * limit, page * limit);
+  const hasNext = (page * limit) < gallery.length;
+
+  if (paginatedGallery.length === 0 && page > 1) {
+      setPage(page - 1);
+  }
+
   return (
     <div className="bg-neutral-900 border border-neutral-800 rounded-lg p-6 shadow-xl">
       <h2 className="text-xl font-bold text-white mb-6 border-b border-neutral-800 pb-2">Catálogo de Trabajos (Galería)</h2>
@@ -83,7 +93,7 @@ export default function GalleryManager() {
       </form>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {gallery.map(g => (
+        {paginatedGallery.map(g => (
           <div key={g._id} className="relative group rounded-md overflow-hidden bg-neutral-800 aspect-square">
             <img src={g.url} alt="Gallery item" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-neutral-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
@@ -95,6 +105,27 @@ export default function GalleryManager() {
           </div>
         ))}
       </div>
+
+      {/* Paginación */}
+      {(page > 1 || hasNext) && (
+          <div className="flex items-center justify-center gap-4 mt-8 pt-6 border-t border-neutral-800/50">
+              <button
+                  disabled={page === 1}
+                  onClick={() => setPage(page - 1)}
+                  className="p-2 bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-400 hover:text-brand-gold disabled:opacity-30 disabled:hover:text-neutral-400 transition-all"
+              >
+                  <ChevronLeft className="size-5" />
+              </button>
+              <span className="text-sm font-bold text-neutral-400 uppercase tracking-widest">Página {page}</span>
+              <button
+                  disabled={!hasNext}
+                  onClick={() => setPage(page + 1)}
+                  className="p-2 bg-neutral-950 border border-neutral-800 rounded-xl text-neutral-400 hover:text-brand-gold disabled:opacity-30 disabled:hover:text-neutral-400 transition-all"
+              >
+                  <ChevronRight className="size-5" />
+              </button>
+          </div>
+      )}
     </div>
   );
 }

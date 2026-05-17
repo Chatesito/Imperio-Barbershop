@@ -131,7 +131,7 @@ export default function OurTeam() {
 
             {/* Métricas / Stats */}
             <section className="py-24 bg-neutral-900/50 border-y border-white/5 relative">
-                <div className="max-w-7xl mx-auto px-6 grid gap-12 md:grid-cols-3 text-center">
+                <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 grid gap-12 md:grid-cols-3 text-center">
                     {[
                         { icon: Scissors, value: "4500+", label: "Cortes Maestros" },
                         { icon: Star, value: "2500+", label: "Afeitados de Lujo" },

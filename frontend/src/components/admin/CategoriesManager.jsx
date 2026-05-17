@@ -17,6 +17,10 @@ export default function CategoriesManager() {
             const { data } = await api.get("/categories", {
                 params: { page, limit: limit + 1 }
             });
+            if (data.length === 0 && page > 1) {
+                setPage(page - 1);
+                return;
+            }
             if (data.length > limit) {
                 setHasNext(true);
                 setCategories(data.slice(0, limit));

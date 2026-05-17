@@ -27,7 +27,7 @@ export default function Home() {
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-black/40 to-transparent" />
                 <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]" />
                 
-                <div className="relative z-10 w-full max-w-7xl mx-auto px-6 py-20 lg:py-32">
+                <div className="relative z-10 w-full max-w-7xl mx-auto px-6 md:px-10 lg:px-16 py-20 lg:py-32">
                     <div className="max-w-2xl animate-fade-in-up">
                         <span className="inline-block py-1 px-4 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold tracking-widest uppercase mb-4 animate-float">
                             Establecido en 2025
@@ -64,7 +64,7 @@ export default function Home() {
 
             <section className="relative py-24 bg-neutral-950 overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-brand-gold/30 to-transparent" />
-                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+                <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 grid lg:grid-cols-2 gap-16 items-center">
                     <div className="relative group">
                         <div className="absolute -inset-4 bg-brand-gold/10 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition duration-1000" />
                         <div className="relative overflow-hidden rounded-2xl border border-neutral-800 shadow-2xl">
@@ -107,7 +107,7 @@ export default function Home() {
                 style={{ backgroundImage: 'url(/images/interior.jpg)', backgroundSize: 'cover', backgroundAttachment: 'fixed' }}
             >
                 <div className="absolute inset-0 bg-neutral-950/80 backdrop-blur-sm" />
-                <div className="relative z-10 max-w-7xl mx-auto px-6 grid lg:grid-cols-12 gap-12 items-center">
+                <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-10 lg:px-16 grid lg:grid-cols-12 gap-12 items-center">
                     
                     <div className="lg:col-span-7">
                         <h2 className="text-5xl md:text-6xl font-karantina font-extrabold text-white uppercase mb-8">
@@ -162,7 +162,7 @@ export default function Home() {
             </section>
 
             <section className="py-24 bg-neutral-950">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16">
                     <div className="text-center mb-16">
                         <h2 className="text-sm font-bold text-brand-gold uppercase tracking-[0.4em] mb-4">Portafolio</h2>
                         <h3 className="text-5xl md:text-6xl font-karantina font-extrabold text-white uppercase">El Trabajo que <span className="text-brand-gold">Habla</span></h3>
@@ -180,7 +180,7 @@ export default function Home() {
             <ReviewsSection />
 
             <section className="py-24 bg-neutral-950 relative border-t border-white/5">
-                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+                <div className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 grid lg:grid-cols-2 gap-16 items-center">
                     <div>
                          <h2 className="text-4xl md:text-5xl font-karantina font-extrabold text-white uppercase mb-6">
                             Ven a <span className="text-brand-gold">Dominar</span> tu estilo

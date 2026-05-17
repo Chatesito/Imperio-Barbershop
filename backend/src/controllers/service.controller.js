@@ -2,9 +2,21 @@ import Service from "../models/Service.js";
 
 export const getServices = async (req, res) => {
   try {
-    const services = await Service.find()
-      .populate("category")
-      .sort({ name: 1 });
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    let services;
+    if (page && limit) {
+      const skip = (page - 1) * limit;
+      services = await Service.find()
+        .populate("category")
+        .sort({ name: 1 })
+        .skip(skip)
+        .limit(limit);
+    } else {
+      services = await Service.find()
+        .populate("category")
+        .sort({ name: 1 });
+    }
     res.status(200).json(services);
   } catch (error) {
     res.status(500).json({ message: "Error obteniendo servicios", error: error.message });

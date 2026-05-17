@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import api from "../../services/api";
 import toast from "react-hot-toast";
-import { Users, UserCircle, ShieldCheck, Mail, Scissors, Search, Filter, Plus } from "lucide-react";
+import { Users, UserCircle, ShieldCheck, Mail, Scissors, Search, Filter, Plus, ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function UsersManager() {
     const [users, setUsers] = useState([]);
@@ -9,6 +9,8 @@ export default function UsersManager() {
     const [searchTerm, setSearchTerm] = useState("");
     const [roleFilter, setRoleFilter] = useState("all");
     const [showCreateForm, setShowCreateForm] = useState(false);
+    const [page, setPage] = useState(1);
+    const limit = 8;
 
     const fetchUsers = async () => {
         try {
@@ -25,6 +27,10 @@ export default function UsersManager() {
     useEffect(() => {
         fetchUsers();
     }, []);
+
+    useEffect(() => {
+        setPage(1);
+    }, [searchTerm, roleFilter]);
 
     const handleRoleChange = async (userId, newRole) => {
         if (!window.confirm(`¿Seguro que quieres cambiar el rol a ${newRole}?`)) return;
@@ -58,6 +64,9 @@ export default function UsersManager() {
         const matchesRole = roleFilter === "all" || u.role === roleFilter;
         return matchesSearch && matchesRole;
     });
+
+    const paginatedUsers = filteredUsers.slice((page - 1) * limit, page * limit);
+    const hasNext = (page * limit) < filteredUsers.length;
 
     if (loading && users.length === 0) return <div className="p-10 text-center text-neutral-500 uppercase tracking-widest animate-pulse">Cargando base de datos...</div>;
 
@@ -104,9 +113,9 @@ export default function UsersManager() {
                         <div className="space-y-1">
                             <label className="text-[10px] font-bold text-neutral-500 uppercase tracking-widest ml-1">Rol Inicial</label>
                             <select value={newUser.role} onChange={(e) => setNewUser({...newUser, role: e.target.value})} className="w-full bg-neutral-950 border border-neutral-800 text-white px-4 py-3 rounded-xl text-sm focus:border-brand-gold/50 outline-none transition-all appearance-none">
-                                <option value="user">Cliente Estándar</option>
-                                <option value="barber">Barbero / Profesional</option>
-                                <option value="admin">Administrador</option>
+                                <option className="bg-neutral-950 text-white" value="user">Cliente Estándar</option>
+                                <option className="bg-neutral-950 text-white" value="barber">Barbero / Profesional</option>
+                                <option className="bg-neutral-950 text-white" value="admin">Administrador</option>
                             </select>
                         </div>
                         <div className="md:col-span-4 flex justify-end pt-2">
@@ -133,12 +142,12 @@ export default function UsersManager() {
                     <select 
                         value={roleFilter} 
                         onChange={(e) => setRoleFilter(e.target.value)}
-                        className="bg-transparent text-sm text-white outline-none py-2 font-bold uppercase tracking-widest cursor-pointer"
+                        className="bg-neutral-950 text-sm text-white outline-none py-2 px-1 font-bold uppercase tracking-widest cursor-pointer border-0 rounded-xl"
                     >
-                        <option value="all">Todos los Roles</option>
-                        <option value="user">Clientes</option>
-                        <option value="barber">Barberos</option>
-                        <option value="admin">Admins</option>
+                        <option className="bg-neutral-950 text-white" value="all">Todos los Roles</option>
+                        <option className="bg-neutral-950 text-white" value="user">Clientes</option>
+                        <option className="bg-neutral-950 text-white" value="barber">Barberos</option>
+                        <option className="bg-neutral-950 text-white" value="admin">Admins</option>
                     </select>
                 </div>
             </div>
@@ -155,7 +164,7 @@ export default function UsersManager() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-neutral-800">
-                            {filteredUsers.map((u) => (
+                            {paginatedUsers.map((u) => (
                                 <tr key={u._id} className="group hover:bg-neutral-800/30 transition-all">
                                     <td className="px-8 py-5">
                                         <div className="flex items-center gap-4">
@@ -206,6 +215,27 @@ export default function UsersManager() {
                     </div>
                 )}
             </div>
+
+            {/* Paginación */}
+            {(page > 1 || hasNext) && (
+                <div className="flex items-center justify-center gap-4 mt-8 pt-6 border-t border-neutral-800/50">
+                    <button
+                        disabled={page === 1}
+                        onClick={() => setPage(page - 1)}
+                        className="p-2 bg-neutral-900 border border-neutral-800 rounded-xl text-neutral-400 hover:text-brand-gold disabled:opacity-30 disabled:hover:text-neutral-400 transition-all"
+                    >
+                        <ChevronLeft className="size-5" />
+                    </button>
+                    <span className="text-sm font-bold text-neutral-400 uppercase tracking-widest">Página {page}</span>
+                    <button
+                        disabled={!hasNext}
+                        onClick={() => setPage(page + 1)}
+                        className="p-2 bg-neutral-900 border border-neutral-800 rounded-xl text-neutral-400 hover:text-brand-gold disabled:opacity-30 disabled:hover:text-neutral-400 transition-all"
+                    >
+                        <ChevronRight className="size-5" />
+                    </button>
+                </div>
+            )}
         </section>
     );
 }

@@ -18,7 +18,15 @@ export const getGallery = async (req, res) => {
     if (count === 0) {
       await Gallery.insertMany(seedGallery);
     }
-    const docs = await Gallery.find().sort({ createdAt: 1 });
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    let docs;
+    if (page && limit) {
+      const skip = (page - 1) * limit;
+      docs = await Gallery.find().sort({ createdAt: 1 }).skip(skip).limit(limit);
+    } else {
+      docs = await Gallery.find().sort({ createdAt: 1 });
+    }
     res.status(200).json(docs);
   } catch (error) {
     res.status(500).json({ message: "Error fetch", error: error.message });

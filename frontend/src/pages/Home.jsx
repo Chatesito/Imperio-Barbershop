@@ -170,12 +170,7 @@ export default function Home() {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {["gallery-01.jpg", "gallery-02.jpg", "gallery-05.jpg", "about-us-NuestraHistoria.png"].map((img, idx) => (
                             <div key={idx} className="group relative aspect-square overflow-hidden rounded-2xl border border-neutral-800">
-                                 <img src={`/images/${img}`} alt="Corte" className="w-full h-full object-cover transition duration-500 group-hover:scale-125" />
-                                 <div className="absolute inset-0 bg-brand-gold/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                      <div className="size-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center text-white scale-50 group-hover:scale-100 transition-transform">
-                                           <Scissors className="size-6" />
-                                      </div>
-                                 </div>
+                                 <img src={`/images/${img}`} alt="Corte" className="w-full h-full object-cover" />
                             </div>
                         ))}
                     </div>
@@ -220,7 +215,13 @@ export default function Home() {
                     <div className="h-[450px] rounded-3xl overflow-hidden border border-neutral-800 shadow-2xl">
                          <iframe
                             title="Mapa Imperio"
-                            src={branches[0]?.mapUrl || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.5774530734902!2d-75.265569!3d2.9370423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b7415e24bef73%3A0x77c1c66f24bab228!2sCl.%2014a%20%23%2034-20%2C%20Neiva%2C%20Huila!5e0!3m2!1ses-419!2sco!4v1763579753457!5m2!1ses-419!2sco"}
+                            src={
+                              branches[0]
+                                ? (branches[0].mapUrl && branches[0].mapUrl.includes("/maps/embed")
+                                    ? branches[0].mapUrl
+                                    : `https://maps.google.com/maps?q=${encodeURIComponent(branches[0].address || branches[0].name)}&t=&z=15&ie=UTF8&iwloc=&output=embed`)
+                                : "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.5774530734902!2d-75.265569!3d2.9370423!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3b7415e24bef73%3A0x77c1c66f24bab228!2sCl.%2014a%20%23%2034-20%2C%20Neiva%2C%20Huila!5e0!3m2!1ses-419!2sco!4v1763579753457!5m2!1ses-419!2sco"
+                            }
                             className="w-full h-full grayscale invert opacity-80 hover:grayscale-0 hover:invert-0 hover:opacity-100 transition-all duration-700"
                             loading="lazy"
                         />

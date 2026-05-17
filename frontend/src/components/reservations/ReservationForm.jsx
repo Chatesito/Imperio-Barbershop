@@ -157,7 +157,18 @@ const ReservationForm = () => {
     let current = parseInt(minTime.split(":")[0]) * 60 + parseInt(minTime.split(":")[1]);
     const end = parseInt(maxTime.split(":")[0]) * 60 + parseInt(maxTime.split(":")[1]);
     
+    const now = new Date();
+    const todayStr = now.toLocaleDateString('en-CA');
+    const isToday = selectedDate === todayStr;
+    
+    // 60 minutes margin for same-day
+    const marginMins = isToday ? (now.getHours() * 60 + now.getMinutes() + 60) : 0;
+    
     while (current <= end) {
+      if (isToday && current < marginMins) {
+        current += 30;
+        continue;
+      }
       const h = Math.floor(current / 60);
       const m = current % 60;
       const timeStr = `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}`;
@@ -172,11 +183,21 @@ const ReservationForm = () => {
     const now = new Date();
     const todayStr = now.toLocaleDateString('en-CA');
     
+    const maxDate = new Date(now);
+    maxDate.setMonth(maxDate.getMonth() + 6);
+    const maxDateStr = maxDate.toLocaleDateString('en-CA');
+    
     if (value < todayStr) {
       return "No puedes reservar en fechas pasadas";
     }
+    if (value > maxDateStr) {
+      return "El plazo máximo de reserva es de 6 meses";
+    }
     return true;
   };
+
+  const isBarberDisabled = (domicilio === "No" && !selectedBranch) || !domicilio;
+  const isServicesDisabled = isBarberDisabled || !selectedBarbero;
 
   useEffect(() => {
     if (domicilio === "Sí") {
@@ -344,6 +365,7 @@ const ReservationForm = () => {
           errors={errors} 
           options={staffOptions} 
           placeholder="Sin preferencia / El mejor disponible" 
+          disabled={isBarberDisabled}
           validation={{ required: false }}
         />
         
@@ -360,6 +382,7 @@ const ReservationForm = () => {
               error={errors.servicio?.message}
               placeholder="Escoge tu experiencia (puedes elegir varios)"
               isMulti={true}
+              disabled={isServicesDisabled}
             />
           )}
         />

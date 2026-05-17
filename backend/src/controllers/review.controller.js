@@ -52,7 +52,15 @@ export const getReviews = async (req, res) => {
     if (count === 0) {
       await Review.insertMany(seedReviews);
     }
-    const docs = await Review.find().sort({ createdAt: 1 });
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    let docs;
+    if (page && limit) {
+      const skip = (page - 1) * limit;
+      docs = await Review.find().sort({ createdAt: 1 }).skip(skip).limit(limit);
+    } else {
+      docs = await Review.find().sort({ createdAt: 1 });
+    }
     res.status(200).json(docs);
   } catch (error) {
     res.status(500).json({ message: "Error fetch", error: error.message });

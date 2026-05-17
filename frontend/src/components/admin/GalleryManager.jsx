@@ -85,7 +85,7 @@ export default function GalleryManager() {
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {gallery.map(g => (
           <div key={g._id} className="relative group rounded-md overflow-hidden bg-neutral-800 aspect-square">
-            <img src={g.url} alt="Gallery item" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+            <img src={g.url} alt="Gallery item" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-neutral-950/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
                 <button onClick={() => handleDelete(g._id)} className="bg-red-500/20 text-red-400 hover:bg-red-500/40 p-3 rounded-full transition-colors">
                   <Trash2 className="size-5" />

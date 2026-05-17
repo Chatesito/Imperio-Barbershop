@@ -75,7 +75,7 @@ export default function Services() {
                     <span className="inline-block py-1 px-4 rounded-full bg-brand-gold/10 border border-brand-gold/20 text-brand-gold text-xs font-bold tracking-[0.3em] uppercase mb-6">
                         Menú de Experiencias
                     </span>
-                    <h1 className="text-6xl md:text-8xl font-karantina font-extrabold text-white uppercase leading-[0.8] tracking-tighter drop-shadow-2xl">
+                    <h1 className="text-6xl md:text-8xl font-karantina font-semibold text-white uppercase leading-[0.8] tracking-tighter drop-shadow-2xl">
                         NUESTROS <br />
                         <span className="text-brand-gold">SERVICIOS</span>
                     </h1>
@@ -101,18 +101,15 @@ export default function Services() {
                             <img
                                 src="/images/barber-working.png"
                                 alt="Personal barber service"
-                                className="w-full aspect-[4/5] object-cover filter grayscale hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
+                                className="w-full aspect-[4/5] object-cover"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent opacity-60" />
-                        </div>
-                        <div className="absolute -bottom-6 -right-6 bg-brand-gold p-8 rounded-2xl shadow-2xl hidden md:block animate-float">
-                            <MapPin className="size-10 text-neutral-950" />
                         </div>
                     </div>
 
                     <div className="order-1 lg:order-2 space-y-8">
                         <h2 className="text-sm font-bold text-brand-gold uppercase tracking-[0.4em]">Exclusividad sin Límites</h2>
-                        <h3 className="text-5xl md:text-6xl font-karantina font-extrabold text-white uppercase leading-tight">
+                        <h3 className="text-5xl md:text-6xl font-karantina font-semibold text-white uppercase leading-tight">
                             ¿TIEMPO <span className="text-brand-gold italic">LIMITADO?</span> <br />
                             EL IMPERIO VA A TI
                         </h3>
@@ -147,7 +144,7 @@ export default function Services() {
             {/* PASOS PARA RESERVAR */}
             <section className="bg-neutral-900/30 py-24 px-6 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto text-center relative z-10">
-                    <h3 className="text-4xl md:text-5xl font-karantina font-extrabold text-white uppercase tracking-wider mb-16">
+                    <h3 className="text-4xl md:text-5xl font-karantina font-semibold text-white uppercase tracking-wider mb-16">
                         EL CAMINO AL <span className="text-brand-gold">DOMINIO</span>
                     </h3>
 
@@ -178,7 +175,7 @@ export default function Services() {
                 <div className="max-w-4xl mx-auto">
                     <div className="text-center mb-16">
                         <h2 className="text-sm font-bold text-brand-gold uppercase tracking-[0.5em] mb-4">Tarifas y Selecciones</h2>
-                        <h3 className="text-5xl md:text-7xl font-karantina font-extrabold text-white uppercase">MENÚ DE <span className="text-brand-gold">GALA</span></h3>
+                        <h3 className="text-5xl md:text-7xl font-karantina font-semibold text-white uppercase">MENÚ DE <span className="text-brand-gold">GALA</span></h3>
                         <div className="w-24 h-1 bg-brand-gold mx-auto mt-4 rounded-full opacity-50" />
                     </div>
 
@@ -210,7 +207,7 @@ export default function Services() {
                                             >
                                                 <div className="flex-1">
                                                     <div className="flex items-baseline gap-2">
-                                                        <h5 className="text-white font-bold group-hover/item:text-brand-gold transition-colors">{srv.name}</h5>
+                                                        <h5 className="text-white font-medium group-hover/item:text-brand-gold transition-colors">{srv.name}</h5>
                                                         <div className="flex-1 border-b border-dotted border-white/20 mx-2 -translate-y-1" />
                                                         <span className="text-brand-gold font-bold text-xl font-karantina tracking-wider transition-transform group-hover/item:scale-110">
                                                             ${(srv.price || 0).toLocaleString()}

@@ -30,17 +30,17 @@ export default function Navbar() {
     return (
         <>
             <nav className="bg-neutral-900 border-b border-neutral-700 relative z-40 shadow-md shadow-black/20">
-                <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+                <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
 
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2">
                         <img
                             src="/images/Isotipo.png"
-                            className="h-10 w-10 object-contain"
+                            className="h-8 w-8 object-contain"
                         />
                         <div className="leading-tight">
-                            <div className="font-extrabold text-white text-lg tracking-wide">IMPERIO</div>
-                            <div className="text-xs text-neutral-400 tracking-widest">BARBERSHOP</div>
+                            <div className="font-extrabold text-white text-base tracking-wide">IMPERIO</div>
+                            <div className="text-[10px] text-neutral-400 tracking-widest">BARBERSHOP</div>
                         </div>
                     </Link>
 

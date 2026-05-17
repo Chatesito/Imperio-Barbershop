@@ -21,7 +21,7 @@ export default function Navbar() {
 
     const desktopLinkClass = ({ isActive }) =>
         [
-            "px-1 py-2 text-sm font-semibold tracking-wide border-b-2 transition-colors",
+            "px-1 py-2 text-xs font-semibold tracking-wide border-b-2 transition-colors",
             isActive
                 ? "text-brand-gold border-brand-gold"
                 : "text-neutral-300 hover:text-brand-gold border-transparent hover:border-brand-gold",
@@ -30,7 +30,7 @@ export default function Navbar() {
     return (
         <>
             <nav className="bg-neutral-900 border-b border-neutral-700 relative z-40 shadow-md shadow-black/20">
-                <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
+                <div className="max-w-7xl mx-auto px-8 md:px-16 lg:px-24 h-14 flex items-center justify-between">
 
                     {/* Logo */}
                     <Link to="/" className="flex items-center gap-2">
@@ -45,7 +45,7 @@ export default function Navbar() {
                     </Link>
 
                     {/* Links desktop */}
-                    <div className="hidden lg:flex items-center gap-6">
+                    <div className="hidden lg:flex items-center gap-4">
                         {links.map((l) => (
                             <NavLink key={l.label} to={l.to} className={desktopLinkClass}>
                                 {l.label}
